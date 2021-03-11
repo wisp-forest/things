@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.glisco.things.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AnvilScreenHandlerAccessor",
+    "AnvilScreenHandlerMixin",
+    "BrewingRecipeRegistryMixin",
+    "BrewingStandBlockEntityAccessor",
+    "BrewingStandBlockEntityMixin",
+    "ContainerLockAccessor",
+    "ContainerLockMixin",
+    "ForgingScreenHandlerAccessor",
+    "ItemsMixin",
+    "LivingEntityMixin",
+    "LockableContainerBlockEntityAccessor",
+    "PlayerEntityMixin",
+    "PotionItemMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

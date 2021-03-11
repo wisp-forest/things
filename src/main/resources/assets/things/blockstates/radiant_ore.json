@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "things:block/radiant_ore"
+    }
+  }
+}

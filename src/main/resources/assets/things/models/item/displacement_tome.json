@@ -1,0 +1,20 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "things:item/displacement_tome_empty"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"pages": 1
+			},
+			"model": "things:item/displacement_tome_half"
+		},
+		{
+			"predicate": {
+				"pages": 2
+			},
+			"model": "things:item/displacement_tome_full"
+		}
+	]
+}

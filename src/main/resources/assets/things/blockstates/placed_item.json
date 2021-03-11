@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "things:block/placed_item"
+    },
+    "facing=up": {
+      "model": "things:block/placed_item"
+    },
+    "facing=west": {
+      "model": "things:block/placed_item"
+    },
+    "facing=east": {
+      "model": "things:block/placed_item"
+    },
+    "facing=south": {
+      "model": "things:block/placed_item"
+    },
+    "facing=north": {
+      "model": "things:block/placed_item"
+    }
+  }
+}

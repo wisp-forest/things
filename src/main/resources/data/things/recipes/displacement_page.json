@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "things:glowing_ink"
+    }
+  ],
+  "result": {
+    "item": "things:displacement_page",
+    "Count": 1
+  }
+}
