@@ -7,7 +7,6 @@ import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,8 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.Collections;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @Environment(EnvType.CLIENT)
 public class ThingsClient implements ClientModInitializer {
@@ -65,7 +63,7 @@ public class ThingsClient implements ClientModInitializer {
         ));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (openEChest.wasPressed()) {
-                if (TrinketsApi.getTrinketsInventory(client.player).containsAny(Collections.singleton(ThingsItems.ENDER_POUCH))) {
+                if (CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENDER_POUCH, client.player).isPresent()) {
                     client.getNetworkHandler().sendPacket(OpenEChestC2SPacket.create());
                 }
             }

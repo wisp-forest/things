@@ -6,7 +6,7 @@
   "description": "",
   "authors": [],
   "contact": {},
-  "license": "MIT",
+  "license": "GPLv3",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -22,6 +22,7 @@
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": ">=1.16.2"
+    "minecraft": ">=1.16.2",
+    "curios": "*"
   }
 }

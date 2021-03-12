@@ -1,6 +1,9 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.data.server.recipe.ShapelessRecipeJsonFactory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
@@ -17,6 +23,8 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class ItemMagnetItem extends Item {
 
@@ -28,17 +36,29 @@ public class ItemMagnetItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
         boolean blue = true;
-        for (double i = 2; i < 10; i += 0.5) {
+        for (double i = 2; i < 10; i += 0.15) {
             HitResult result = user.raycast(i, 0, false);
 
             if (world.isClient) {
-                ParticleEffect particle = new DustParticleEffect(blue ? 0 : 1, 0, blue ? 1 : 0, 1);
+                ParticleEffect particle = new DustParticleEffect(blue ? 0.5f : 1, 0, blue ? 1 : 0.5f, 1);
                 blue = !blue;
 
                 world.addParticle(particle, result.getPos().x, result.getPos().y, result.getPos().z, 0, 0, 0);
+
+                if (i > 9.5) {
+                    displayTerminator(world, result.getPos(), 0.65);
+                }
             }
 
-            if (!result.getType().equals(HitResult.Type.MISS)) break;
+            if (!result.getType().equals(HitResult.Type.MISS)) {
+
+                if (world.isClient) {
+                    HitResult terminatorPosition = user.raycast(i - 0.75, 0, false);
+                    displayTerminator(world, terminatorPosition.getPos(), 0.25);
+                }
+
+                break;
+            }
 
             Vec3d box1 = result.getPos().add(-1.5, -1.5, -1.5);
             Vec3d box2 = result.getPos().add(1.5, 1.5, 1.5);
@@ -59,6 +79,19 @@ public class ItemMagnetItem extends Item {
         user.getItemCooldownManager().set(ThingsItems.ITEM_MAGNET, 20);
 
         return TypedActionResult.success(user.getStackInHand(hand));
+    }
+
+    @Environment(EnvType.CLIENT)
+    private static void displayTerminator(World worldIn, Vec3d at, double spread) {
+        for (int j = 0; j < 5; j++) {
+            Random rand = worldIn.getRandom();
+
+            double x = at.x + (rand.nextDouble() - 0.5) * spread;
+            double y = at.y + (rand.nextDouble() - 0.5) * spread;
+            double z = at.z + (rand.nextDouble() - 0.5) * spread;
+
+            worldIn.addParticle(ParticleTypes.WITCH, x, y, z, 0, 0, 0);
+        }
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -12,6 +14,7 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosComponent;
 
 import java.util.Collections;
 import java.util.List;
@@ -62,6 +65,7 @@ public class ThingsItems {
         }
     };
 
+    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
     public static void register() {
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "hardening_catalyst"), ThingsItems.HARDENING_CRYSTAL);
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "container_key"), ThingsItems.CONTAINER_KEY);
@@ -84,5 +88,14 @@ public class ThingsItems {
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "item_magnet"), ThingsItems.ITEM_MAGNET);
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "rabbit_foot_charm"), ThingsItems.RABBIT_FOOT_CHARM);
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "luck_of_the_irish"), ThingsItems.LUCK_OF_THE_IRISH);
+
+        ItemComponentCallbackV2.event(Items.APPLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new AppleCurio()));
+        ItemComponentCallbackV2.event(ENCHANTED_WAX_GLAND).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new EnchantedWaxGlandItem.Curio()));
+        ItemComponentCallbackV2.event(HADES_CRYSTAL).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new HadesCrystalItem.Curio()));
+        ItemComponentCallbackV2.event(MONOCLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new MonocleItem.Curio()));
+        ItemComponentCallbackV2.event(MOSS_NECKLACE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new MossNecklaceItem.Curio()));
+        ItemComponentCallbackV2.event(RABBIT_FOOT_CHARM).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new RabbitFootCharmItem.Curio()));
+        ItemComponentCallbackV2.event(RIOT_GAUNTLET).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new RiotGauntletItem.Curio()));
+        ItemComponentCallbackV2.event(MINING_GLOVES).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new MiningGlovesItem.Curio()));
     }
 }

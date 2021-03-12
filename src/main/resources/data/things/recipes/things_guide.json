@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:apple"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ],
+  "result": {
+    "item": "minecraft:diamond_pickaxe",
+    "nbt": {
+      "patchouli:book": "things:things_guide"
+    }
+  }
+}

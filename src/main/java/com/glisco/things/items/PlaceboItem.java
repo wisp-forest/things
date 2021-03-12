@@ -1,14 +1,13 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
-import dev.emi.trinkets.api.SlotGroups;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceboItem extends TrinketItemWithOptionalTooltip {
+public class PlaceboItem extends ItemWithOptionalTooltip {
 
     private static final List<Text> TOOLTIP;
 
@@ -20,11 +19,6 @@ public class PlaceboItem extends TrinketItemWithOptionalTooltip {
 
     public PlaceboItem() {
         super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
-    }
-
-    @Override
-    public boolean canWearInSlot(String group, String slot) {
-        return group.equals(SlotGroups.HEAD);
     }
 
     @Override

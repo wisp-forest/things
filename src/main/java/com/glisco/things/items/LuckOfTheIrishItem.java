@@ -7,15 +7,10 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 
-public class LuckOfTheIrishItem extends TrinketItemWithOptionalTooltip {
+public class LuckOfTheIrishItem extends ItemWithOptionalTooltip {
 
     public LuckOfTheIrishItem() {
         super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
-    }
-
-    @Override
-    public boolean canWearInSlot(String group, String slot) {
-        return true;
     }
 
     @Override

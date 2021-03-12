@@ -2,7 +2,6 @@ package com.glisco.things.network;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.items.ThingsItems;
-import dev.emi.trinkets.api.TrinketsApi;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -17,8 +16,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Collections;
+import top.theillusivec4.curios.api.CuriosApi;
 
 public class OpenEChestC2SPacket {
 
@@ -27,7 +25,7 @@ public class OpenEChestC2SPacket {
 
     public static void onPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {
         server.execute(() -> {
-            if (TrinketsApi.getTrinketsInventory(player).containsAny(Collections.singleton(ThingsItems.ENDER_POUCH))) {
+            if (CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENDER_POUCH, player).isPresent()) {
                 player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> {
                     return GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, player.getEnderChestInventory());
                 }, new TranslatableText("container.enderpouch")));

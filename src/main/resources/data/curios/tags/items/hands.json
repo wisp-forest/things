@@ -1,0 +1,7 @@
+{
+  "replaces": "false",
+  "values": [
+    "things:riot_gauntlet",
+    "things:mining_gloves"
+  ]
+}

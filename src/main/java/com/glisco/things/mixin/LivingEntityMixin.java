@@ -2,7 +2,6 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.items.ThingsItems;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -18,8 +17,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Collections;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
@@ -53,7 +51,7 @@ public class LivingEntityMixin {
 
         PlayerEntity player = (PlayerEntity) entity;
 
-        if (!TrinketsApi.getTrinketsInventory(player).containsAny(Collections.singleton(ThingsItems.ENCHANTED_WAX_GLAND))) return j;
+        if (!CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENCHANTED_WAX_GLAND, player).isPresent()) return j;
 
         return j * 10f;
     }
@@ -65,7 +63,7 @@ public class LivingEntityMixin {
 
         PlayerEntity player = (PlayerEntity) entity;
 
-        if (TrinketsApi.getTrinketsInventory(player).containsAny(Collections.singleton(ThingsItems.ENCHANTED_WAX_GLAND)) && TrinketsApi.getTrinketsInventory(player).containsAny(Collections.singleton(ThingsItems.HADES_CRYSTAL))) {
+        if (CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENCHANTED_WAX_GLAND, player).isPresent() && CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.HADES_CRYSTAL, player).isPresent()) {
             int depthStrider = EnchantmentHelper.getDepthStrider(player);
             player.updateVelocity(0.175f + 0.1f * depthStrider, movementInput);
         } else {
