@@ -16,19 +16,13 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
   },
   "criteria": {
-    "iron_ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "item": "minecraft:iron_ingot"
-          }
-        ]
-      }
+    "tick": {
+      "trigger": "minecraft:tick"
     }
   },
   "requirements": [
     [
-      "iron_ingot"
+      "tick"
     ]
-    }
+  ]
+}

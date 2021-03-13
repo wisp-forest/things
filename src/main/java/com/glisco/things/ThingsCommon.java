@@ -10,21 +10,22 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -100,6 +101,23 @@ public class ThingsCommon implements ModInitializer {
         });
 
         isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
+
+        UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
+            if (!isPatchouliLoaded()) return ActionResult.PASS;
+
+            if (playerEntity.getMainHandStack().getItem() == Items.BOOK && world.getBlockState(blockHitResult.getBlockPos()).isOf(ThingsBlocks.GLEAMING_ORE)) {
+                if (!world.isClient) {
+                    playerEntity.getMainHandStack().decrement(1);
+
+                    ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
+                    book.getOrCreateTag().putString("patchouli:book", "things:things_guide");
+                    playerEntity.inventory.offerOrDrop(world, book);
+                }
+                return ActionResult.SUCCESS;
+            } else {
+                return ActionResult.PASS;
+            }
+        });
     }
 
     public static boolean isPatchouliLoaded() {
