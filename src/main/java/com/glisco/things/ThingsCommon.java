@@ -6,6 +6,11 @@ import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -42,6 +47,8 @@ import top.theillusivec4.curios.api.SlotTypePreset;
 
 public class ThingsCommon implements ModInitializer {
 
+    public static ThingsConfig CONFIG;
+
     public static final String MOD_ID = "things";
 
     public static final ItemGroup THINGS_ITEMS = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
@@ -69,6 +76,9 @@ public class ThingsCommon implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+        AutoConfig.register(ThingsConfig.class, JanksonConfigSerializer::new);
+        CONFIG = AutoConfig.getConfigHolder(ThingsConfig.class).getConfig();
 
         CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.BELT.getInfoBuilder().build());
         CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.HEAD.getInfoBuilder().build());
@@ -122,5 +132,13 @@ public class ThingsCommon implements ModInitializer {
 
     public static boolean isPatchouliLoaded() {
         return isPatchouliLoaded;
+    }
+
+    @Config(name = "things")
+    public static class ThingsConfig implements ConfigData {
+
+        @Comment("Disables curio support for apples")
+        public boolean appleCurio = true;
+
     }
 }

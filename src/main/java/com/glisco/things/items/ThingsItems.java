@@ -89,7 +89,10 @@ public class ThingsItems {
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "rabbit_foot_charm"), ThingsItems.RABBIT_FOOT_CHARM);
         Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "luck_of_the_irish"), ThingsItems.LUCK_OF_THE_IRISH);
 
-        ItemComponentCallbackV2.event(Items.APPLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new AppleCurio()));
+        if (ThingsCommon.CONFIG.appleCurio) {
+            ItemComponentCallbackV2.event(Items.APPLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new AppleCurio()));
+        }
+
         ItemComponentCallbackV2.event(ENCHANTED_WAX_GLAND).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new EnchantedWaxGlandItem.Curio()));
         ItemComponentCallbackV2.event(HADES_CRYSTAL).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new HadesCrystalItem.Curio()));
         ItemComponentCallbackV2.event(MONOCLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new MonocleItem.Curio()));

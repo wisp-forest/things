@@ -10,6 +10,19 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+repositories {
+
+    maven { url "https://maven.shedaniel.me/" }
+
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+}
+
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -22,6 +35,11 @@ dependencies {
     modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
 
     modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:5.11.202"
+    modRuntime "me.shedaniel:RoughlyEnoughItems:5.11.202"
+
+    modImplementation "curse.maven:modmenu-308702:3268909"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
