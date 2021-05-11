@@ -3,7 +3,7 @@
   "id": "things",
   "version": "${version}",
   "name": "Things",
-  "description": "",
+  "description": "Curios and other utilities",
   "authors": [],
   "contact": {},
   "license": "GPLv3",

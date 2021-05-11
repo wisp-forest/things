@@ -12,6 +12,7 @@
     "ContainerLockAccessor",
     "ContainerLockMixin",
     "ForgingScreenHandlerAccessor",
+    "ItemAccessor",
     "LivingEntityMixin",
     "LockableContainerBlockEntityAccessor",
     "PlayerAdvancementTrackerMixin",

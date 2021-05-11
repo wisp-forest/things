@@ -9,12 +9,11 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -56,19 +55,19 @@ public class LivingEntityMixin {
         return j * 10f;
     }
 
-    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 1))
-    public void waxGlandLava(LivingEntity livingEntity, float speed, Vec3d movementInput) {
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"), index = 0)
+    public float waxGlandLava(float speed) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        if (!(entity instanceof PlayerEntity)) return;
+        if (!(entity instanceof PlayerEntity)) return speed;
 
         PlayerEntity player = (PlayerEntity) entity;
 
         if (CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENCHANTED_WAX_GLAND, player).isPresent() && CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.HADES_CRYSTAL, player).isPresent()) {
             int depthStrider = EnchantmentHelper.getDepthStrider(player);
-            player.updateVelocity(0.175f + 0.1f * depthStrider, movementInput);
-        } else {
-            player.updateVelocity(speed, movementInput);
+            return 0.175f + 0.1f * depthStrider;
         }
+
+        return speed;
     }
 
     /*@Redirect(method = "getMovementSpeed(F)F", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/LivingEntity;flyingSpeed:F", opcode = Opcodes.GETFIELD))

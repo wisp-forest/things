@@ -1,6 +1,7 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.mixin.ItemAccessor;
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
@@ -92,6 +93,8 @@ public class ThingsItems {
         if (ThingsCommon.CONFIG.appleCurio) {
             ItemComponentCallbackV2.event(Items.APPLE).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new AppleCurio()));
         }
+
+        ((ItemAccessor) BATER_WUCKET).setRecipeRemainder(BATER_WUCKET);
 
         ItemComponentCallbackV2.event(ENCHANTED_WAX_GLAND).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new EnchantedWaxGlandItem.Curio()));
         ItemComponentCallbackV2.event(HADES_CRYSTAL).register((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new HadesCrystalItem.Curio()));
