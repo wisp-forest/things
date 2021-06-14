@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:mining_gloves"
+            "items": [
+              "things:mining_gloves"
+            ]
           }
         ]
       }

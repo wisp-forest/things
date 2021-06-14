@@ -1,10 +1,10 @@
 plugins {
-    id 'fabric-loom' version '0.5-SNAPSHOT'
+    id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -32,14 +32,14 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
 
-    modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    //modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:5.11.202"
-    modRuntime "me.shedaniel:RoughlyEnoughItems:5.11.202"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.246-alpha"
+    modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:6.0.246-alpha"
 
-    modImplementation "curse.maven:modmenu-308702:3268909"
+    modImplementation "curse.maven:modmenu-308702:3331339"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
@@ -48,13 +48,8 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
@@ -62,18 +57,23 @@ repositories {
     maven { url = "https://jitpack.io" }
 
     maven {
-        name = "NerdHubMC"
-        url = "https://maven.abusedmaster.xyz/"
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
-
-    maven { url = "https://maven.theillusivec4.top/" }
 
     maven {
         name = "Ladysnake Libs"
-        url = 'https://dl.bintray.com/ladysnake/libs'
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
 
     maven { url 'https://maven.blamejared.com' }
+
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is

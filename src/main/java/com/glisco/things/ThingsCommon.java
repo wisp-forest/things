@@ -25,9 +25,9 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.UniformLootTableRange;
 import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.ActionResult;
@@ -36,14 +36,13 @@ import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeInfo;
-import top.theillusivec4.curios.api.SlotTypePreset;
+import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 
 public class ThingsCommon implements ModInitializer {
 
@@ -62,10 +61,9 @@ public class ThingsCommon implements ModInitializer {
                     OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
                     ThingsBlocks.GLEAMING_ORE.getDefaultState(),
                     3))
-            .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(
-                    3,
-                    0,
-                    15)))
+            .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(UniformHeightProvider.create(
+                    YOffset.fixed(0),
+                    YOffset.fixed(15)))))
             .spreadHorizontally().repeat(5);
 
     static {
@@ -80,35 +78,19 @@ public class ThingsCommon implements ModInitializer {
         AutoConfig.register(ThingsConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ThingsConfig.class).getConfig();
 
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.BELT.getInfoBuilder().build());
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.HEAD.getInfoBuilder().build());
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.NECKLACE.getInfoBuilder().build());
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.CHARM.getInfoBuilder().build());
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.HANDS.getInfoBuilder().build());
-        CuriosApi.enqueueSlotType(SlotTypeInfo.BuildScheme.REGISTER, SlotTypePreset.BODY.getInfoBuilder().build());
-
         ThingsItems.register();
         ThingsBlocks.register();
 
         Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "retribution"), RETRIBUTION);
 
-        RegistryKey<ConfiguredFeature<?, ?>> oreGleamingOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN,
+        RegistryKey<ConfiguredFeature<?, ?>> oreGleamingOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY,
                 new Identifier(MOD_ID, "ore_gleaming_overworld"));
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, oreGleamingOverworld.getValue(), ORE_GLEAMING_OVERWORLD);
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, oreGleamingOverworld);
 
         ServerPlayNetworking.registerGlobalReceiver(PlaceItemC2SPacket.ID, PlaceItemC2SPacket::onPacket);
-
         ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
-
         ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
-
-        LootTableLoadingCallback.EVENT.register((resourceManager, lootManager, id, supplier, setter) -> {
-            if (new Identifier("minecraft", "entities/squid").equals(id)) {
-                FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder().rolls(UniformLootTableRange.between(1, 3)).withEntry(ItemEntry.builder(ThingsItems.GLOWING_INK).build()).withCondition(RandomChanceWithLootingLootCondition.builder(0.05f, 0.025f).build());
-                supplier.withPool(poolBuilder.build());
-            }
-        });
 
         isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
 
@@ -121,7 +103,7 @@ public class ThingsCommon implements ModInitializer {
 
                     ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
                     book.getOrCreateTag().putString("patchouli:book", "things:things_guide");
-                    playerEntity.inventory.offerOrDrop(world, book);
+                    playerEntity.getInventory().offerOrDrop(book);
                 }
                 return ActionResult.SUCCESS;
             } else {
@@ -137,8 +119,14 @@ public class ThingsCommon implements ModInitializer {
     @Config(name = "things")
     public static class ThingsConfig implements ConfigData {
 
-        @Comment("Disables curio support for apples")
-        public boolean appleCurio = true;
+        @Comment("Disables trinket support for apples")
+        public boolean appleTrinket = true;
+
+        @Comment("How much faster the wax gland should make you")
+        public float waxGlandMultiplier = 10f;
+
+        @Comment("The base durability of the infernal scepter")
+        public int infernalScepterDurability = 64;
 
     }
 }

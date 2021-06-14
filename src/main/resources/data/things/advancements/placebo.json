@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:placebo"
+            "items": [
+              "things:placebo"
+            ]
           }
         ]
       }

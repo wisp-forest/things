@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:feather"
+      "item": "things:gleaming_powder"
     },
     {
       "item": "minecraft:paper"
@@ -11,7 +11,7 @@
       "item": "minecraft:diamond"
     },
     {
-      "item": "things:glowing_ink"
+      "item": "minecraft:glow_ink_sac"
     }
   ],
   "result": {

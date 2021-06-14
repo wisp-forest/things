@@ -51,9 +51,8 @@ public class RecallPotionItem extends Item {
         PlayerEntity player = user instanceof PlayerEntity ? (PlayerEntity) user : null;
 
         if (player == null) return new ItemStack(Items.GLASS_BOTTLE);
-        if (player instanceof ServerPlayerEntity) {
+        if (player instanceof ServerPlayerEntity serverPlayer) {
 
-            ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             ServerWorld spawnWorld = serverPlayer.getServer().getWorld(serverPlayer.getSpawnPointDimension());
 
             Criteria.CONSUME_ITEM.trigger(serverPlayer, stack);
@@ -71,12 +70,12 @@ public class RecallPotionItem extends Item {
             }
         }
 
-        if (!player.abilities.creativeMode) {
+        if (!player.getAbilities().creativeMode) {
             stack.decrement(1);
             if (stack.isEmpty()) {
                 return new ItemStack(Items.GLASS_BOTTLE);
             } else {
-                player.inventory.offerOrDrop(player.world, new ItemStack(Items.GLASS_BOTTLE));
+                player.getInventory().offerOrDrop(new ItemStack(Items.GLASS_BOTTLE));
             }
         }
 

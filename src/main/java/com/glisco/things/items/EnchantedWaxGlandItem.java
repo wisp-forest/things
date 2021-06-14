@@ -1,18 +1,18 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantedWaxGlandItem extends ItemWithOptionalTooltip {
+public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip {
 
     private static final List<Text> TOOLTIP;
 
@@ -36,19 +36,15 @@ public class EnchantedWaxGlandItem extends ItemWithOptionalTooltip {
         return TOOLTIP;
     }
 
-    public static class Curio implements ICurio {
+    @Override
+    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof PlayerEntity player)) return;
 
-        @Override
-        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-
-            if (!(livingEntity instanceof PlayerEntity)) return;
-            PlayerEntity player = (PlayerEntity) livingEntity;
-
-            if (player.isTouchingWater()) {
-                player.addVelocity(0, 0.005, 0);
-            } else if (player.isInLava() && CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.HADES_CRYSTAL, player).isPresent()) {
-                player.addVelocity(0, 0.02, 0);
-            }
+        if (player.isTouchingWater()) {
+            player.addVelocity(0, 0.005, 0);
+        } else if (player.isInLava() && TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.HADES_CRYSTAL)) {
+            player.addVelocity(0, 0.02, 0);
         }
     }
+
 }

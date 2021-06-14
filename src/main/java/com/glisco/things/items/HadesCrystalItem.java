@@ -1,18 +1,19 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HadesCrystalItem extends ItemWithOptionalTooltip {
+public class HadesCrystalItem extends TrinketItemWithOptionalTooltip {
 
     private static final List<Text> TOOLTIP;
 
@@ -31,14 +32,12 @@ public class HadesCrystalItem extends ItemWithOptionalTooltip {
         return TOOLTIP;
     }
 
-    public static class Curio implements ICurio {
-        @Override
-        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-            if (!(livingEntity instanceof ServerPlayerEntity)) return;
-            ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
+    @Override
+    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
 
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 5, 0, true, false, true));
-            if (player.isOnFire()) player.setFireTicks(0);
-        }
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 5, 0, true, false, true));
+        if (player.isOnFire()) player.setFireTicks(0);
     }
+
 }

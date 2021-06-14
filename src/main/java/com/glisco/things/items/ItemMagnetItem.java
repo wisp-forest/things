@@ -22,6 +22,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -40,7 +41,7 @@ public class ItemMagnetItem extends Item {
             HitResult result = user.raycast(i, 0, false);
 
             if (world.isClient) {
-                ParticleEffect particle = new DustParticleEffect(blue ? 0.5f : 1, 0, blue ? 1 : 0.5f, 1);
+                ParticleEffect particle = new DustParticleEffect(new Vec3f(blue ? 0.5f : 1, 0, blue ? 1 : 0.5f), 1);
                 blue = !blue;
 
                 world.addParticle(particle, result.getPos().x, result.getPos().y, result.getPos().z, 0, 0, 0);

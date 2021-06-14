@@ -3,18 +3,18 @@ package com.glisco.things.client;
 import com.glisco.things.DisplacementTomeScreenHandler;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.mixin.ScreenAccessor;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -33,7 +33,9 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     public static final Identifier TOME_WIDGETS_LOCATION = new Identifier(ThingsCommon.MOD_ID, "textures/gui/tome_widgets.png");
 
     private TextFieldWidget nameField;
+    private final List<ButtonWidget> buttons = new ArrayList<>();
 
+    private final PlayerInventory playerInventory;
     private final List<Object> currentInputEventData;
     private Consumer<String> finishInputAction;
 
@@ -41,11 +43,12 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         super(handler, inventory, title);
         this.backgroundWidth = 147;
         this.currentInputEventData = new ArrayList<>();
+        this.playerInventory = inventory;
     }
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        client.getTextureManager().bindTexture(TEXTURE);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
@@ -65,7 +68,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         nameField.visible = false;
         nameField.active = false;
         nameField.setChangedListener(this::onNameFieldChange);
-        this.children.add(nameField);
+        addDrawableChild(nameField);
         update();
     }
 
@@ -77,7 +80,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        CompoundTag tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
+        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
         int fuelLevel = tag.contains("Fuel") ? tag.getInt("Fuel") : 0;
         this.textRenderer.draw(matrices, new LiteralText("Charges: " + fuelLevel), titleX, titleY, 0xFFFFFF);
     }
@@ -104,12 +107,13 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     public void update() {
         this.buttons.clear();
-        this.children.removeIf((element -> element instanceof ButtonWidget));
+        ((ScreenAccessor)this).getDrawables().removeIf(drawable -> drawable instanceof ButtonWidget);
+        children().removeIf(element -> element instanceof ButtonWidget);
         addDefaultButtons();
 
-        CompoundTag tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
+        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
         if (tag.contains("Targets")) {
-            CompoundTag targets = tag.getCompound("Targets");
+            NbtCompound targets = tag.getCompound("Targets");
 
             int i = 0;
             for (String s : targets.getKeys()) {
@@ -119,6 +123,11 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
                 i++;
             }
         }
+    }
+
+    private void addButton(ButtonWidget widget){
+        buttons.add(widget);
+        addDrawable(widget);
     }
 
     public void addDefaultButtons() {
@@ -155,10 +164,13 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (button == 1) {
-            for (AbstractButtonWidget b : buttons) {
+            for (ButtonWidget b : buttons) {
                 if (!b.isHovered()) continue;
                 startRenaming(buttons.indexOf(b));
             }
+        }
+        for (ButtonWidget b : buttons) {
+            if (b.mouseClicked(mouseX, mouseY, button)) return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
@@ -167,7 +179,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         this.currentInputEventData.clear();
         this.currentInputEventData.add(buttonIndex);
 
-        AbstractButtonWidget button = buttons.get(buttonIndex);
+        ButtonWidget button = buttons.get(buttonIndex);
 
         this.nameField.visible = true;
         this.nameField.active = true;
@@ -224,7 +236,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     private void finishCreating(String text) {
         client.getNetworkHandler().sendPacket(RequestTomeActionC2SPacket.create(RequestTomeActionC2SPacket.Action.CREATE_POINT, text));
-        playerInventory.getStack(playerInventory.method_7371(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
+        playerInventory.getStack(playerInventory.getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
         this.nameField.visible = false;
         this.nameField.active = false;
 
@@ -242,15 +254,14 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             TextRenderer textRenderer = minecraftClient.textRenderer;
-            minecraftClient.getTextureManager().bindTexture(TOME_WIDGETS_LOCATION);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.setShaderTexture(0, TOME_WIDGETS_LOCATION);
             int i = this.getYImage(this.isHovered());
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
             this.drawTexture(matrices, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
             this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-            this.renderBg(matrices, minecraftClient, mouseX, mouseY);
+            this.renderBackground(matrices, minecraftClient, mouseX, mouseY);
             int j = this.active ? 16777215 : 10526880;
             drawCenteredText(matrices, textRenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
         }
@@ -266,15 +277,14 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             TextRenderer textRenderer = minecraftClient.textRenderer;
-            minecraftClient.getTextureManager().bindTexture(TOME_WIDGETS_LOCATION);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+            RenderSystem.setShaderTexture(0, TOME_WIDGETS_LOCATION);
             int i = this.getYImage(this.isHovered());
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.enableDepthTest();
             this.drawTexture(matrices, this.x, this.y, 0, 126 + i * 20, this.width / 2, this.height);
             this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 126 + i * 20, this.width / 2, this.height);
-            this.renderBg(matrices, minecraftClient, mouseX, mouseY);
+            this.renderBackground(matrices, minecraftClient, mouseX, mouseY);
             int j = this.active ? 0x001054 : 0x001054;
             textRenderer.draw(matrices, this.getMessage(), (this.x + this.width / 2 - textRenderer.getWidth(this.getMessage()) / 2), this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
         }

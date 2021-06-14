@@ -3,9 +3,18 @@
   "id": "things",
   "version": "${version}",
   "name": "Things",
-  "description": "Curios and other utilities",
-  "authors": [],
-  "contact": {},
+  "description": "Trinkets and other utilities",
+  "authors": [
+    "glisco"
+  ],
+  "contact": {
+    "issues": "https://github.com/glisco03/things/issues",
+    "sources": "https://github.com/glisco03/things"
+  },
+  "contributors": [
+    "Pois1x"
+  ],
+  "icon": "assets/things/icon.png",
   "license": "GPLv3",
   "environment": "*",
   "entrypoints": {
@@ -14,6 +23,8 @@
     ],
     "main": [
       "com.glisco.things.ThingsCommon"
+    ],"modmenu": [
+      "com.glisco.things.ModMenuIntegration"
     ]
   },
   "mixins": [
@@ -22,7 +33,14 @@
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": ">=1.16.2",
-    "curios": "*"
+    "minecraft": ">=1.17",
+    "trinkets": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/xrwHKktV2d"
+      }
+    }
   }
 }

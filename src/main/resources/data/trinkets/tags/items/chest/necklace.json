@@ -1,0 +1,9 @@
+{
+  "replaces": "false",
+  "values": [
+    "things:moss_necklace",
+    "things:placebo",
+    "things:luck_of_the_irish",
+    "things:hades_crystal"
+  ]
+}

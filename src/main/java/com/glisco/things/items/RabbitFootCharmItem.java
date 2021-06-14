@@ -1,18 +1,19 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.Collections;
 import java.util.List;
 
-public class RabbitFootCharmItem extends ItemWithOptionalTooltip {
+public class RabbitFootCharmItem extends TrinketItemWithOptionalTooltip {
 
     public RabbitFootCharmItem() {
         super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
@@ -23,13 +24,10 @@ public class RabbitFootCharmItem extends ItemWithOptionalTooltip {
         return Collections.singletonList(new LiteralText("§7Grants permanent Jump Boost II"));
     }
 
-    public static class Curio implements ICurio {
-        @Override
-        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-            if (!(livingEntity instanceof ServerPlayerEntity)) return;
-            ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
+    @Override
+    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
 
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 5, 1, true, false, true));
-        }
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 5, 1, true, false, true));
     }
 }

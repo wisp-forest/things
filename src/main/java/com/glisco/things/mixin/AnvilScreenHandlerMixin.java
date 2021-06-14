@@ -4,9 +4,12 @@ import com.glisco.things.items.ThingsItems;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AnvilScreenHandler;
+import net.minecraft.screen.Property;
 import net.minecraft.text.LiteralText;
 import org.apache.commons.lang3.StringUtils;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,6 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AnvilScreenHandler.class)
 public class AnvilScreenHandlerMixin {
 
+    @Shadow @Final private Property levelCost;
+
+    @Shadow private String newItemName;
+
     @Inject(method = "canTakeOutput", at = @At("HEAD"), cancellable = true)
     public void outputCheckOverride(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
 
@@ -22,7 +29,7 @@ public class AnvilScreenHandlerMixin {
 
         if (!handler.getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CRYSTAL)) return;
 
-        cir.setReturnValue(((AnvilScreenHandlerAccessor) (Object) this).getLevelCost().get() <= player.experienceLevel);
+        cir.setReturnValue(levelCost.get() <= player.experienceLevel);
         cir.cancel();
     }
 
@@ -30,7 +37,6 @@ public class AnvilScreenHandlerMixin {
     public void setOutput(CallbackInfo ci) {
 
         ForgingScreenHandlerAccessor forgingHandler = (ForgingScreenHandlerAccessor) (Object) this;
-        AnvilScreenHandlerAccessor anvilHandler = (AnvilScreenHandlerAccessor) (Object) this;
 
         if (!forgingHandler.getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CRYSTAL)) return;
         if (forgingHandler.getInput().getStack(0).getItem().getMaxDamage() == 0) return;
@@ -39,14 +45,14 @@ public class AnvilScreenHandlerMixin {
         ItemStack newOutput = forgingHandler.getInput().getStack(0).copy();
         newOutput.getOrCreateTag().putByte("Unbreakable", (byte) 1);
 
-        if (!StringUtils.isBlank(anvilHandler.getNewItemName())) {
-            newOutput.setCustomName(new LiteralText(anvilHandler.getNewItemName()));
+        if (!StringUtils.isBlank(newItemName)) {
+            newOutput.setCustomName(new LiteralText(newItemName));
         } else {
             newOutput.removeCustomName();
         }
 
         forgingHandler.getOutput().setStack(0, newOutput);
-        anvilHandler.getLevelCost().set(30);
+        levelCost.set(30);
 
         ci.cancel();
     }

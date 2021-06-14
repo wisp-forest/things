@@ -4,11 +4,10 @@
   "package": "com.glisco.things.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "AnvilScreenHandlerAccessor",
     "AnvilScreenHandlerMixin",
     "BrewingRecipeRegistryMixin",
-    "BrewingStandBlockEntityAccessor",
     "BrewingStandBlockEntityMixin",
+    "BucketItemMixin",
     "ContainerLockAccessor",
     "ContainerLockMixin",
     "ForgingScreenHandlerAccessor",
@@ -17,7 +16,8 @@
     "LockableContainerBlockEntityAccessor",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
-    "PotionItemMixin"
+    "PotionItemMixin",
+    "ScreenAccessor"
   ],
   "client": [
   ],

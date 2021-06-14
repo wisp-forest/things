@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:recall_potion"
+            "items": [
+              "things:recall_potion"
+            ]
           }
         ]
       }

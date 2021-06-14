@@ -4,15 +4,16 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
 
     private ItemStack item;
     private int rotation = 0;
 
-    public PlacedItemBlockEntity() {
-        super(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY);
+    public PlacedItemBlockEntity(BlockPos pos, BlockState state) {
+        super(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY, pos, state);
     }
 
     public void setItem(ItemStack item) {
@@ -24,11 +25,11 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        super.toTag(tag);
+    public NbtCompound writeNbt(NbtCompound tag) {
+        super.writeNbt(tag);
         if (item != null) {
-            CompoundTag itemTag = new CompoundTag();
-            item.toTag(itemTag);
+            NbtCompound itemTag = new NbtCompound();
+            item.writeNbt(itemTag);
             tag.put("Item", itemTag);
         }
         tag.putInt("Rotation", rotation);
@@ -36,22 +37,22 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        super.readNbt(tag);
         if (tag.contains("Item")) {
-            item = ItemStack.fromTag(tag.getCompound("Item"));
+            item = ItemStack.fromNbt(tag.getCompound("Item"));
         }
         this.rotation = tag.getInt("Rotation");
     }
 
     @Override
-    public void fromClientTag(CompoundTag tag) {
-        this.fromTag(null, tag);
+    public void fromClientTag(NbtCompound tag) {
+        this.readNbt(tag);
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag tag) {
-        return this.toTag(tag);
+    public NbtCompound toClientTag(NbtCompound tag) {
+        return this.writeNbt(tag);
     }
 
     @Override

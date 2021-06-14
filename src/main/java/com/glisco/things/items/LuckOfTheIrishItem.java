@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 
-public class LuckOfTheIrishItem extends ItemWithOptionalTooltip {
+public class LuckOfTheIrishItem extends TrinketItemWithOptionalTooltip {
 
     public LuckOfTheIrishItem() {
         super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));

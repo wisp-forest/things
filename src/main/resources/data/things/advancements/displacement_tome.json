@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:displacement_tome"
+            "items": [
+              "things:displacement_tome"
+            ]
           }
         ]
       }

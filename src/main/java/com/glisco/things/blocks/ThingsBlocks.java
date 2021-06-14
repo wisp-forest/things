@@ -2,6 +2,7 @@ package com.glisco.things.blocks;
 
 import com.glisco.things.ThingsCommon;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -15,25 +16,19 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
 
 public class ThingsBlocks {
 
     public static final Block STONE_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
     public static final Block QUARTZ_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
 
-    public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).breakByTool(FabricToolTags.PICKAXES, 3).luminance(5).requiresTool()) {
-        @Override
-        protected int getExperienceWhenMined(Random random) {
-            return MathHelper.nextInt(random, 3, 7);
-        }
-    };
+    public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).breakByTool(FabricToolTags.PICKAXES, 3).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
 
     public static final Block DIAMOND_PRESSURE_PLATE = new DiamondPressurePlateBlock();
     public static final Item DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)) {
@@ -47,7 +42,7 @@ public class ThingsBlocks {
     public static BlockEntityType<PlacedItemBlockEntity> PLACED_ITEM_BLOCK_ENTITY;
 
     static {
-        PLACED_ITEM_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "things:placed_item", BlockEntityType.Builder.create(PlacedItemBlockEntity::new, PLACED_ITEM).build(null));
+        PLACED_ITEM_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "things:placed_item", FabricBlockEntityTypeBuilder.create(PlacedItemBlockEntity::new, PLACED_ITEM).build(null));
     }
 
     public static void register() {

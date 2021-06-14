@@ -14,7 +14,6 @@
   "item.things.placebo": "Placebo",
   "item.things.displacement_tome": "Displacement Tome",
   "item.things.displacement_page": "Displacement Page",
-  "item.things.glowing_ink": "Glowing Ink",
   "item.things.mining_gloves": "Mining Glove",
   "item.things.riot_gauntlet": "Riot Gauntlet",
   "item.things.infernal_scepter": "Infernal Scepter",
@@ -73,5 +72,10 @@
   "advancement.things.riot_gauntlet.title": "missingno",
   "advancement.things.riot_gauntlet.description": "missingno",
   "advancement.things.rabbit_foot_charm.title": "Who doesn\u0027t like b-hopping?",
-  "advancement.things.rabbit_foot_charm.description": "Craft a Rabbit Foot Charm"
+  "advancement.things.rabbit_foot_charm.description": "Craft a Rabbit Foot Charm",
+
+  "text.autoconfig.things.title": "Things Config",
+  "text.autoconfig.things.option.appleTrinket": "Apple Trinket enabled",
+  "text.autoconfig.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
+  "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability"
 }

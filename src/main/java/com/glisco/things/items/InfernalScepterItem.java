@@ -31,12 +31,12 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
     }
 
     public InfernalScepterItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).maxDamage(64));
+        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability));
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!user.inventory.containsAny(Collections.singleton(Items.FIRE_CHARGE))) return TypedActionResult.fail(user.getStackInHand(hand));
+        if (!user.getInventory().containsAny(Collections.singleton(Items.FIRE_CHARGE))) return TypedActionResult.fail(user.getStackInHand(hand));
         user.setCurrentHand(hand);
         return TypedActionResult.success(user.getStackInHand(hand));
     }
@@ -48,12 +48,10 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (!(user instanceof PlayerEntity)) return;
+        if (!(user instanceof PlayerEntity player)) return;
         if (72000 - remainingUseTicks < 20) return;
 
-        PlayerEntity player = (PlayerEntity) user;
-
-        if (!player.inventory.containsAny(Collections.singleton(Items.FIRE_CHARGE))) return;
+        if (!player.getInventory().containsAny(Collections.singleton(Items.FIRE_CHARGE))) return;
 
         if (!world.isClient) {
             Vec3d vec3d = player.getRotationVec(0.0F);
@@ -61,9 +59,8 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
             double vY = (player.getY() + vec3d.y * 4.0D) - player.getY();
             double vZ = (player.getZ() + vec3d.z * 4.0D) - player.getZ();
 
-            FireballEntity fireball = new FireballEntity(world, user, vX, vY, vZ);
+            FireballEntity fireball = new FireballEntity(world, user, vX, vY, vZ, 3);
             fireball.updatePosition(player.getX() + vec3d.x * 2.0D, player.getEyeY() - 1, player.getZ() + vec3d.z * 2.0D);
-            fireball.explosionPower = 3;
             world.spawnEntity(fireball);
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 1, 1);
 
@@ -72,7 +69,7 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
             });
         }
 
-        player.inventory.getStack(player.inventory.method_7371(new ItemStack(Items.FIRE_CHARGE))).decrement(1);
+        player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(Items.FIRE_CHARGE))).decrement(1);
     }
 
     @Override

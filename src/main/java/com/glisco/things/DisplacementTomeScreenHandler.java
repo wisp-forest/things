@@ -6,7 +6,7 @@ import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -51,7 +51,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
             return;
         }
 
-        CompoundTag bookTargetsTag = book.getOrCreateSubTag("Targets");
+        NbtCompound bookTargetsTag = book.getOrCreateSubTag("Targets");
         if (!bookTargetsTag.contains(location)) return;
 
         currentFuel--;
@@ -71,9 +71,9 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public void addPoint(String name) {
-        player.inventory.getStack(player.inventory.method_7371(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
+        player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
         sendContentUpdates();
-        DisplacementTomeItem.storeTeleportTargetInBook(book, new DisplacementTomeItem.TargetLocation(player.getBlockPos(), player.world.getRegistryKey(), player.getHeadYaw(), player.pitch), name, false);
+        DisplacementTomeItem.storeTeleportTargetInBook(book, new DisplacementTomeItem.TargetLocation(player.getBlockPos(), player.world.getRegistryKey(), player.getHeadYaw(), player.getPitch()), name, false);
         updateClient();
     }
 

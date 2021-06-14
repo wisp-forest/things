@@ -10,6 +10,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -23,8 +24,8 @@ public class GlowstoneFixtureBlock extends FacingBlock {
 
     private static final VoxelShape BASE_DOWN = Block.createCuboidShape(5, 0, 5, 11, 1, 11);
     private static final VoxelShape GLOWSTONE_DOWN = Block.createCuboidShape(6, 1, 6, 10, 2, 10);
-    private static final VoxelShape BASE_UP = Block.createCuboidShape(5, 16, 5, 11, 15, 11);
-    private static final VoxelShape GLOWSTONE_UP = Block.createCuboidShape(6, 15, 6, 10, 14, 10);
+    private static final VoxelShape BASE_UP = Block.createCuboidShape(5, 15, 5, 11, 16, 11);
+    private static final VoxelShape GLOWSTONE_UP = Block.createCuboidShape(6, 14, 6, 10, 15, 10);
 
     private static final VoxelShape BASE_NORTH = Block.createCuboidShape(5, 5, 0, 11, 11, 1);
     private static final VoxelShape GLOWSTONE_NORTH = Block.createCuboidShape(6, 6, 1, 10, 10, 2);
@@ -116,7 +117,7 @@ public class GlowstoneFixtureBlock extends FacingBlock {
                 break;
         }
 
-        ParticleEffect dust = new DustParticleEffect(1, 1, 1, 1);
+        ParticleEffect dust = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
         world.addParticle(dust, x, y, z, 0, 0, 0);
     }
 

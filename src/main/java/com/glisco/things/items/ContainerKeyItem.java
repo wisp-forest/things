@@ -12,7 +12,7 @@ import net.minecraft.inventory.ContainerLock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.LiteralText;
@@ -95,10 +95,10 @@ public class ContainerKeyItem extends ItemWithOptionalTooltip {
     }
 
     private static void setLock(LockableContainerBlockEntity entity, String lock) {
-        CompoundTag lockTag = new CompoundTag();
+        NbtCompound lockTag = new NbtCompound();
         lockTag.putString("Lock", lock);
 
-        ContainerLock containerLock = lock.isEmpty() ? ContainerLock.EMPTY : ContainerLock.fromTag(lockTag);
+        ContainerLock containerLock = lock.isEmpty() ? ContainerLock.EMPTY : ContainerLock.fromNbt(lockTag);
 
         ((LockableContainerBlockEntityAccessor) entity).setLock(containerLock);
         if (entity instanceof ChestBlockEntity) {

@@ -7,6 +7,7 @@ import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,13 +17,12 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import org.lwjgl.glfw.GLFW;
-import top.theillusivec4.curios.api.CuriosApi;
 
 @Environment(EnvType.CLIENT)
 public class ThingsClient implements ClientModInitializer {
@@ -63,7 +63,7 @@ public class ThingsClient implements ClientModInitializer {
         ));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (openEChest.wasPressed()) {
-                if (CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.ENDER_POUCH, client.player).isPresent()) {
+                if (TrinketsApi.getTrinketComponent(client.player).get().isEquipped(ThingsItems.ENDER_POUCH)) {
                     client.getNetworkHandler().sendPacket(OpenEChestC2SPacket.create());
                 }
             }

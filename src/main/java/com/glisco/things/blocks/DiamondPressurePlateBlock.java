@@ -2,7 +2,7 @@ package com.glisco.things.blocks;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.MaterialColor;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,13 +16,13 @@ import java.util.List;
 public class DiamondPressurePlateBlock extends PressurePlateBlock {
 
     protected DiamondPressurePlateBlock() {
-        super(ActivationRule.MOBS, FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).materialColor(MaterialColor.DIAMOND));
+        super(ActivationRule.MOBS, FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).mapColor(MapColor.DIAMOND_BLUE));
     }
 
     @Override
     protected int getRedstoneOutput(World world, BlockPos pos) {
         Box box = BOX.offset(pos);
-        List<Entity> entities = world.getNonSpectatingEntities(PlayerEntity.class, box);
+        List<PlayerEntity> entities = world.getNonSpectatingEntities(PlayerEntity.class, box);
 
         if (!entities.isEmpty()) {
             for (Entity entity : entities) {

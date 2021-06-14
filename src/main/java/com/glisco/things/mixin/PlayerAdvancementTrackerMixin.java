@@ -27,7 +27,7 @@ public class PlayerAdvancementTrackerMixin {
         ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
         book.getOrCreateTag().putString("patchouli:book", "things:things_guide");
 
-        owner.inventory.offerOrDrop(owner.world, book);
+        owner.getInventory().offerOrDrop(book);
 
     }
 

@@ -17,8 +17,7 @@
     },
     {
       "type": "crafting",
-      "recipe": "things:displacement_page",
-      "text": "$(item)Glowing Ink$() is dropped rarely by $(thing)Squids$()"
+      "recipe": "things:displacement_page"
     }
   ]
 }

@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:hades_crystal"
+            "items":[
+              "things:hades_crystal"
+            ]
           }
         ]
       }

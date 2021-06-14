@@ -5,6 +5,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class BaterWucketItem extends BucketItem {
 
@@ -13,9 +16,10 @@ public class BaterWucketItem extends BucketItem {
     }
 
     @Override
-    protected ItemStack getEmptiedStack(ItemStack stack, PlayerEntity player) {
-        return stack;
+    public void onEmptied(@Nullable PlayerEntity player, World world, ItemStack stack, BlockPos pos) {
+        super.onEmptied(player, world, stack, pos);
     }
+
 
     @Override
     public boolean hasGlint(ItemStack stack) {

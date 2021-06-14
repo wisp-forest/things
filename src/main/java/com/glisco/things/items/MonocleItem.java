@@ -1,18 +1,19 @@
 package com.glisco.things.items;
 
 import com.glisco.things.ThingsCommon;
+import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.Collections;
 import java.util.List;
 
-public class MonocleItem extends ItemWithOptionalTooltip {
+public class MonocleItem extends TrinketItemWithOptionalTooltip {
 
     public MonocleItem() {
         super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
@@ -23,21 +24,17 @@ public class MonocleItem extends ItemWithOptionalTooltip {
         return Collections.singletonList(new LiteralText("§7Grants permanent Night Vision"));
     }
 
-    public static class Curio implements ICurio {
-        @Override
-        public void curioTick(String identifier, int index, LivingEntity livingEntity) {
-            if (!(livingEntity instanceof ServerPlayerEntity)) return;
-            ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
+    @Override
+    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
 
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 610, 0, true, false, true));
-        }
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 610, 0, true, false, true));
+    }
 
-        @Override
-        public void onUnequip(String identifier, int index, LivingEntity livingEntity) {
-            if (!(livingEntity instanceof ServerPlayerEntity)) return;
-            ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
+    @Override
+    public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
 
-            player.removeStatusEffect(StatusEffects.NIGHT_VISION);
-        }
+        player.removeStatusEffect(StatusEffects.NIGHT_VISION);
     }
 }

@@ -4,13 +4,14 @@ import com.glisco.things.DisplacementTomeScreenHandler;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.client.item.ModelPredicateProvider;
+import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -36,7 +37,7 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
     }
 
     public static void storeTeleportTargetInBook(ItemStack stack, TargetLocation target, String name, boolean replaceIfExisting) {
-        CompoundTag targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubTag("Targets");
 
         if (targets.contains(name) && !replaceIfExisting) {
             throw new IllegalArgumentException("This teleport point already exists and replaceIfExisting was not set");
@@ -47,14 +48,14 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
     }
 
     public static void addFuel(ItemStack stack, int fuel) {
-        CompoundTag stackTag = stack.getOrCreateTag();
+        NbtCompound stackTag = stack.getOrCreateTag();
         int currentFuel = stackTag.contains("Fuel") ? stackTag.getInt("Fuel") : 0;
         currentFuel += fuel;
         stackTag.putInt("Fuel", currentFuel);
     }
 
     public static boolean deletePoint(ItemStack stack, String name) {
-        CompoundTag targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubTag("Targets");
         if (!targets.contains(name)) return false;
         targets.remove(name);
         stack.putSubTag(name, targets);
@@ -65,9 +66,9 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
         String name = data.split(":")[0];
         String newName = data.split(":")[1];
 
-        CompoundTag targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubTag("Targets");
         if (!targets.contains(name)) return false;
-        CompoundTag toRename = targets.getCompound(name).copy();
+        NbtCompound toRename = targets.getCompound(name).copy();
         targets.remove(name);
         targets.put(newName, toRename);
         stack.putSubTag(name, targets);
@@ -78,12 +79,12 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 
         if (user.isSneaking()) {
-            int enderPearlSlot = user.inventory.method_7371(new ItemStack(Items.ENDER_PEARL));
+            int enderPearlSlot = user.getInventory().getSlotWithStack(new ItemStack(Items.ENDER_PEARL));
             if (enderPearlSlot == -1) return TypedActionResult.pass(user.getStackInHand(hand));
 
-            ItemStack pearls = user.inventory.getStack(enderPearlSlot);
+            ItemStack pearls = user.getInventory().getStack(enderPearlSlot);
             addFuel(user.getStackInHand(hand), pearls.getCount());
-            user.inventory.setStack(enderPearlSlot, ItemStack.EMPTY);
+            user.getInventory().setStack(enderPearlSlot, ItemStack.EMPTY);
             user.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1, 2);
         } else {
             user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> {
@@ -121,8 +122,8 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
             player.teleport(player.getServer().getWorld(world), pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5, headYaw, headPitch);
         }
 
-        public CompoundTag toTag() {
-            CompoundTag tag = new CompoundTag();
+        public NbtCompound toTag() {
+            NbtCompound tag = new NbtCompound();
             tag.putLong("Pos", pos.asLong());
             tag.putString("World", world.getValue().toString());
             tag.putFloat("HeadYaw", headYaw);
@@ -131,18 +132,18 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
         }
 
         public static TargetLocation fromPlayer(ServerPlayerEntity player) {
-            return new TargetLocation(player.getBlockPos(), player.world.getRegistryKey(), player.headYaw, player.pitch);
+            return new TargetLocation(player.getBlockPos(), player.world.getRegistryKey(), player.headYaw, player.getPitch());
         }
 
         @Nullable
-        public static TargetLocation fromTag(CompoundTag tag) {
+        public static TargetLocation fromTag(NbtCompound tag) {
             if (!tag.contains("Pos")) return null;
             if (!tag.contains("World")) return null;
             if (!tag.contains("HeadYaw")) return null;
             if (!tag.contains("HeadPitch")) return null;
 
             BlockPos blockPos = BlockPos.fromLong(tag.getLong("Pos"));
-            RegistryKey<World> worldRegistryKey = RegistryKey.of(Registry.DIMENSION, new Identifier(tag.getString("World")));
+            RegistryKey<World> worldRegistryKey = RegistryKey.of(Registry.WORLD_KEY, new Identifier(tag.getString("World")));
             float yaw = tag.getFloat("HeadYaw");
             float pitch = tag.getFloat("HeadPitch");
 
@@ -151,9 +152,9 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
 
     }
 
-    public static class PredicateProvider implements ModelPredicateProvider {
+    public static class PredicateProvider implements UnclampedModelPredicateProvider {
         @Override
-        public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+        public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
             int size = stack.getOrCreateSubTag("Targets").getSize();
             if (size == 0) {
                 return 0;

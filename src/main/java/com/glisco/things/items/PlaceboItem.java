@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceboItem extends ItemWithOptionalTooltip {
+public class PlaceboItem extends TrinketItemWithOptionalTooltip {
 
     private static final List<Text> TOOLTIP;
 

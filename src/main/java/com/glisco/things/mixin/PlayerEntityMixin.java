@@ -1,6 +1,7 @@
 package com.glisco.things.mixin;
 
 import com.glisco.things.items.ThingsItems;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.theillusivec4.curios.api.CuriosApi;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
@@ -22,7 +22,7 @@ public class PlayerEntityMixin {
         if (!stack.getItem().equals(Items.POISONOUS_POTATO)) return;
 
         PlayerEntity player = (PlayerEntity) (Object) this;
-        if (!CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.LUCK_OF_THE_IRISH, player).isPresent()) return;
+        if (!TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.LUCK_OF_THE_IRISH)) return;
 
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 1));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 400, 0));

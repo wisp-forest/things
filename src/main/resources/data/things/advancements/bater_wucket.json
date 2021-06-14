@@ -20,7 +20,9 @@
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "item": {
-          "item": "things:bater_wucket"
+          "items":[
+            "things:bater_wucket"
+          ]
         }
       }
     }

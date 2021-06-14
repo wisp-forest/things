@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "things:item_magnet"
+            "items": [
+              "things:item_magnet"
+            ]
           }
         ]
       }

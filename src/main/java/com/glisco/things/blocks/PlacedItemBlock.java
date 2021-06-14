@@ -38,9 +38,10 @@ public class PlacedItemBlock extends BlockWithEntity {
         super(FabricBlockSettings.of(Material.AIR).nonOpaque().hardness(-1).sounds(BlockSoundGroup.METAL));
     }
 
+    @Nullable
     @Override
-    public @Nullable BlockEntity createBlockEntity(BlockView world) {
-        return new PlacedItemBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new PlacedItemBlockEntity(pos, state);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class PlacedItemBlock extends BlockWithEntity {
 
     @Override
     public void onBlockBreakStart(BlockState state, World world, BlockPos pos, PlayerEntity player) {
-        player.inventory.offerOrDrop(world, ((PlacedItemBlockEntity) world.getBlockEntity(pos)).getItem());
+        player.getInventory().offerOrDrop(((PlacedItemBlockEntity) world.getBlockEntity(pos)).getItem());
         world.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
@@ -107,7 +108,7 @@ public class PlacedItemBlock extends BlockWithEntity {
 
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        if (world.getBlockEntity(pos) != null) return ((PlacedItemBlockEntity) world.getBlockEntity(pos)).getItem();
+        if (world.getBlockEntity(pos) != null) return ((PlacedItemBlockEntity) world.getBlockEntity(pos)).getItem().copy();
         return super.getPickStack(world, pos, state);
     }
 }

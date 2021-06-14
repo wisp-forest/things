@@ -1,6 +1,7 @@
 package com.glisco.things.mixin;
 
 import com.glisco.things.items.ThingsItems;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.theillusivec4.curios.api.CuriosApi;
 
 @Mixin(PotionItem.class)
 public class PotionItemMixin {
@@ -21,7 +21,7 @@ public class PotionItemMixin {
         PlayerEntity playerEntity = (PlayerEntity) user;
 
         if (world.random.nextDouble() > 0.75) return;
-        if (!CuriosApi.getCuriosHelper().findEquippedCurio(ThingsItems.PLACEBO, playerEntity).isPresent()) return;
+        if (!TrinketsApi.getTrinketComponent(playerEntity).get().isEquipped(ThingsItems.PLACEBO)) return;
 
         playerEntity.incrementStat(Stats.USED.getOrCreateStat((PotionItem) (Object) this));
         cir.setReturnValue(stack);

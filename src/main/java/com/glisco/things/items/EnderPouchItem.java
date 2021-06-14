@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 
-public class EnderPouchItem extends ItemWithOptionalTooltip {
+public class EnderPouchItem extends TrinketItemWithOptionalTooltip {
 
     public EnderPouchItem() {
         super(new Item.Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
