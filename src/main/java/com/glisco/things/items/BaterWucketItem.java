@@ -20,7 +20,6 @@ public class BaterWucketItem extends BucketItem {
         super.onEmptied(player, world, stack, pos);
     }
 
-
     @Override
     public boolean hasGlint(ItemStack stack) {
         return true;

@@ -16,10 +16,10 @@
     "LockableContainerBlockEntityAccessor",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
-    "PotionItemMixin",
-    "ScreenAccessor"
+    "PotionItemMixin"
   ],
   "client": [
+    "ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
