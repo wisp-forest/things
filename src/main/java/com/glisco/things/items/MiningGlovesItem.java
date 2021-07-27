@@ -28,7 +28,6 @@ public class MiningGlovesItem extends TrinketItemWithOptionalTooltip {
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 5, 1, true, false, true));
-
+        player.addStatusEffect(new StatusEffectInstance(ThingsCommon.MOMENTUM, 5, ThingsCommon.CONFIG.miningGloveMomentumLevel - 1, true, false, true));
     }
 }

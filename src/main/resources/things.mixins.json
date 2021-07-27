@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AnvilScreenHandlerMixin",
+    "BeaconBlockEntityMixin",
     "BrewingRecipeRegistryMixin",
     "BrewingStandBlockEntityMixin",
     "BucketItemMixin",
@@ -16,7 +17,8 @@
     "LockableContainerBlockEntityAccessor",
     "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
-    "PotionItemMixin"
+    "PotionItemMixin",
+    "StatusEffectUtilMixin"
   ],
   "client": [
     "ScreenAccessor"

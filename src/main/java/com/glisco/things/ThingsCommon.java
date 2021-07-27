@@ -9,6 +9,7 @@ import com.glisco.things.network.RequestTomeActionC2SPacket;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.fabricmc.api.ModInitializer;
@@ -16,18 +17,18 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.loot.v1.FabricLootPoolBuilder;
-import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.condition.RandomChanceWithLootingLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.ActionResult;
@@ -53,6 +54,8 @@ public class ThingsCommon implements ModInitializer {
     public static final ItemGroup THINGS_ITEMS = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
 
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
+
+    public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
 
     public static final ScreenHandlerType<ScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
@@ -92,6 +95,8 @@ public class ThingsCommon implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
 
+        Registry.register(Registry.STATUS_EFFECT, new Identifier(MOD_ID, "momentum"), MOMENTUM);
+
         isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
 
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
@@ -128,5 +133,11 @@ public class ThingsCommon implements ModInitializer {
         @Comment("The base durability of the infernal scepter")
         public int infernalScepterDurability = 64;
 
+        @Comment("The momentum level the mining glove produces")
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        public int miningGloveMomentumLevel = 2;
+
+        @Comment("Whether Things should prevent beacons from giving someone haste when they already have momentum")
+        public boolean nerfBeaconsWithMomentum = true;
     }
 }
