@@ -15,7 +15,7 @@
     "Pois1x"
   ],
   "icon": "assets/things/icon.png",
-  "license": "GPLv3",
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
     "client": [
