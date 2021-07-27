@@ -6,7 +6,7 @@
   "description": "Curios and other utilities",
   "authors": [],
   "contact": {},
-  "license": "GPLv3",
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
     "client": [
