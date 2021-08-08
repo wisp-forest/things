@@ -1,0 +1,15 @@
+{
+  "name": "炼狱魔杖",
+  "icon": "things:infernal_scepter",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "将 $(item)岩浆$() 与 $(item)烈焰棒$() 组合在一起,再用一些 $(item)下界合金锭$() 来加固它.这样就做成一把好武器! $(item)炼狱魔杖$() 通过加热 $(item)火焰弹$() 能发出致命的火球.不过产生的威力过于激烈,就连下界合金这种坚硬的物质也无法承受."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:infernal_scepter"
+    }
+  ]
+}

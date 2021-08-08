@@ -1,0 +1,16 @@
+{
+  "name": "容器钥匙",
+  "icon": "things:container_key",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "对于那些热衷于保护自己财物的人来说，$(item)容器钥匙$() 是一个非常有用的工具. 通过 $(thing)Shift+右键$() 来锁定任何容器(如. 箱子, 熔炉, ...) 容器锁定后只能通过 $(thing)特定$() 的钥匙再次开启.这可以通过 $(thing)Shift+右键$() 再次开启."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:container_key",
+      "text": "然而，应该记住，对于那些暴力打开容器的人来说,这种保护是微不足道的."
+    }
+  ]
+}

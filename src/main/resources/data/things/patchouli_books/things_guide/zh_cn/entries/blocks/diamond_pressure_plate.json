@@ -1,0 +1,15 @@
+{
+  "name": "钻石压力板",
+  "icon": "things:diamond_pressure_plate",
+  "category": "things:blocks",
+  "pages": [
+    {
+      "type": "text",
+      "text": "一块由钻石制成的压力板,它只会对玩家做出反应."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:diamond_pressure_plate"
+    }
+  ]
+}

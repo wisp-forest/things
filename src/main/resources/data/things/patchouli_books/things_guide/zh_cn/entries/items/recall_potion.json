@@ -1,0 +1,11 @@
+{
+  "name": "回忆药水",
+  "icon": "things:recall_potion",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "这可能是一个与Minecraft本身一样古老的概念,$(item)回忆药水$() 允许使用者通过利用一些我们仍然不确定的空间能量来返回他们的 $(thing)重生点$(). 这种神奇的酿造可以通过在 $(item)酿造台$() 上向 $(thing)粗制药水$() 中注入 $(item)末影珍珠$() 的能量来制成."
+    }
+  ]
+}

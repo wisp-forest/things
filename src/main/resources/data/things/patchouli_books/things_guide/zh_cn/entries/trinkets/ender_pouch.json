@@ -1,0 +1,15 @@
+{
+  "name": "末影袋",
+  "icon": "things:ender_pouch",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "每个人都知道不得不提早从探索中返回以清空库存的痛苦. 现在,这个问题由于 $(item)末影袋$() 的问世使得外出冒险可以花费的时间几乎翻了一番. 其与 $(thing)末影箱$() 运作原理一致,这也是末影能量的新研究成果之一"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:ender_pouch"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "防暴手套",
+  "icon": "things:riot_gauntlet",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "利用 $(item)闪晶复合体$() 和 2 个 $(item)下界合金锭$() 制作而成, $(item)防暴手套$() 能显著地提升了佩戴者的力量. 即便赤手空拳，也可以毫不费力地肢解一个孤独的僵尸."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:riot_gauntlet"
+    }
+  ]
+}

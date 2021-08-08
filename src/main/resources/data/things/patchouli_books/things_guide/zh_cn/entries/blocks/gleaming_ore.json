@@ -1,0 +1,19 @@
+{
+  "name": "闪晶矿",
+  "icon": "things:gleaming_ore",
+  "category": "things:blocks",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)闪晶矿$() 是一种产于地底深层的稀有矿石,它需要至少使用钻石镐采集. 采集后掉落少量 $(l:things:items/gleaming_materials)闪晶粉尘$()."
+    },
+    {
+      "type": "image",
+      "images": [
+        "things:textures/gui/gleaming_ore_patchouli.png"
+      ],
+      "border": true,
+      "text": "$(item)闪晶矿$() 在自然中. $(o)$(#999999)会发出微光"
+    }
+  ]
+}

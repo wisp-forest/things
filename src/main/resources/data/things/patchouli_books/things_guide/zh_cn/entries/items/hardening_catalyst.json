@@ -1,0 +1,15 @@
+{
+  "name": "硬化药剂",
+  "icon": "things:hardening_catalyst",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过将 $(item)下界之星$() 与许多特殊的材料组合在一起所产生的特殊液体具有一种有趣的性质.在 $(thing)铁砧$() 上用来与一些物品融合,并花费一定的经验值就能使物品具有 $(thing)无法破坏$() 的特性."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:hardening_catalyst"
+    }
+  ]
+}

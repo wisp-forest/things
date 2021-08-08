@@ -1,0 +1,19 @@
+{
+  "name": "苹果",
+  "icon": "minecraft:apple",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "苹果是可以食用的食物.$(p)吃一个苹果能恢复 2.4 饥饿和饱腹感.$(p)将苹果放入堆肥桶有 65%(13⁄20) 的机会使堆肥等级提高 1."
+    },
+    {
+      "type": "image",
+      "images": [
+        "things:textures/gui/apple_patchouli.png"
+      ],
+      "border": true,
+      "text": "论如何正确使用 $(#ff0000)苹果$()"
+    }
+  ]
+}

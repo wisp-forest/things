@@ -1,0 +1,16 @@
+{
+  "name": "苔藓项链",
+  "icon": "things:moss_necklace",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "治愈伤口是一项令人讨厌的工作，幸运的是 $(item)苔藓项链$() 能够代替这份工作!  只要为它提供自然或人造的光,它就会开始治愈佩戴者. 它的工作原理也许并不完全卫生，但只要伤口可以愈合就足够了."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:moss_necklace",
+      "text": "$(o)$(#999999) \"天然\" 创可贴" 
+    }
+  ]
+}

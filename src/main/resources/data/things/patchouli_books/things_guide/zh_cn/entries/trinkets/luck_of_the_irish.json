@@ -1,0 +1,15 @@
+{
+  "name": "幸运四叶草",
+  "icon": "things:luck_of_the_irish",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "对于普通的 Minecrafter 来说, $(item)毒马铃薯$() 是一个没什么特色的东西之一. 不过,通过制作和佩戴 $(item)幸运四叶草$() 后可以改变这一点. 它可以将身体内的毒素转换为另一种能量,这种特殊能量被定义为 $(thing)再生 II$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:luck_of_the_irish"
+    }
+  ]
+}

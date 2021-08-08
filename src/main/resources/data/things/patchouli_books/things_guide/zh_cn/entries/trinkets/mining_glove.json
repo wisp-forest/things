@@ -1,0 +1,15 @@
+{
+  "name": "挖掘手套",
+  "icon": "things:mining_gloves",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "尽管挖掘是 Minecraft 的核心游戏机制之一, 但大批量的挖掘是一项艰巨的任务. 然而 $(item)挖掘手套$() 的发明改良了这一过程, 通过让使用者的双手更加强壮和敏捷，实现了挖矿速度的大幅提升."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:mining_gloves"
+    }
+  ]
+}

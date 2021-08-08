@@ -1,0 +1,16 @@
+{
+  "name": "魔法蜡腺",
+  "icon": "things:enchanted_wax_gland",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "将 $(item)蜜脾$() 绑在脚上实际上是一个好主意.  类似于自然界中的典范,打蜡的下半身让您漂浮.  此外 混合在这个特殊腺体中的 $(item)闪晶复合体$() 赋予使用者在水中极快的速度，使其成为一种非常有效的交通方式."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:enchanted_wax_gland",
+      "text": "尽管这个物品用起来很方便，但其遇到热力就会失去效用, 但如果你将它和 $(l:things:trinkets/hades_crystal)地狱水晶$() 一起佩戴, 则可以解决这个问题."
+    }
+  ]
+}

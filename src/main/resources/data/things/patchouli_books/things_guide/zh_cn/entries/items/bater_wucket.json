@@ -1,0 +1,16 @@
+{
+  "name": "无尽水桶",
+  "icon": "things:bater_wucket",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "传说中描述了一个名为Reddit的古老领域.那里出现了一个被称为 $(item)无尽水桶$() 的奇怪容器, 它可以从中流出无穷无尽的水,这让每个目击过的人都感到发自内心的恐惧."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:bater_wucket",
+      "text": "这个被诅咒的容器其所构成的材质应为上帝方能知晓，它能够提供几乎无尽的最纯净的水.$(p)$(o)$(#999999).. ! ! !"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "奇怪药剂",
+  "icon": "things:placebo",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "虽然制作大量的药水并不是什么艰巨的任务, 但节省一些药水无疑是有用的. 这种 $(item)奇怪药剂$() 可能对此有所帮助. 有时,它会在你不知道的情况下,代替你正在喝的药剂，但不知怎的却保留了药效."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:placebo",
+      "text": "它的原理至今都是个迷, \"只是很有效\""
+    }
+  ]
+}

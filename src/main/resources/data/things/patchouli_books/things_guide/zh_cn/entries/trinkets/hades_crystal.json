@@ -1,0 +1,15 @@
+{
+  "name": "地狱水晶",
+  "icon": "things:hades_crystal",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "通过将下界的污染热量直接施加到 $(item)闪晶复合体$() 上,最后形成了 $(item)地狱水晶$(). 这种新化合物能够吸收和中和热量,能对佩戴者达到免受各种火焰的侵害."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:hades_crystal"
+    }
+  ]
+}

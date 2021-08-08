@@ -1,0 +1,15 @@
+{
+  "name": "物品磁铁",
+  "icon": "things:item_magnet",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)物品磁铁$() 是清理垃圾和/或盗窃的宝贵工具.$(thing)右键$() 会发出一条射线吸引地上的物品, 其原理是通过镶嵌在其中的 $(item)末影珍珠$() 来达到具有传送物品的能力!"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:item_magnet"
+    }
+  ]
+}

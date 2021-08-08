@@ -1,0 +1,16 @@
+{
+  "name": "萤石挂灯",
+  "icon": "things:quartz_glowstone_fixture",
+  "category": "things:blocks",
+  "pages": [
+    {
+      "type": "text",
+      "text": "由萤石制成的灯, 具有萤石一样的亮度和粒子.$(p)"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:quartz_glowstone_fixture",
+      "recipe2": "things:stone_glowstone_fixture"
+    }
+  ]
+}

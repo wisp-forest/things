@@ -1,0 +1,23 @@
+{
+  "name": "传送魔典",
+  "icon": "things:displacement_tome",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "研究发现,利用 $(item)末影珍珠$() 的特殊性可以将使用者引导到 $(item)传送卷轴$() 上所记录的位置. 然而，这些卷轴太过脆弱而不能单独使用, 它们需要被收录在 $(item)魔典$() 中才能发挥其效用. 魔典允许人们在卷轴上刻录一定的位置信息."
+    },
+    {
+      "type": "text",
+      "text": "在$(item)传送魔典 $()中点击$(thing)+$() 来创建一个新的位置信息.可以通过 $(thing)SHIFT+右键$() 重新编写页面信息,甚至允许使用者删除它! 魔典可以使用 $(item)末影珍珠$() 进行充能,通过 $(thing)Shift+右键$() 来实行."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:displacement_tome"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:displacement_page"
+    }
+  ]
+}

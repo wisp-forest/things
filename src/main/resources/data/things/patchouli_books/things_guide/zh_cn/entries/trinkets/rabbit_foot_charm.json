@@ -1,0 +1,15 @@
+{
+  "name": "兔足护符",
+  "icon": "things:rabbit_foot_charm",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "虽然一般的兔足护符都被认为能带来好运，但在如果制作时加入一些 $(item)闪晶粉尘$() 就会有出乎意料的效果. 通过刺激其内的魔药成分, 使 $(item)兔足护符$() 为佩戴者提供永久的 $(thing)再生 II$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:rabbit_foot_charm"
+    }
+  ]
+}

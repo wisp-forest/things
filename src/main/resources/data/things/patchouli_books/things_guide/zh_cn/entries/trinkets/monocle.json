@@ -1,0 +1,15 @@
+{
+  "name": "夜视眼镜",
+  "icon": "things:monocle",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "长期以来,夜间总是伴随着危险重重. 由学者门研究发现:向镜片中添加 $(item)闪晶粉尘$() 后所制成的眼镜, 能达到使佩戴者产生 $(thing)夜视$() 效果."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:monocle"
+    }
+  ]
+}
