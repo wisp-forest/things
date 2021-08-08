@@ -1,4 +1,7 @@
 {
+  "item.things.guide_book.name": "Guide Book about Things",
+  "item.things.guide_book.landing": "A mod about $(thing)Things$()",
+
   "block.things.stone_glowstone_fixture": "Stone Glowstone Fixture",
   "block.things.quartz_glowstone_fixture": "Quartz Glowstone Fixture",
   "block.things.gleaming_ore": "Gleaming Ore",
