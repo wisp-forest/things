@@ -1,11 +1,11 @@
 {
-  "name": "Diamond Pressure Plate",
+  "name": "钻石压力板",
   "icon": "things:diamond_pressure_plate",
   "category": "things:blocks",
   "pages": [
     {
       "type": "text",
-      "text": "A Pressure Plate made of $(item)Diamonds$() is quite the unusual sight, but useful nonetheless. When constructed like this, it $(thing)only reacts to players$(), making it finally a viable option for placing outside your front door."
+      "text": "虽然一个由$(item)钻石$()做成的压力板可不多见，但它的用途却能使它大放光芒。照这样合成后，这个压力板便$(thing)只会对玩家作出反应$()，十分适合安置在你家门前。"
     },
     {
       "type": "crafting",

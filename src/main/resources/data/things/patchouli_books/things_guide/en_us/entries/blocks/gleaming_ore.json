@@ -1,11 +1,11 @@
 {
-  "name": "Gleaming Ore",
+  "name": "璀璨矿",
   "icon": "things:gleaming_ore",
   "category": "things:blocks",
   "pages": [
     {
       "type": "text",
-      "text": "$(item)Gleaming Ore$() is most important in the majority of endeavours aiming to create a $(thing)Thing$(). It can be found deep within the bowels of the earth, and will drop some $(l:things:items/gleaming_materials)Gleaming Powder$() if harvested using at least a $(item)Diamond Pickaxe$(). Enchanting this tool with $(thing)Fortune$() could prove useful when ore is sparse, although the increase in yield might disappoint."
+      "text": "$(item)璀璨矿$()在合成$(thing)Thing$()的途中功不可没。它身居大地的深处，且在使用$(item)钻石镐$()以上的矿镐挖掘后会掉落一些$(l:things:items/gleaming_materials)璀璨粉$()。矿量十分稀少的时候可以利用附魔过$(thing)时运$()的工具挖掘，不过掉率的提升可能不如所期。"
     },
     {
       "type": "image",
@@ -13,7 +13,7 @@
         "things:textures/gui/gleaming_ore_patchouli.png"
       ],
       "border": true,
-      "text": "Some $(item)Gleaming Ore$() in its natural habitat. $(o)$(#999999)It glows"
+      "text": "在其栖息地内的一摞璀璨矿。$(o)$(#999999)还会发光耶！"
     }
   ]
 }
