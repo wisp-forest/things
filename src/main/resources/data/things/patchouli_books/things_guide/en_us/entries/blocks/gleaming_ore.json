@@ -13,7 +13,7 @@
         "things:textures/gui/gleaming_ore_patchouli.png"
       ],
       "border": true,
-      "text": "Some $(item)Gleaming Ore$() in it's natural habitat. $(o)$(#999999)It glows"
+      "text": "Some $(item)Gleaming Ore$() in its natural habitat. $(o)$(#999999)It glows"
     }
   ]
 }
