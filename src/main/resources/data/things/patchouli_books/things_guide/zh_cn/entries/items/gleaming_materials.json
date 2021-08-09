@@ -1,0 +1,16 @@
+{
+  "name": "璀璨材料",
+  "icon": "things:gleaming_powder",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "从$(item)璀璨矿$()中开采出的$(item)璀璨粉$()拥有一些十分有用的魔力，以至于一些魔怔的人甚至认为其必为生命最基本的形态。虽然它本身毫无用处，但它在合成一系列工具与饰品中起到了关键作用。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:gleaming_compound",
+      "text": "还有人试着用它包裹钻石，无意间创造出了更加强大的$(item)璀璨合金$()。"
+    }
+  ]
+}
