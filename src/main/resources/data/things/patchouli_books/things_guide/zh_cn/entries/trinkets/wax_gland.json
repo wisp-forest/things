@@ -10,7 +10,7 @@
     {
       "type": "crafting",
       "recipe": "things:enchanted_wax_gland",
-      "text": "As great as theses powers are, heat is their downfall. This could be remedied however, if you were to to wear the gland in conjunction with a $(l:things:trinkets/hades_crystal)Hades Crystal$()"
+      "text": "As great as these powers are, heat is their downfall. This could be remedied however, if you were to to wear the gland in conjunction with a $(l:things:trinkets/hades_crystal)Hades Crystal$()"
     }
   ]
 }
