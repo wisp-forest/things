@@ -25,6 +25,9 @@
       "com.glisco.things.ThingsCommon"
     ],"modmenu": [
       "com.glisco.things.ModMenuIntegration"
+    ],
+    "rei_plugins": [
+      "com.glisco.things.compat.rei.ThingsPlugin"
     ]
   },
   "mixins": [

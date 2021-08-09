@@ -80,5 +80,7 @@
   "text.autoconfig.things.title": "Things Config",
   "text.autoconfig.things.option.appleTrinket": "Apple Trinket enabled",
   "text.autoconfig.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
-  "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability"
+  "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability",
+  "text.autoconfig.things.option.miningGloveMomentumLevel": "Mining Glove Momentum Level",
+  "text.autoconfig.things.option.nerfBeaconsWithMomentum": "Nerf Beacons"
 }
