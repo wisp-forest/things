@@ -28,6 +28,8 @@
 
 
   "enchantment.things.retribution": "Retribution",
+  "enchantment.things.retribution.desc": "Rewards the user with strength upon blocking an attack with their enchanted shield",
+
   "container.enderpouch": "Ender Pouch",
   "itemGroup.things.things": "Things",
   "trinkets.slot.feet.charm": "Charm",
