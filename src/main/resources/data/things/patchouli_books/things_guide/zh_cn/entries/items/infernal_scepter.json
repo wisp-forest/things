@@ -1,11 +1,11 @@
 {
-  "name": "Infernal Scepter",
+  "name": "烈焰魔杖",
   "icon": "things:infernal_scepter",
   "category": "things:items",
   "pages": [
     {
       "type": "text",
-      "text": "Slapping a $(item)Lava Bucket$() onto a $(item)Blaze Rod$() reinforced with a few $(item)Netherite Ingots$() seems like a great idea, doesn't it? Well, it sure does make for a good weapon! By heating up $(item)Fire Charges$(), the $(item)Infernal Scepter$() makes them go airborne, and thereby potentially deadly. This process is very intense though, and even the incredible toughness of Netherite can not withstand it forever."
+      "text": "$(thing)工欲善其事，必先利其器。$()把$(item)一大桶岩浆$()浇在仅靠一些$(item)下界合金锭$()固定的$(item)烈焰棒$()上听上去不错吧？当然啦！这把$(item)烈焰魔杖$()能够以加热$(item)火焰弹$()的方式将它们发射出去，大幅提高了它们的杀伤力。不过这个过程损耗非常大，就连那刚硬的下界合金也无法一直保持。"
     },
     {
       "type": "crafting",
