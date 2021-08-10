@@ -9,7 +9,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,7 +26,7 @@ public class LivingEntityMixin {
 
         LivingEntity user = (LivingEntity) (Object) this;
 
-        if (user.getActiveItem().getItem() != Items.SHIELD) return;
+        if (!(user.getActiveItem().getItem() instanceof ShieldItem)) return;
         if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(ThingsCommon.RETRIBUTION)) return;
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
@@ -38,7 +38,7 @@ public class LivingEntityMixin {
 
         LivingEntity user = (LivingEntity) (Object) this;
 
-        if (user.getActiveItem().getItem() != Items.SHIELD) return;
+        if (!(user.getActiveItem().getItem() instanceof ShieldItem)) return;
         if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(ThingsCommon.RETRIBUTION)) return;
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
