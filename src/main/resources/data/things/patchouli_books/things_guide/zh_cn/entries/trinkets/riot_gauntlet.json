@@ -1,11 +1,11 @@
 {
-  "name": "Riot Gauntlet",
+  "name": "狂暴臂铠",
   "icon": "things:riot_gauntlet",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Utilizing $(item)Gleaming Compound$()'s magical properties and the pure blunt force of two $(item)Netherite Ingots$() to the face, the $(item)Riot Gauntlet$() enhances it's wearers strength significantly. Dismembering a lone Zombie proves effortless even without a weapon, making the Gauntlet a warrior's best friend."
+      "text": "通过结合$(item)璀璨合金$()的魔法属性与两块$(item)下界合金锭$()“映入眼帘”的绝对钝力诞生的$(item)狂暴臂铠$()大幅增强佩戴者的力量。佩带它甚至能让你将一个僵尸徒手撕成两半，是狂战士的好拍档。"
     },
     {
       "type": "crafting",

@@ -1,11 +1,11 @@
 {
-  "name": "Rabbit Foot Charm",
+  "name": "兔脚护符",
   "icon": "things:rabbit_foot_charm",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Although the average rabbit foot pendant is supposed to bring good luck, sprinkling some $(item)Gleaming Powder$() onto one has a different effect. By stimulating the ingredients usually used in potion-making, the $(item)Rabbit's Foot$() is coaxed into providing the user with permanent $(thing)Jump Boost II$()."
+      "text": "虽然一般的兔脚挂坠是用来祈福保平安的，往上面撒点$(item)璀璨粉$()就会有另一种效果了——它能刺激一般用于炼药的材料，比如挂坠中的$(item)兔子脚$()，使它能够给佩戴者源源不断的$(thing)跳跃提升 II$()效果。"
     },
     {
       "type": "crafting",

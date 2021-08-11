@@ -1,11 +1,11 @@
 {
-  "name": "Mining Glove",
+  "name": "挖矿手套",
   "icon": "things:mining_gloves",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Even though mining is one of Minecraft's core game mechanics, doing it in bulk can be quite the task. A $(item)Mining Glove$(), however, can help speed this up. By both making the user's hands more tough and swift, a vast increase in mining speed is achieved."
+      "text": "虽然挖矿是Minecraft的核心游戏机制之一，想要大量地开采还是一个十分艰巨的任务，有一副$(item)挖矿手套$()的话就会简单很多——通过将使用者的双手变得更加强壮、迅捷，使他的挖掘速度大幅提升。"
     },
     {
       "type": "crafting",

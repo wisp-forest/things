@@ -1,16 +1,16 @@
 {
-  "name": "Enchanted Wax Gland",
+  "name": "附魔蜡腺",
   "icon": "things:enchanted_wax_gland",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Strapping a $(item)Wax Gland$() to your feet is actually a great idea. Similar to it's paragon in nature, a waxed lower body makes you float. Moreover, the $(item)Gleaming Compound$() mixed into this particular gland bestows upon you great speed in water, turning it a very effective means of transport."
+      "text": "将一个$(item)蜡腺$()绑到你的脚上其实是个好主意——我们能从自然界中诸多典范中得知，将你的下身涂满蜡就能让你浮起来。不仅如此，将$(item)璀璨合金$()特别混入到这个蜡腺里能在水中赐予你极快的速度，使它变成一种十分有效的交通方式。"
     },
     {
       "type": "crafting",
       "recipe": "things:enchanted_wax_gland",
-      "text": "As great as these powers are, heat is their downfall. This could be remedied however, if you were to to wear the gland in conjunction with a $(l:things:trinkets/hades_crystal)Hades Crystal$()"
+      "text": "虽然这股力量十分强大，但热能终究是它的克星。不过总有一物降一物，只要将附魔蜡腺和$(l:things:trinkets/hades_crystal)炼狱结晶$()一同佩戴，就能让你上天入地无所不能了。"
     }
   ]
 }

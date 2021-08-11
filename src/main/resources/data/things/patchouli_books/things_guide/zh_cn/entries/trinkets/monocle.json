@@ -1,11 +1,11 @@
 {
-  "name": "Monocle",
+  "name": "单片眼镜",
   "icon": "things:monocle",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Monocles have long been used to provide their wearer with better vision. Taking one and adding some $(item)Gleaming Powder$() onto it's lens gives it a magical glow that, when worn, grants $(thing)Night Vision$() on top of the usual benefits."
+      "text": "单片眼镜早已经被人们用于增强视力。取一片，再在其镜片上撒上一些$(item)璀璨粉$()，就能赋予它一种神秘的光芒；佩戴它时能在已有的功效上，还给予佩戴者$(thing)夜视$()效果。"
     },
     {
       "type": "crafting",

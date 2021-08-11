@@ -1,16 +1,16 @@
 {
-  "name": "Placebo",
+  "name": "安慰剂",
   "icon": "things:placebo",
   "category": "things:trinkets",
   "pages": [
     {
       "type": "text",
-      "text": "Whilst producing mass-amounts of potions is not the most straining task imaginable, saving some would no doubt be useful. The $(item)Placebo$() might just about help with this. It sometimes decides, unbeknownst to you, to replace the potion you're drinking with a placebo yet somehow preserve the effects"
+      "text": "虽然大量生产药水并不是世上最艰苦的工作，能偷懒一下少做一些也是挺好的。$(item)安慰剂$()没准就能做到这一点。它有时会（在你不知情的情况下）将你的喝的药水换成一瓶安慰剂，却同时保留原药水的效果。"
     },
     {
       "type": "crafting",
       "recipe": "things:placebo",
-      "text": "How it accomplishes this is currently unknown, \"it just works\""
+      "text": "治疗机制目前不明，管用就完事了（"
     }
   ]
 }
