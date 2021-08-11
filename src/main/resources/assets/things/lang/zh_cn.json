@@ -82,5 +82,7 @@
   "text.autoconfig.things.title": "『杂七杂八的东西』设置",
   "text.autoconfig.things.option.appleTrinket": "启用苹果饰品",
   "text.autoconfig.things.option.waxGlandMultiplier": "附魔蜡腺速度倍率",
-  "text.autoconfig.things.option.infernalScepterDurability": "烈焰魔杖最大耐久"
+  "text.autoconfig.things.option.infernalScepterDurability": "烈焰魔杖最大耐久",
+  "text.autoconfig.things.option.miningGloveMomentumLevel": "挖矿手套给予的动能效果的级别",
+  "text.autoconfig.things.option.nerfBeaconsWithMomentum": "削弱带动能效果的信标"
 }
