@@ -19,11 +19,13 @@
     "bater_wucket": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "item": {
-          "items":[
-            "things:bater_wucket"
-          ]
-        }
+        "items": [
+          {
+            "items": [
+              "things:bater_wucket"
+            ]
+          }
+        ]
       }
     }
   },

@@ -244,6 +244,18 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         this.buttons.get(0).active = false;
     }
 
+    public boolean isNameFieldVisible(){
+        return this.nameField.isVisible();
+    }
+
+    public int getRootX() {
+        return (width - backgroundWidth) / 2;
+    }
+
+    public int getRootY() {
+        return (height - backgroundHeight) / 2;
+    }
+
     private static class SmallButtonWidget extends ButtonWidget {
 
         public SmallButtonWidget(int x, int y, int width, int height, Text message, PressAction onPress) {
