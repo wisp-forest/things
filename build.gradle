@@ -34,7 +34,7 @@ dependencies {
 
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 
-    //modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.246-alpha"
     modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:6.0.246-alpha"

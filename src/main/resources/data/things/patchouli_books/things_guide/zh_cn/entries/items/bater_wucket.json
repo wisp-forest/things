@@ -1,0 +1,16 @@
+{
+  "name": "木涌",
+  "icon": "things:bater_wucket",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "古籍暨纪族曰$(thing)「贴吧」$()者，间奇人云集。年月日，某覆水于内，盖木其外，得一神器，名之$(item)「木涌」$()，取$(item)「水桶」$()之逆也。众无不惊骇。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:bater_wucket",
+      "text": "这玩意儿就是纯水，至于怎么聚在一起的你问我我问谁？作用：近乎无限地倾倒其组分……$(p)$(o)$(#999999)什么贵物"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "苔藓项链",
+  "icon": "things:moss_necklace",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "处理伤口是个十分恶心的活，不过万幸的是，你的$(item)苔藓项链$()十分愿意为你效劳。只需要给它一点光照——自然的或人工的都可以——它就能开始治疗你。它治疗的方法虽然不是特别卫生，不过只须说苔藓可以生长，且伤口可以被包扎就够了。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:moss_necklace",
+      "text": "$(o)$(#999999)一个“天然的”创可贴"
+    }
+  ]
+}

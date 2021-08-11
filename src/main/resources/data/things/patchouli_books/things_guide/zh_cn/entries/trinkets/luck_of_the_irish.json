@@ -1,0 +1,15 @@
+{
+  "name": "爱尔兰人的幸运符",
+  "icon": "things:luck_of_the_irish",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "对一般的Minecraft玩家来说，$(item)毒马铃薯$()像是个没有卵用的累赘。但如果你用它们合成出一个$(item)爱尔兰人的幸运符$()，就能使用它们腐烂的躯骸中提取出无从想象的力量。护符中镶嵌的$(item)璀璨合金$()在学习完$(item)附魔金苹果$()其中的功效之后，可以将佩戴者的一切中毒效果转作$(thing)生命恢复 II$()的效果。"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:luck_of_the_irish"
+    }
+  ]
+}

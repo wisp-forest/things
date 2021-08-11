@@ -1,7 +1,7 @@
 {
-  "name": "Things",
-  "landing_text": "A mod about $(thing)Things$()",
-  "version": 1,
+  "name": "item.things.guide_book.name",
+  "landing_text": "item.things.guide_book.landing",
+  "version": 2,
   "book_texture": "patchouli:textures/gui/book_blue.png",
   "model": "patchouli:book_blue",
   "show_progress": false

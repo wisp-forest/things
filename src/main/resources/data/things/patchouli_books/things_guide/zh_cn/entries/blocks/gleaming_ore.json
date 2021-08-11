@@ -1,0 +1,19 @@
+{
+  "name": "璀璨矿",
+  "icon": "things:gleaming_ore",
+  "category": "things:blocks",
+  "pages": [
+    {
+      "type": "text",
+      "text": "$(item)璀璨矿$()在合成$(thing)一些杂七杂八的东西$()的途中功不可没。它身居大地的深处，且在使用$(item)钻石镐$()以上的矿镐挖掘后会掉落一些$(l:things:items/gleaming_materials)璀璨粉$()。矿量十分稀少的时候可以利用附魔过$(thing)时运$()的工具挖掘，不过掉率的提升可能不如所期。"
+    },
+    {
+      "type": "image",
+      "images": [
+        "things:textures/gui/gleaming_ore_patchouli.png"
+      ],
+      "border": true,
+      "text": "在其自然栖息地内的一块璀璨矿。$(o)$(#999999)还会发光耶！"
+    }
+  ]
+}
