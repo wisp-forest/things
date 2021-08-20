@@ -22,7 +22,7 @@ public class PlaceboItem extends TrinketItemWithOptionalTooltip {
     }
 
     @Override
-    List<Text> getTooltipText() {
+    public List<Text> getExtendedTooltip() {
         return TOOLTIP;
     }
 }

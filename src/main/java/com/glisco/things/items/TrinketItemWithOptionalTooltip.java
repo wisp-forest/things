@@ -13,27 +13,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public abstract class TrinketItemWithOptionalTooltip extends TrinketItem {
-
-    public static final Text TOOLTIP;
-
-    static {
-        TOOLTIP = new LiteralText("§7Hold §6SHIFT §7for info");
-    }
+public abstract class TrinketItemWithOptionalTooltip extends TrinketItem implements ExtendableTooltipProvider{
 
     public TrinketItemWithOptionalTooltip(Settings settings) {
         super(settings);
     }
 
-    abstract List<Text> getTooltipText();
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (ThingsCommon.isPatchouliLoaded()) return;
-        if (Screen.hasShiftDown()) {
-            tooltip.addAll(getTooltipText());
-        } else {
-            tooltip.add(TrinketItemWithOptionalTooltip.TOOLTIP);
-        }
+        append(tooltip);
     }
 }

@@ -2,12 +2,16 @@ package com.glisco.things.client;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.blocks.ThingsBlocks;
+import com.glisco.things.items.AppleTrinket;
 import com.glisco.things.items.DisplacementTomeItem;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
+import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.client.TrinketRenderer;
+import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +23,8 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -55,6 +61,15 @@ public class ThingsClient implements ClientModInitializer {
             }
         });
 
+        TrinketRendererRegistry.registerRenderer(Items.APPLE, new AppleTrinket.Renderer());
+
+        registerRenderedTrinket(ThingsItems.ENCHANTED_WAX_GLAND);
+        registerRenderedTrinket(ThingsItems.ENDER_POUCH);
+        registerRenderedTrinket(ThingsItems.HADES_CRYSTAL);
+        registerRenderedTrinket(ThingsItems.LUCK_OF_THE_IRISH);
+        registerRenderedTrinket(ThingsItems.MONOCLE);
+        registerRenderedTrinket(ThingsItems.MOSS_NECKLACE);
+
         openEChest = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.things.openenderchest",
                 InputUtil.Type.KEYSYM,
@@ -68,5 +83,9 @@ public class ThingsClient implements ClientModInitializer {
                 }
             }
         });
+    }
+
+    private void registerRenderedTrinket(Item trinket) {
+        TrinketRendererRegistry.registerRenderer(trinket, (TrinketRenderer) trinket);
     }
 }

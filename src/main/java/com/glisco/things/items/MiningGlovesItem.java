@@ -20,7 +20,7 @@ public class MiningGlovesItem extends TrinketItemWithOptionalTooltip {
     }
 
     @Override
-    List<Text> getTooltipText() {
+    public List<Text> getExtendedTooltip() {
         return Collections.singletonList(new LiteralText("§7Grants permanent Haste II"));
     }
 

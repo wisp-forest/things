@@ -7,7 +7,6 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.block.enums.ChestType;
-import net.minecraft.entity.Entity;
 import net.minecraft.inventory.ContainerLock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,8 +23,9 @@ import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class ContainerKeyItem extends ItemWithOptionalTooltip {
+public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
     private static final List<Text> TOOLTIP;
 
@@ -43,6 +43,9 @@ public class ContainerKeyItem extends ItemWithOptionalTooltip {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         if (!context.getPlayer().isSneaking()) return ActionResult.PASS;
+
+        verifyKey(context.getStack(), context.getWorld().random);
+
         World w = context.getWorld();
         BlockPos pos = context.getBlockPos();
         ItemStack stack = context.getStack();
@@ -69,6 +72,12 @@ public class ContainerKeyItem extends ItemWithOptionalTooltip {
             return ActionResult.SUCCESS;
         } else {
             return ActionResult.PASS;
+        }
+    }
+
+    private static void verifyKey(ItemStack stack, Random random) {
+        if (!stack.getOrCreateTag().contains("Lock")) {
+            stack.getOrCreateTag().putInt("Lock", random.nextInt(200000));
         }
     }
 
@@ -109,14 +118,7 @@ public class ContainerKeyItem extends ItemWithOptionalTooltip {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (!stack.getOrCreateTag().contains("Lock")) {
-            stack.getOrCreateTag().putInt("Lock", world.random.nextInt(200000));
-        }
-    }
-
-    @Override
-    List<Text> getTooltipText() {
+    public List<Text> getExtendedTooltip() {
         return TOOLTIP;
     }
 }

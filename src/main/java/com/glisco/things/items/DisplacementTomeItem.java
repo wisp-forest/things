@@ -3,7 +3,6 @@ package com.glisco.things.items;
 import com.glisco.things.DisplacementTomeScreenHandler;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
-import net.minecraft.client.item.ModelPredicateProvider;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class DisplacementTomeItem extends ItemWithOptionalTooltip {
+public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     public DisplacementTomeItem() {
         super(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
@@ -100,7 +99,7 @@ public class DisplacementTomeItem extends ItemWithOptionalTooltip {
     }
 
     @Override
-    List<Text> getTooltipText() {
+    public List<Text> getExtendedTooltip() {
         return Collections.singletonList(new LiteralText("§7A fancy tool used for teleportation"));
     }
 

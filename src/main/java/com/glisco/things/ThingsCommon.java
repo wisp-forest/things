@@ -7,11 +7,7 @@ import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
 import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -21,11 +17,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectType;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -121,23 +113,4 @@ public class ThingsCommon implements ModInitializer {
         return isPatchouliLoaded;
     }
 
-    @Config(name = "things")
-    public static class ThingsConfig implements ConfigData {
-
-        @Comment("Disables trinket support for apples")
-        public boolean appleTrinket = true;
-
-        @Comment("How much faster the wax gland should make you")
-        public float waxGlandMultiplier = 10f;
-
-        @Comment("The base durability of the infernal scepter")
-        public int infernalScepterDurability = 64;
-
-        @Comment("The momentum level the mining glove produces")
-        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
-        public int miningGloveMomentumLevel = 2;
-
-        @Comment("Whether Things should prevent beacons from giving someone haste when they already have momentum")
-        public boolean nerfBeaconsWithMomentum = true;
-    }
 }

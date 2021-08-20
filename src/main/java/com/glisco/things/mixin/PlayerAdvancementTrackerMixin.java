@@ -21,7 +21,7 @@ public class PlayerAdvancementTrackerMixin {
 
     @Inject(method = "grantCriterion", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancement/AdvancementRewards;apply(Lnet/minecraft/server/network/ServerPlayerEntity;)V"))
     public void givePatchouli(Advancement advancement, String criterionName, CallbackInfoReturnable<Boolean> cir) {
-        if (!ThingsCommon.isPatchouliLoaded()) return;
+        if (!(ThingsCommon.isPatchouliLoaded() && ThingsCommon.CONFIG.giveGuideOnWorldEntry)) return;
         if (!advancement.getId().equals(new Identifier("things", "root"))) return;
 
         ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));

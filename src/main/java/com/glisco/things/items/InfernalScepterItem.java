@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InfernalScepterItem extends ItemWithOptionalTooltip {
+public class InfernalScepterItem extends ItemWithExtendableTooltip {
 
     private static final List<Text> TOOLTIP;
 
@@ -31,7 +31,7 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
     }
 
     public InfernalScepterItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability));
+        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability).fireproof());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class InfernalScepterItem extends ItemWithOptionalTooltip {
     }
 
     @Override
-    List<Text> getTooltipText() {
+    public List<Text> getExtendedTooltip() {
         return TOOLTIP;
     }
 }

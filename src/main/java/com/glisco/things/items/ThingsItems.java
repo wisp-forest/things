@@ -39,9 +39,9 @@ public class ThingsItems {
     public static final Item RABBIT_FOOT_CHARM = new RabbitFootCharmItem();
     public static final Item LUCK_OF_THE_IRISH = new LuckOfTheIrishItem();
 
-    public static final Item HARDENING_CRYSTAL = new ItemWithOptionalTooltip(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).rarity(Rarity.UNCOMMON).fireproof()) {
+    public static final Item HARDENING_CRYSTAL = new ItemWithExtendableTooltip(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).rarity(Rarity.UNCOMMON).fireproof()) {
         @Override
-        List<Text> getTooltipText() {
+        public List<Text> getExtendedTooltip() {
             return Collections.singletonList(new LiteralText("§7Apply in an Anvil to make any item unbreakable"));
         }
 

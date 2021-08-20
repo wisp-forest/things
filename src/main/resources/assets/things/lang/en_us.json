@@ -1,5 +1,5 @@
 {
-  "item.things.guide_book.name": "Guide Book about Things",
+  "item.things.guide_book.name": "Things Almanac",
   "item.things.guide_book.landing": "A mod about $(thing)Things$()",
 
   "block.things.stone_glowstone_fixture": "Stone Glowstone Fixture",
@@ -85,5 +85,8 @@
   "text.autoconfig.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
   "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability",
   "text.autoconfig.things.option.miningGloveMomentumLevel": "Mining Glove Momentum Level",
-  "text.autoconfig.things.option.nerfBeaconsWithMomentum": "Nerf Beacons"
+  "text.autoconfig.things.option.nerfBeaconsWithMomentum": "Nerf Beacons",
+  "text.autoconfig.things.option.renderTrinkets": "Render Trinkets",
+  "text.autoconfig.things.option.renderAppleTrinket": "Render Apple Trinket",
+  "text.autoconfig.things.option.giveGuideOnWorldEntry": "Give guide on world entry"
 }
