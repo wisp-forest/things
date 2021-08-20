@@ -26,7 +26,7 @@ public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements Si
 
     @Override
     public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText(String.format("§7Press §6%s §7to open Ender Chest Inventory", I18n.translate(KeyBindingHelper.getBoundKeyOf(ThingsClient.openEChest).getTranslationKey()))));
+        return Collections.singletonList(new LiteralText(String.format("§7Press §6%s §7to open Ender Chest Inventory", I18n.translate(KeyBindingHelper.getBoundKeyOf(ThingsClient.openEChest).getLocalizedText().getString()))));
     }
 
     @Override
