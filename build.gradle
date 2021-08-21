@@ -36,10 +36,12 @@ dependencies {
 
     modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.246-alpha"
-    modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:6.0.246-alpha"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:6.0.268-alpha"
+    modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:6.0.268-alpha"
 
     modImplementation "curse.maven:modmenu-308702:3331339"
+
+    modRuntime 'com.ptsmods:devlogin:1.2'
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
@@ -73,6 +75,10 @@ repositories {
         content {
             includeGroup "curse.maven"
         }
+    }
+    maven {
+        url 'https://repo.maven.apache.org/maven2'
+        name 'Maven Central'
     }
 }
 

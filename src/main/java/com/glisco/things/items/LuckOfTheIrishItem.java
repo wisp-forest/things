@@ -3,6 +3,8 @@ package com.glisco.things.items;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRenderer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -26,6 +28,7 @@ public class LuckOfTheIrishItem extends TrinketItemWithOptionalTooltip implement
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToChest(matrices, model, player);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));

@@ -3,6 +3,8 @@ package com.glisco.things.client;
 import com.glisco.things.ThingsCommon;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.client.TrinketRenderer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -19,6 +21,7 @@ import net.minecraft.item.ItemStack;
 public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
 
     @Override
+    @Environment(EnvType.CLIENT)
     default void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         if (!ThingsCommon.CONFIG.renderTrinkets) return;
         if (!(entity instanceof ClientPlayerEntity player)) return;
@@ -28,5 +31,6 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
         MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
     }
 
+    @Environment(EnvType.CLIENT)
     void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch);
 }
