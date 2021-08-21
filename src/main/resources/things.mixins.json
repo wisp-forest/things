@@ -11,6 +11,7 @@
     "BucketItemMixin",
     "ContainerLockAccessor",
     "ContainerLockMixin",
+    "EnchantmentHelperMixin",
     "ForgingScreenHandlerAccessor",
     "ItemAccessor",
     "LivingEntityMixin",
