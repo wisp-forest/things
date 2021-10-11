@@ -80,7 +80,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
+        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateNbt();
         int fuelLevel = tag.contains("Fuel") ? tag.getInt("Fuel") : 0;
         this.textRenderer.draw(matrices, new LiteralText("Charges: " + fuelLevel), titleX, titleY, 0xFFFFFF);
     }
@@ -88,9 +88,9 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     public void onNameFieldChange(String text) {
         if (!StringUtils.isBlank(nameField.getText())) {
             if (this.currentInputEventData.isEmpty()) {
-                buttons.get(0).active = !((DisplacementTomeScreenHandler) handler).getBook().getSubTag("Targets").getKeys().contains(text);
+                buttons.get(0).active = !((DisplacementTomeScreenHandler) handler).getBook().getSubNbt("Targets").getKeys().contains(text);
             } else {
-                buttons.get(0).active = buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString().equals(text) || !((DisplacementTomeScreenHandler) handler).getBook().getSubTag("Targets").getKeys().contains(text);
+                buttons.get(0).active = buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString().equals(text) || !((DisplacementTomeScreenHandler) handler).getBook().getSubNbt("Targets").getKeys().contains(text);
             }
         } else {
             buttons.get(0).active = false;
@@ -111,7 +111,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         children().removeIf(element -> element instanceof ButtonWidget);
         addDefaultButtons();
 
-        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateTag();
+        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateNbt();
         if (tag.contains("Targets")) {
             NbtCompound targets = tag.getCompound("Targets");
 
@@ -148,7 +148,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         ButtonWidget createButton = new SmallButtonWidget(x + 130, y + 4, 12, 12, new LiteralText("+"), button -> {
             startCreating();
         });
-        createButton.active = playerInventory.containsAny(Collections.singleton(ThingsItems.DISPLACEMENT_PAGE)) && ((DisplacementTomeScreenHandler) handler).getBook().getOrCreateSubTag("Targets").getSize() <= 7;
+        createButton.active = playerInventory.containsAny(Collections.singleton(ThingsItems.DISPLACEMENT_PAGE)) && ((DisplacementTomeScreenHandler) handler).getBook().getOrCreateSubNbt("Targets").getSize() <= 7;
 
         this.addButton(createButton);
     }

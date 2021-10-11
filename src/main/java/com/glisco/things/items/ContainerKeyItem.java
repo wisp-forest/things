@@ -37,7 +37,7 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
     }
 
     public ContainerKeyItem() {
-        super(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
+        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
     }
 
     @Override
@@ -55,14 +55,14 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
         String existingLock = getExistingLock(w, pos);
 
         if (existingLock.isEmpty()) {
-            setLock((LockableContainerBlockEntity) w.getBlockEntity(pos), String.valueOf(stack.getTag().getInt("Lock")));
+            setLock((LockableContainerBlockEntity) w.getBlockEntity(pos), String.valueOf(stack.getNbt().getInt("Lock")));
 
             if (w.isClient) {
                 sendLockedState(context, true);
             }
 
             return ActionResult.SUCCESS;
-        } else if (existingLock.equals(String.valueOf(stack.getTag().getInt("Lock")))) {
+        } else if (existingLock.equals(String.valueOf(stack.getNbt().getInt("Lock")))) {
             setLock((LockableContainerBlockEntity) w.getBlockEntity(pos), "");
 
             if (w.isClient) {
@@ -76,8 +76,8 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
     }
 
     private static void verifyKey(ItemStack stack, Random random) {
-        if (!stack.getOrCreateTag().contains("Lock")) {
-            stack.getOrCreateTag().putInt("Lock", random.nextInt(200000));
+        if (!stack.getOrCreateNbt().contains("Lock")) {
+            stack.getOrCreateNbt().putInt("Lock", random.nextInt(200000));
         }
     }
 

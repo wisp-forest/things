@@ -44,18 +44,18 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public void requestTeleport(String location) {
-        int currentFuel = book.getOrCreateTag().contains("Fuel") ? book.getOrCreateTag().getInt("Fuel") : 0;
+        int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
 
         if (currentFuel <= 0) {
             player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
             return;
         }
 
-        NbtCompound bookTargetsTag = book.getOrCreateSubTag("Targets");
+        NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
         if (!bookTargetsTag.contains(location)) return;
 
         currentFuel--;
-        book.getOrCreateTag().putInt("Fuel", currentFuel);
+        book.getOrCreateNbt().putInt("Fuel", currentFuel);
 
         DisplacementTomeItem.TargetLocation target = DisplacementTomeItem.TargetLocation.fromTag(bookTargetsTag.getCompound(location));
         target.teleportPlayer((ServerPlayerEntity) player);

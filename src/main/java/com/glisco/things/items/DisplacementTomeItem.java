@@ -32,32 +32,32 @@ import java.util.List;
 public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     public DisplacementTomeItem() {
-        super(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
+        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
     }
 
     public static void storeTeleportTargetInBook(ItemStack stack, TargetLocation target, String name, boolean replaceIfExisting) {
-        NbtCompound targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubNbt("Targets");
 
         if (targets.contains(name) && !replaceIfExisting) {
             throw new IllegalArgumentException("This teleport point already exists and replaceIfExisting was not set");
         }
 
         targets.put(name, target.toTag());
-        stack.putSubTag("Targets", targets);
+        stack.setSubNbt("Targets", targets);
     }
 
     public static void addFuel(ItemStack stack, int fuel) {
-        NbtCompound stackTag = stack.getOrCreateTag();
+        NbtCompound stackTag = stack.getOrCreateNbt();
         int currentFuel = stackTag.contains("Fuel") ? stackTag.getInt("Fuel") : 0;
         currentFuel += fuel;
         stackTag.putInt("Fuel", currentFuel);
     }
 
     public static boolean deletePoint(ItemStack stack, String name) {
-        NbtCompound targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubNbt("Targets");
         if (!targets.contains(name)) return false;
         targets.remove(name);
-        stack.putSubTag(name, targets);
+        stack.setSubNbt(name, targets);
         return true;
     }
 
@@ -65,12 +65,12 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
         String name = data.split(":")[0];
         String newName = data.split(":")[1];
 
-        NbtCompound targets = stack.getOrCreateSubTag("Targets");
+        NbtCompound targets = stack.getOrCreateSubNbt("Targets");
         if (!targets.contains(name)) return false;
         NbtCompound toRename = targets.getCompound(name).copy();
         targets.remove(name);
         targets.put(newName, toRename);
-        stack.putSubTag(name, targets);
+        stack.setSubNbt(name, targets);
         return true;
     }
 
@@ -154,7 +154,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
     public static class PredicateProvider implements UnclampedModelPredicateProvider {
         @Override
         public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-            int size = stack.getOrCreateSubTag("Targets").getSize();
+            int size = stack.getOrCreateSubNbt("Targets").getSize();
             if (size == 0) {
                 return 0;
             } else if (size < 4) {

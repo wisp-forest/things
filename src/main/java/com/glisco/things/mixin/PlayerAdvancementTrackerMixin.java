@@ -25,7 +25,7 @@ public class PlayerAdvancementTrackerMixin {
         if (!advancement.getId().equals(new Identifier("things", "root"))) return;
 
         ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
-        book.getOrCreateTag().putString("patchouli:book", "things:things_guide");
+        book.getOrCreateNbt().putString("patchouli:book", "things:things_guide");
 
         owner.getInventory().offerOrDrop(book);
 

@@ -23,7 +23,7 @@ import java.util.Optional;
 public class RecallPotionItem extends Item {
 
     public RecallPotionItem() {
-        super(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(16));
+        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(16));
     }
 
     @Override

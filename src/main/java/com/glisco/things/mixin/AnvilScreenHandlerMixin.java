@@ -40,10 +40,10 @@ public class AnvilScreenHandlerMixin {
 
         if (!forgingHandler.getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CRYSTAL)) return;
         if (forgingHandler.getInput().getStack(0).getItem().getMaxDamage() == 0) return;
-        if (forgingHandler.getInput().getStack(0).getOrCreateTag().getByte("Unbreakable") == (byte) 1) return;
+        if (forgingHandler.getInput().getStack(0).getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
 
         ItemStack newOutput = forgingHandler.getInput().getStack(0).copy();
-        newOutput.getOrCreateTag().putByte("Unbreakable", (byte) 1);
+        newOutput.getOrCreateNbt().putByte("Unbreakable", (byte) 1);
 
         if (!StringUtils.isBlank(newItemName)) {
             newOutput.setCustomName(new LiteralText(newItemName));

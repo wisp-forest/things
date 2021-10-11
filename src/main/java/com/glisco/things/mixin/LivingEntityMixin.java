@@ -53,7 +53,7 @@ public class LivingEntityMixin {
         return j * ThingsCommon.CONFIG.waxGlandMultiplier;
     }
 
-    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"), index = 0)
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
     public float waxGlandLava(float speed) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (!(entity instanceof PlayerEntity player)) return speed;

@@ -99,7 +99,7 @@ public class ThingsCommon implements ModInitializer {
                     playerEntity.getMainHandStack().decrement(1);
 
                     ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
-                    book.getOrCreateTag().putString("patchouli:book", "things:things_guide");
+                    book.getOrCreateNbt().putString("patchouli:book", "things:things_guide");
                     playerEntity.getInventory().offerOrDrop(book);
                 }
                 return ActionResult.SUCCESS;

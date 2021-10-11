@@ -23,7 +23,7 @@ import java.util.List;
 public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public EnderPouchItem() {
-        super(new Item.Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
     }
 
     @Override

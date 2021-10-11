@@ -29,7 +29,7 @@ public class StatusEffectUtilMixin {
 
     @ModifyVariable(method = "getHasteAmplifier", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 1), ordinal = 0)
     private static int getMomentumAmplifier(int i) {
-        var entity = cachedEntity.get();
+        LivingEntity entity = cachedEntity.get();
 
         if (entity.hasStatusEffect(ThingsCommon.MOMENTUM)) {
             i += entity.getStatusEffect(ThingsCommon.MOMENTUM).getAmplifier();
