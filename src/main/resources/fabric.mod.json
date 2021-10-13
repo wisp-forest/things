@@ -9,7 +9,8 @@
   ],
   "contact": {
     "issues": "https://github.com/glisco03/things/issues",
-    "sources": "https://github.com/glisco03/things"
+    "sources": "https://github.com/glisco03/things",
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/things-fabric"
   },
   "contributors": [
     "Pois1x"
