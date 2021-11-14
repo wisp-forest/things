@@ -18,9 +18,9 @@ import net.minecraft.util.math.Vec3f;
 public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<PlacedItemBlockEntity> {
 
     public PlacedItemBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-        
+
     }
-    
+
     @Override
     public void render(PlacedItemBlockEntity entity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (entity.getItem() != null) {

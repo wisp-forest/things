@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BucketItemMixin {
 
     @Inject(method = "getEmptiedStack", at = @At("HEAD"), cancellable = true)
-    private static void preserverBaterWucket(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ItemStack> cir){
-        if(!stack.isOf(ThingsItems.BATER_WUCKET)) return;
+    private static void preserverBaterWucket(ItemStack stack, PlayerEntity player, CallbackInfoReturnable<ItemStack> cir) {
+        if (!stack.isOf(ThingsItems.BATER_WUCKET)) return;
         cir.setReturnValue(stack);
     }
 

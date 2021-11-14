@@ -10,11 +10,10 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import net.minecraft.util.math.Vec3f;
 
 import java.util.Collections;
@@ -28,7 +27,8 @@ public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements Si
 
     @Override
     public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText(String.format("§7Press §6%s §7to open Ender Chest Inventory", I18n.translate(KeyBindingHelper.getBoundKeyOf(ThingsClient.openEChest).getLocalizedText().getString()))));
+        return Collections.singletonList(new LiteralText(String.format("§7Press §6%s §7to open Ender Chest Inventory",
+                Language.getInstance().get(KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText().getString()))));
     }
 
     @Override

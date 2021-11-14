@@ -1,5 +1,6 @@
 package com.glisco.things.items;
 
+import com.glisco.owo.registration.reflect.ItemRegistryContainer;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.mixin.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -10,16 +11,14 @@ import net.minecraft.item.Items;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ThingsItems {
+public class ThingsItems implements ItemRegistryContainer {
 
     public static final Item RECALL_POTION = new RecallPotionItem();
     public static final Item CONTAINER_KEY = new ContainerKeyItem();
@@ -39,7 +38,7 @@ public class ThingsItems {
     public static final Item RABBIT_FOOT_CHARM = new RabbitFootCharmItem();
     public static final Item LUCK_OF_THE_IRISH = new LuckOfTheIrishItem();
 
-    public static final Item HARDENING_CRYSTAL = new ItemWithExtendableTooltip(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).rarity(Rarity.UNCOMMON).fireproof()) {
+    public static final Item HARDENING_CATALYST = new ItemWithExtendableTooltip(new Item.Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).rarity(Rarity.UNCOMMON).fireproof()) {
         @Override
         public List<Text> getExtendedTooltip() {
             return Collections.singletonList(new LiteralText("§7Apply in an Anvil to make any item unbreakable"));
@@ -64,32 +63,12 @@ public class ThingsItems {
         }
     };
 
-    public static void register() {
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "hardening_catalyst"), ThingsItems.HARDENING_CRYSTAL);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "container_key"), ThingsItems.CONTAINER_KEY);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "recall_potion"), ThingsItems.RECALL_POTION);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "bater_wucket"), ThingsItems.BATER_WUCKET);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "ender_pouch"), ThingsItems.ENDER_POUCH);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "monocle"), ThingsItems.MONOCLE);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "moss_necklace"), ThingsItems.MOSS_NECKLACE);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "placebo"), ThingsItems.PLACEBO);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "displacement_tome"), ThingsItems.DISPLACEMENT_TOME);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "displacement_page"), ThingsItems.DISPLACEMENT_PAGE);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "mining_gloves"), ThingsItems.MINING_GLOVES);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "riot_gauntlet"), ThingsItems.RIOT_GAUNTLET);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "infernal_scepter"), ThingsItems.INFERNAL_SCEPTER);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "gleaming_powder"), ThingsItems.GLEAMING_POWDER);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "gleaming_compound"), ThingsItems.GLEAMING_COMPOUND);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "hades_crystal"), ThingsItems.HADES_CRYSTAL);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "enchanted_wax_gland"), ThingsItems.ENCHANTED_WAX_GLAND);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "item_magnet"), ThingsItems.ITEM_MAGNET);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "rabbit_foot_charm"), ThingsItems.RABBIT_FOOT_CHARM);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "luck_of_the_irish"), ThingsItems.LUCK_OF_THE_IRISH);
-
+    @Override
+    public void afterFieldProcessing() {
         if (ThingsCommon.CONFIG.appleTrinket) {
             TrinketsApi.registerTrinket(Items.APPLE, new AppleTrinket());
         }
 
-        ((ItemAccessor) BATER_WUCKET).setRecipeRemainder(BATER_WUCKET);
+        ((ItemAccessor) BATER_WUCKET).things$setRecipeRemainder(BATER_WUCKET);
     }
 }

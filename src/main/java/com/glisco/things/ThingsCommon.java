@@ -1,5 +1,6 @@
 package com.glisco.things;
 
+import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
@@ -39,17 +40,15 @@ import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 
 public class ThingsCommon implements ModInitializer {
 
-    public static ThingsConfig CONFIG;
-
     public static final String MOD_ID = "things";
 
+    public static ThingsConfig CONFIG;
+
     public static final ItemGroup THINGS_ITEMS = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
-
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
-
     public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
 
-    public static final ScreenHandlerType<ScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
+    public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
     private static final ConfiguredFeature<?, ?> ORE_GLEAMING_OVERWORLD = Feature.ORE
             .configure(new OreFeatureConfig(
@@ -62,7 +61,7 @@ public class ThingsCommon implements ModInitializer {
             .spreadHorizontally().repeat(5);
 
     static {
-        DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(new Identifier(MOD_ID, "displacement_tome"), DisplacementTomeScreenHandler::new);
+        DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
     }
 
     private static boolean isPatchouliLoaded;
@@ -73,21 +72,22 @@ public class ThingsCommon implements ModInitializer {
         AutoConfig.register(ThingsConfig.class, JanksonConfigSerializer::new);
         CONFIG = AutoConfig.getConfigHolder(ThingsConfig.class).getConfig();
 
-        ThingsItems.register();
-        ThingsBlocks.register();
+        FieldRegistrationHandler.register(ThingsItems.class, MOD_ID, false);
+        FieldRegistrationHandler.register(ThingsBlocks.class, MOD_ID, false);
 
-        Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "retribution"), RETRIBUTION);
+        Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
         RegistryKey<ConfiguredFeature<?, ?>> oreGleamingOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY,
-                new Identifier(MOD_ID, "ore_gleaming_overworld"));
+                id("ore_gleaming_overworld"));
         Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, oreGleamingOverworld.getValue(), ORE_GLEAMING_OVERWORLD);
+
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, oreGleamingOverworld);
 
         ServerPlayNetworking.registerGlobalReceiver(PlaceItemC2SPacket.ID, PlaceItemC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
 
-        Registry.register(Registry.STATUS_EFFECT, new Identifier(MOD_ID, "momentum"), MOMENTUM);
+        Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
 
         isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
 
@@ -111,6 +111,10 @@ public class ThingsCommon implements ModInitializer {
 
     public static boolean isPatchouliLoaded() {
         return isPatchouliLoaded;
+    }
+
+    public static Identifier id(String path) {
+        return new Identifier(MOD_ID, path);
     }
 
 }

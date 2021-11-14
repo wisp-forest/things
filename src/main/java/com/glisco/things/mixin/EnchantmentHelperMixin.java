@@ -16,7 +16,8 @@ public class EnchantmentHelperMixin {
 
     @Inject(method = "getPossibleEntries", at = @At("RETURN"))
     private static void removeInvalidEnchantments(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir) {
-        cir.getReturnValue().removeIf(enchantmentLevelEntry -> enchantmentLevelEntry.enchantment instanceof RetributionEnchantment && !enchantmentLevelEntry.enchantment.isAcceptableItem(stack));
+        cir.getReturnValue().removeIf(enchantmentLevelEntry ->
+                enchantmentLevelEntry.enchantment instanceof RetributionEnchantment && !enchantmentLevelEntry.enchantment.isAcceptableItem(stack));
     }
 
 }

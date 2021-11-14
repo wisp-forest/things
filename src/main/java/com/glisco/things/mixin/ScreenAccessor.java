@@ -10,7 +10,7 @@ import java.util.List;
 @Mixin(Screen.class)
 public interface ScreenAccessor {
 
-    @Accessor
-    List<Drawable> getDrawables();
+    @Accessor("drawables")
+    List<Drawable> things$getDrawables();
 
 }

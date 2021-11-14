@@ -22,6 +22,7 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
 
     @Override
     @Environment(EnvType.CLIENT)
+    @SuppressWarnings("unchecked")
     default void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         if (!ThingsCommon.CONFIG.renderTrinkets) return;
         if (!(entity instanceof ClientPlayerEntity player)) return;

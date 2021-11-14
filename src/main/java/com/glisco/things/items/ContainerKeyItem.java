@@ -8,7 +8,6 @@ import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.inventory.ContainerLock;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
@@ -82,13 +81,13 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
     }
 
     private static String getExistingLock(World w, BlockPos pos) {
-        String existingLock = ((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(pos)).getLock()).getKey();
+        String existingLock = ((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(pos)).things$getLock()).things$getKey();
 
         if (existingLock.isEmpty() && w.getBlockEntity(pos) instanceof ChestBlockEntity) {
             if (!w.getBlockState(pos).get(Properties.CHEST_TYPE).equals(ChestType.SINGLE)) {
                 BlockPos otherChest = pos.offset(ChestBlock.getFacing(w.getBlockState(pos)));
-                if (!((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(otherChest)).getLock()).getKey().isEmpty()) {
-                    existingLock = ((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(otherChest)).getLock()).getKey();
+                if (!((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(otherChest)).things$getLock()).things$getKey().isEmpty()) {
+                    existingLock = ((ContainerLockAccessor) ((LockableContainerBlockEntityAccessor) w.getBlockEntity(otherChest)).things$getLock()).things$getKey();
                 }
             }
         }
@@ -109,10 +108,10 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
         ContainerLock containerLock = lock.isEmpty() ? ContainerLock.EMPTY : ContainerLock.fromNbt(lockTag);
 
-        ((LockableContainerBlockEntityAccessor) entity).setLock(containerLock);
+        ((LockableContainerBlockEntityAccessor) entity).things$setLock(containerLock);
         if (entity instanceof ChestBlockEntity) {
             if (!entity.getWorld().getBlockState(entity.getPos()).get(Properties.CHEST_TYPE).equals(ChestType.SINGLE)) {
-                ((LockableContainerBlockEntityAccessor) entity.getWorld().getBlockEntity(entity.getPos().offset(ChestBlock.getFacing(entity.getCachedState())))).setLock(containerLock);
+                ((LockableContainerBlockEntityAccessor) entity.getWorld().getBlockEntity(entity.getPos().offset(ChestBlock.getFacing(entity.getCachedState())))).things$setLock(containerLock);
             }
         }
     }

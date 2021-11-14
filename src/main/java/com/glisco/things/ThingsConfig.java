@@ -29,7 +29,7 @@ public class ThingsConfig implements ConfigData {
 
     @Comment("Only disables trinket rendering for apples")
     public boolean renderAppleTrinket = true;
-    
+
     @Comment("Whether players should receive a Things guide when they first enter a world")
     public boolean giveGuideOnWorldEntry = true;
 }

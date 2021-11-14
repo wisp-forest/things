@@ -17,7 +17,7 @@ public class ThingsPlugin implements REIClientPlugin {
             int x = screen.getRootX();
             int y = screen.getRootY();
 
-            return Collections.singletonList(new Rectangle(x + 160, y + 50, 130, 40));
+            return Collections.singletonList(new Rectangle(x + 160, y + 50, 130, 60));
         });
     }
 }

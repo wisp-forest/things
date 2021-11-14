@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 
 public class MomentumStatusEffect extends StatusEffect {
 
-    public MomentumStatusEffect(){
+    public MomentumStatusEffect() {
         super(StatusEffectCategory.BENEFICIAL, 0xe8c170);
     }
 

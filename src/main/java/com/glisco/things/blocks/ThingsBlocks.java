@@ -1,9 +1,9 @@
 package com.glisco.things.blocks;
 
+import com.glisco.owo.registration.reflect.BlockRegistryContainer;
 import com.glisco.things.ThingsCommon;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.OreBlock;
@@ -23,15 +23,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ThingsBlocks {
+public class ThingsBlocks implements BlockRegistryContainer {
 
     public static final Block STONE_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
     public static final Block QUARTZ_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
 
-    public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).breakByTool(FabricToolTags.PICKAXES, 3).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
+    public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
 
     public static final Block DIAMOND_PRESSURE_PLATE = new DiamondPressurePlateBlock();
-    public static final Item DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)) {
+    public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)) {
         @Override
         public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
             tooltip.add(new LiteralText("Players only").formatted(Formatting.GRAY));
@@ -39,26 +39,21 @@ public class ThingsBlocks {
     };
 
     public static final Block PLACED_ITEM = new PlacedItemBlock();
-    public static BlockEntityType<PlacedItemBlockEntity> PLACED_ITEM_BLOCK_ENTITY;
+    public static final BlockEntityType<PlacedItemBlockEntity> PLACED_ITEM_BLOCK_ENTITY = FabricBlockEntityTypeBuilder.create(PlacedItemBlockEntity::new, PLACED_ITEM).build();
 
-    static {
-        PLACED_ITEM_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, "things:placed_item", FabricBlockEntityTypeBuilder.create(PlacedItemBlockEntity::new, PLACED_ITEM).build(null));
+    @Override
+    public BlockItem createBlockItem(Block block, String identifier) {
+        return block == DIAMOND_PRESSURE_PLATE ? DIAMOND_PRESSURE_PLATE_ITEM : new BlockItem(block, new Item.Settings().group(ThingsCommon.THINGS_ITEMS));
     }
 
-    public static void register() {
-        Registry.register(Registry.BLOCK, new Identifier(ThingsCommon.MOD_ID, "stone_glowstone_fixture"), ThingsBlocks.STONE_GLOWSTONE_FIXTURE);
-        Registry.register(Registry.BLOCK, new Identifier(ThingsCommon.MOD_ID, "quartz_glowstone_fixture"), ThingsBlocks.QUARTZ_GLOWSTONE_FIXTURE);
+    @Override
+    public void postProcessField(String namespace, Block value, String identifier) {
+        if (value == PLACED_ITEM) return;
+        Registry.register(Registry.ITEM, new Identifier(namespace, identifier), createBlockItem(value, identifier));
+    }
 
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "stone_glowstone_fixture"), new BlockItem(ThingsBlocks.STONE_GLOWSTONE_FIXTURE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)));
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "quartz_glowstone_fixture"), new BlockItem(ThingsBlocks.QUARTZ_GLOWSTONE_FIXTURE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)));
-
-        Registry.register(Registry.BLOCK, new Identifier(ThingsCommon.MOD_ID, "placed_item"), ThingsBlocks.PLACED_ITEM);
-
-        Registry.register(Registry.BLOCK, new Identifier(ThingsCommon.MOD_ID, "gleaming_ore"), ThingsBlocks.GLEAMING_ORE);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "gleaming_ore"), new BlockItem(ThingsBlocks.GLEAMING_ORE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)));
-
-        Registry.register(Registry.BLOCK, new Identifier(ThingsCommon.MOD_ID, "diamond_pressure_plate"), ThingsBlocks.DIAMOND_PRESSURE_PLATE);
-        Registry.register(Registry.ITEM, new Identifier(ThingsCommon.MOD_ID, "diamond_pressure_plate"), DIAMOND_PRESSURE_PLATE_ITEM);
-
+    @Override
+    public void afterFieldProcessing() {
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, ThingsCommon.id("placed_item"), PLACED_ITEM_BLOCK_ENTITY);
     }
 }

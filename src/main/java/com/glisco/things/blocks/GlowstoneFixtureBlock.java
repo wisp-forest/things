@@ -1,15 +1,14 @@
 package com.glisco.things.blocks;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -45,7 +44,7 @@ public class GlowstoneFixtureBlock extends FacingBlock {
     private static final VoxelShape SHAPE_EAST = VoxelShapes.union(BASE_EAST, GLOWSTONE_EAST);
 
     public GlowstoneFixtureBlock() {
-        super(FabricBlockSettings.of(Material.STONE).nonOpaque().luminance(15).breakByTool(FabricToolTags.PICKAXES).hardness(1));
+        super(FabricBlockSettings.of(Material.STONE).nonOpaque().luminance(15).requiresTool().hardness(1));
     }
 
     @Override
@@ -59,20 +58,14 @@ public class GlowstoneFixtureBlock extends FacingBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        switch (state.get(FACING)) {
-            case UP:
-                return SHAPE_UP;
-            case EAST:
-                return SHAPE_EAST;
-            case WEST:
-                return SHAPE_WEST;
-            case NORTH:
-                return SHAPE_NORTH;
-            case SOUTH:
-                return SHAPE_SOUTH;
-            default:
-                return SHAPE_DOWN;
-        }
+        return switch (state.get(FACING)) {
+            case UP -> SHAPE_UP;
+            case EAST -> SHAPE_EAST;
+            case WEST -> SHAPE_WEST;
+            case NORTH -> SHAPE_NORTH;
+            case SOUTH -> SHAPE_SOUTH;
+            default -> SHAPE_DOWN;
+        };
     }
 
     @Override
@@ -80,45 +73,15 @@ public class GlowstoneFixtureBlock extends FacingBlock {
 
         if (random.nextDouble() > 0.15) return;
 
-        double x = pos.getX();
-        double y = pos.getY();
-        double z = pos.getZ();
+        var facing = state.get(FACING);
+        var center = Vec3d.ofCenter(pos);
 
-        switch (state.get(FACING)) {
-            case UP:
-                x += 0.5;
-                y += 0.85;
-                z += 0.5;
-                break;
-            case EAST:
-                x += 0.85;
-                y += 0.5;
-                z += 0.5;
-                break;
-            case WEST:
-                x += 0.15;
-                y += 0.5;
-                z += 0.5;
-                break;
-            case NORTH:
-                x += 0.5;
-                y += 0.5;
-                z += 0.15;
-                break;
-            case SOUTH:
-                x += 0.5;
-                y += 0.5;
-                z += 0.85;
-                break;
-            default:
-                x += 0.5;
-                y += 0.15;
-                z += 0.5;
-                break;
-        }
+        double x = center.getX() + facing.getOffsetX() * .35f;
+        double y = center.getY() + facing.getOffsetY() * .35f;
+        double z = center.getZ() + facing.getOffsetZ() * .35f;
 
-        ParticleEffect dust = new DustParticleEffect(new Vec3f(1, 1, 1), 1);
-        world.addParticle(dust, x, y, z, 0, 0, 0);
+        world.addParticle(new DustParticleEffect(new Vec3f(1, 1, 1), 1),
+                x, y, z, 0, 0, 0);
     }
 
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {

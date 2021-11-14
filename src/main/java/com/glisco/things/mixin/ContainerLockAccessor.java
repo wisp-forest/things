@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(ContainerLock.class)
 public interface ContainerLockAccessor {
 
-    @Accessor
-    String getKey();
+    @Accessor("key")
+    String things$getKey();
 }

@@ -1,5 +1,6 @@
 package com.glisco.things.items;
 
+import com.glisco.owo.ops.WorldOps;
 import com.glisco.things.ThingsCommon;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +15,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -48,7 +48,7 @@ public class RecallPotionItem extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        PlayerEntity player = user instanceof PlayerEntity ? (PlayerEntity) user : null;
+        var player = user instanceof PlayerEntity ? (PlayerEntity) user : null;
 
         if (player == null) return new ItemStack(Items.GLASS_BOTTLE);
         if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -60,8 +60,7 @@ public class RecallPotionItem extends Item {
             if (serverPlayer.getSpawnPointPosition() != null) {
                 Optional<Vec3d> posOptional = PlayerEntity.findRespawnPosition(spawnWorld, serverPlayer.getSpawnPointPosition(), serverPlayer.getSpawnAngle(), true, false);
                 if (posOptional.isPresent()) {
-                    BlockPos spawn = posOptional.map(BlockPos::new).get();
-                    serverPlayer.teleport(spawnWorld, spawn.getX() + 0.5f, spawn.getY(), spawn.getZ() + 0.5f, serverPlayer.getSpawnAngle(), 0f);
+                    WorldOps.teleportToWorld(serverPlayer, spawnWorld, posOptional.get());
                 } else {
                     serverPlayer.sendMessage(new LiteralText("No respawn point"), true);
                 }

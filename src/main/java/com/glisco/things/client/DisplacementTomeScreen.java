@@ -3,11 +3,8 @@ package com.glisco.things.client;
 import com.glisco.things.DisplacementTomeScreenHandler;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.items.ThingsItems;
-import com.glisco.things.mixin.ScreenAccessor;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -15,11 +12,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -27,19 +22,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
+public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreenHandler> {
 
     private static final Identifier TEXTURE = new Identifier(ThingsCommon.MOD_ID, "textures/gui/displacement_tome.png");
-    public static final Identifier TOME_WIDGETS_LOCATION = new Identifier(ThingsCommon.MOD_ID, "textures/gui/tome_widgets.png");
 
-    private TextFieldWidget nameField;
     private final List<ButtonWidget> buttons = new ArrayList<>();
+    private TextFieldWidget nameField;
 
     private final PlayerInventory playerInventory;
     private final List<Object> currentInputEventData;
     private Consumer<String> finishInputAction;
 
-    public DisplacementTomeScreen(ScreenHandler handler, PlayerInventory inventory, Text title) {
+    public DisplacementTomeScreen(DisplacementTomeScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.backgroundWidth = 147;
         this.currentInputEventData = new ArrayList<>();
@@ -58,16 +52,18 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     protected void init() {
         super.init();
         client.keyboard.setRepeatEvents(true);
+
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        nameField = new TextFieldWidget(this.textRenderer, x + 152, y + 60, 138, 12, new LiteralText(""));
+
+        nameField = new TextFieldWidget(this.textRenderer, x + 152, y + 60, 138, 12, Text.of(""));
         nameField.setMaxLength(20);
         nameField.setDrawsBackground(true);
-        nameField.setUneditableColor(0xFFFFFF);
         nameField.setUneditableColor(0xFF0000);
         nameField.visible = false;
         nameField.active = false;
         nameField.setChangedListener(this::onNameFieldChange);
+
         addDrawableChild(nameField);
         update();
     }
@@ -80,7 +76,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateNbt();
+        NbtCompound tag = this.handler.getBook().getOrCreateNbt();
         int fuelLevel = tag.contains("Fuel") ? tag.getInt("Fuel") : 0;
         this.textRenderer.draw(matrices, new LiteralText("Charges: " + fuelLevel), titleX, titleY, 0xFFFFFF);
     }
@@ -88,9 +84,10 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     public void onNameFieldChange(String text) {
         if (!StringUtils.isBlank(nameField.getText())) {
             if (this.currentInputEventData.isEmpty()) {
-                buttons.get(0).active = !((DisplacementTomeScreenHandler) handler).getBook().getSubNbt("Targets").getKeys().contains(text);
+                buttons.get(0).active = !handler.getBook().getSubNbt("Targets").getKeys().contains(text);
             } else {
-                buttons.get(0).active = buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString().equals(text) || !((DisplacementTomeScreenHandler) handler).getBook().getSubNbt("Targets").getKeys().contains(text);
+                buttons.get(0).active = buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString().equals(text)
+                        || !handler.getBook().getSubNbt("Targets").getKeys().contains(text);
             }
         } else {
             buttons.get(0).active = false;
@@ -106,50 +103,48 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
     }
 
     public void update() {
+        this.buttons.forEach(this::remove);
         this.buttons.clear();
-        ((ScreenAccessor)this).getDrawables().removeIf(drawable -> drawable instanceof ButtonWidget);
-        children().removeIf(element -> element instanceof ButtonWidget);
+
         addDefaultButtons();
 
-        NbtCompound tag = ((DisplacementTomeScreenHandler) this.handler).getBook().getOrCreateNbt();
+        NbtCompound tag = this.handler.getBook().getOrCreateNbt();
         if (tag.contains("Targets")) {
             NbtCompound targets = tag.getCompound("Targets");
 
-            int i = 0;
+            int idx = 0;
             for (String s : targets.getKeys()) {
-                this.addButton(new WarpButtonWidget(x + 6, y + 21 + i * 17, 133, 13, new LiteralText(s), button -> {
+                final var widget = new ButtonWithMessageWidget(x + 6, y + 21 + idx * 17, 133, 13, 0, 179, TEXTURE, button -> {
                     client.getNetworkHandler().sendPacket(RequestTomeActionC2SPacket.create(RequestTomeActionC2SPacket.Action.TELEPORT, s));
-                }));
-                i++;
+                });
+                widget.setTextColor(0x001054);
+                widget.setMessage(Text.of(s));
+                this.addButton(widget);
+                idx++;
             }
         }
     }
 
-    private void addButton(ButtonWidget widget){
+    private void addButton(ButtonWidget widget) {
         buttons.add(widget);
         addDrawable(widget);
     }
 
     public void addDefaultButtons() {
-        ButtonWidget okButton = new ButtonWidget(x + 150, y + 80, 70, 20, new LiteralText(""), button -> {
-            finishInputEvent();
-        });
+        ButtonWidget okButton = new ButtonWidget(x + 150, y + 80, 70, 20, new LiteralText(""), button -> finishInputEvent());
         okButton.active = false;
         okButton.visible = false;
         this.addButton(okButton);
 
-        ButtonWidget deleteButton = new ButtonWidget(x + 223, y + 80, 70, 20, new LiteralText("Delete"), button -> {
-            delete();
-        });
+        ButtonWidget deleteButton = new ButtonWidget(x + 223, y + 80, 70, 20, new LiteralText("Delete"), button -> delete());
         deleteButton.active = false;
         deleteButton.visible = false;
         this.addButton(deleteButton);
 
-        ButtonWidget createButton = new SmallButtonWidget(x + 130, y + 4, 12, 12, new LiteralText("+"), button -> {
-            startCreating();
-        });
-        createButton.active = playerInventory.containsAny(Collections.singleton(ThingsItems.DISPLACEMENT_PAGE)) && ((DisplacementTomeScreenHandler) handler).getBook().getOrCreateSubNbt("Targets").getSize() <= 7;
-
+        ButtonWidget createButton = new ButtonWithMessageWidget(x + 130, y + 4, 12, 12, 147, 12, TEXTURE, button -> startCreating());
+        createButton.setMessage(Text.of("+"));
+        createButton.active = playerInventory.containsAny(Collections.singleton(ThingsItems.DISPLACEMENT_PAGE)) &&
+                handler.getBook().getOrCreateSubNbt("Targets").getSize() <= 7;
         this.addButton(createButton);
     }
 
@@ -158,7 +153,6 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         drawMouseoverTooltip(matrices, mouseX, mouseY);
-        nameField.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
@@ -244,7 +238,7 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
         this.buttons.get(0).active = false;
     }
 
-    public boolean isNameFieldVisible(){
+    public boolean isNameFieldVisible() {
         return this.nameField.isVisible();
     }
 
@@ -254,52 +248,6 @@ public class DisplacementTomeScreen extends HandledScreen<ScreenHandler> {
 
     public int getRootY() {
         return (height - backgroundHeight) / 2;
-    }
-
-    private static class SmallButtonWidget extends ButtonWidget {
-
-        public SmallButtonWidget(int x, int y, int width, int height, Text message, PressAction onPress) {
-            super(x, y, width, height, message, onPress);
-        }
-
-        @Override
-        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            MinecraftClient minecraftClient = MinecraftClient.getInstance();
-            TextRenderer textRenderer = minecraftClient.textRenderer;
-            RenderSystem.setShaderTexture(0, TOME_WIDGETS_LOCATION);
-            int i = this.getYImage(this.isHovered());
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            this.drawTexture(matrices, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-            this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-            this.renderBackground(matrices, minecraftClient, mouseX, mouseY);
-            int j = this.active ? 16777215 : 10526880;
-            drawCenteredText(matrices, textRenderer, this.getMessage(), this.x + this.width / 2, this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
-        }
-    }
-
-    private static class WarpButtonWidget extends ButtonWidget {
-
-        public WarpButtonWidget(int x, int y, int width, int height, Text message, PressAction onPress) {
-            super(x, y, width, height, message, onPress);
-        }
-
-        @Override
-        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            MinecraftClient minecraftClient = MinecraftClient.getInstance();
-            TextRenderer textRenderer = minecraftClient.textRenderer;
-            RenderSystem.setShaderTexture(0, TOME_WIDGETS_LOCATION);
-            int i = this.getYImage(this.isHovered());
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            this.drawTexture(matrices, this.x, this.y, 0, 126 + i * 20, this.width / 2, this.height);
-            this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 126 + i * 20, this.width / 2, this.height);
-            this.renderBackground(matrices, minecraftClient, mouseX, mouseY);
-            int j = this.active ? 0x001054 : 0x001054;
-            textRenderer.draw(matrices, this.getMessage(), (this.x + this.width / 2 - textRenderer.getWidth(this.getMessage()) / 2), this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
-        }
     }
 
 }

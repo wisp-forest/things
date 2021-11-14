@@ -18,16 +18,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AnvilScreenHandler.class)
 public class AnvilScreenHandlerMixin {
 
-    @Shadow @Final private Property levelCost;
+    @Shadow
+    @Final
+    private Property levelCost;
 
-    @Shadow private String newItemName;
+    @Shadow
+    private String newItemName;
 
     @Inject(method = "canTakeOutput", at = @At("HEAD"), cancellable = true)
     public void outputCheckOverride(PlayerEntity player, boolean present, CallbackInfoReturnable<Boolean> cir) {
+        ForgingScreenHandlerAccessor handler = (ForgingScreenHandlerAccessor) this;
 
-        ForgingScreenHandlerAccessor handler = (ForgingScreenHandlerAccessor) (Object) this;
-
-        if (!handler.getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CRYSTAL)) return;
+        if (!handler.things$getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CATALYST)) return;
 
         cir.setReturnValue(levelCost.get() <= player.experienceLevel);
         cir.cancel();
@@ -35,14 +37,13 @@ public class AnvilScreenHandlerMixin {
 
     @Inject(method = "updateResult", at = @At("HEAD"), cancellable = true)
     public void setOutput(CallbackInfo ci) {
+        ForgingScreenHandlerAccessor forgingHandler = (ForgingScreenHandlerAccessor) this;
 
-        ForgingScreenHandlerAccessor forgingHandler = (ForgingScreenHandlerAccessor) (Object) this;
+        if (!forgingHandler.things$getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CATALYST)) return;
+        if (forgingHandler.things$getInput().getStack(0).getItem().getMaxDamage() == 0) return;
+        if (forgingHandler.things$getInput().getStack(0).getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
 
-        if (!forgingHandler.getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CRYSTAL)) return;
-        if (forgingHandler.getInput().getStack(0).getItem().getMaxDamage() == 0) return;
-        if (forgingHandler.getInput().getStack(0).getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
-
-        ItemStack newOutput = forgingHandler.getInput().getStack(0).copy();
+        ItemStack newOutput = forgingHandler.things$getInput().getStack(0).copy();
         newOutput.getOrCreateNbt().putByte("Unbreakable", (byte) 1);
 
         if (!StringUtils.isBlank(newItemName)) {
@@ -51,7 +52,7 @@ public class AnvilScreenHandlerMixin {
             newOutput.removeCustomName();
         }
 
-        forgingHandler.getOutput().setStack(0, newOutput);
+        forgingHandler.things$getOutput().setStack(0, newOutput);
         levelCost.set(30);
 
         ci.cancel();

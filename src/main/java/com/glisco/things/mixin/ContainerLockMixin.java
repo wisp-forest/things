@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ContainerLock.class)
 public class ContainerLockMixin {
 
-    @Shadow @Final private String key;
+    @Shadow
+    @Final
+    private String key;
 
     @Inject(method = "canOpen", at = @At("HEAD"), cancellable = true)
     public void checkOpen(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {

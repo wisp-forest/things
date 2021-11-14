@@ -11,16 +11,15 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-
     maven { url "https://maven.shedaniel.me/" }
 
-    maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
+    maven { url "https://maven.wispforest.io/"}
 
+    maven { url "https://maven.terraformersmc.com/"}
+
+    maven { url = "https://ladysnake.jfrog.io/artifactory/mods" }
+
+    maven { url 'https://maven.blamejared.com' }
 }
 
 dependencies {
@@ -39,12 +38,11 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
     modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
-    modImplementation "curse.maven:modmenu-308702:3331339"
+    modImplementation "com.terraformersmc:modmenu:2.0.14"
 
-    modRuntime 'com.ptsmods:devlogin:1.2'
+    modImplementation "com.glisco:owo-lib:0.3.2+1.17"
 
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
+    modRuntime 'com.ptsmods:devlogin:1.2.1'
 }
 
 processResources {
@@ -52,33 +50,6 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-}
-
-repositories {
-    maven { url = "https://jitpack.io" }
-
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
-
-    maven {
-        name = "Ladysnake Libs"
-        url = "https://ladysnake.jfrog.io/artifactory/mods"
-    }
-
-    maven { url 'https://maven.blamejared.com' }
-
-    maven {
-        url "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        url 'https://repo.maven.apache.org/maven2'
-        name 'Maven Central'
     }
 }
 
