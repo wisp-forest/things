@@ -19,6 +19,7 @@ import net.minecraft.world.WorldView;
 
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class GlowstoneFixtureBlock extends FacingBlock {
 
     private static final VoxelShape BASE_DOWN = Block.createCuboidShape(5, 0, 5, 11, 1, 11);

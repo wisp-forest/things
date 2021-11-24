@@ -37,7 +37,7 @@
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": ">=1.17",
+    "minecraft": "*",
     "trinkets": "*",
     "owo": ">=0.3.2+1.17"
   },

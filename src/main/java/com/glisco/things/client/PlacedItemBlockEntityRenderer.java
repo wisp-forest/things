@@ -17,15 +17,13 @@ import net.minecraft.util.math.Vec3f;
 
 public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<PlacedItemBlockEntity> {
 
-    public PlacedItemBlockEntityRenderer(BlockEntityRendererFactory.Context context) {
-
-    }
+    public PlacedItemBlockEntityRenderer(BlockEntityRendererFactory.Context context) {}
 
     @Override
     public void render(PlacedItemBlockEntity entity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         if (entity.getItem() != null) {
             ItemStack item = entity.getItem();
-            BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(item, null, null, 0);
+            BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0);
 
             float scaleFactor = item.getItem() instanceof BlockItem ? 0.5f : 0.4f;
 

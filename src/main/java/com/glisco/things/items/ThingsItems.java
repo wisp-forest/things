@@ -1,6 +1,6 @@
 package com.glisco.things.items;
 
-import com.glisco.owo.registration.reflect.ItemRegistryContainer;
+import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.mixin.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;

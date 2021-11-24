@@ -1,6 +1,6 @@
 package com.glisco.things.items;
 
-import com.glisco.owo.ops.WorldOps;
+import io.wispforest.owo.ops.WorldOps;
 import com.glisco.things.ThingsCommon;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;

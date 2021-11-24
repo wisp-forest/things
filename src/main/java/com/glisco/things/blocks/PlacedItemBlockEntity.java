@@ -1,13 +1,17 @@
 package com.glisco.things.blocks;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.Nullable;
 
-public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityClientSerializable {
+public class PlacedItemBlockEntity extends BlockEntity {
 
     private ItemStack item;
     private int rotation = 0;
@@ -25,7 +29,7 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound tag) {
+    public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
         if (item != null) {
             NbtCompound itemTag = new NbtCompound();
@@ -33,7 +37,6 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
             tag.put("Item", itemTag);
         }
         tag.putInt("Rotation", rotation);
-        return tag;
     }
 
     @Override
@@ -46,21 +49,9 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
     }
 
     @Override
-    public void fromClientTag(NbtCompound tag) {
-        this.readNbt(tag);
-    }
-
-    @Override
-    public NbtCompound toClientTag(NbtCompound tag) {
-        return this.writeNbt(tag);
-    }
-
-    @Override
     public void markDirty() {
         super.markDirty();
-        if (!world.isClient) {
-            this.sync();
-        }
+        WorldOps.updateIfOnServer(world, pos);
     }
 
     public int getRotation() {
@@ -76,5 +67,18 @@ public class PlacedItemBlockEntity extends BlockEntity implements BlockEntityCli
 
     public void changeRotation(boolean direction) {
         setRotation(direction ? rotation + 1 : rotation - 1);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        var tag = new NbtCompound();
+        this.writeNbt(tag);
+        return tag;
     }
 }

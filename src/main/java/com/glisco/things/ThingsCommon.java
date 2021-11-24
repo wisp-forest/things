@@ -1,12 +1,12 @@
 package com.glisco.things;
 
-import com.glisco.owo.registration.reflect.FieldRegistrationHandler;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
+import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -22,7 +22,6 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
@@ -31,12 +30,16 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.decorator.Decorator;
-import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.decorator.BiomePlacementModifier;
+import net.minecraft.world.gen.decorator.CountPlacementModifier;
+import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
+import net.minecraft.world.gen.decorator.SquarePlacementModifier;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreConfiguredFeatures;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
+import net.minecraft.world.gen.feature.PlacedFeature;
+
+import java.util.List;
 
 public class ThingsCommon implements ModInitializer {
 
@@ -50,15 +53,14 @@ public class ThingsCommon implements ModInitializer {
 
     public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
-    private static final ConfiguredFeature<?, ?> ORE_GLEAMING_OVERWORLD = Feature.ORE
-            .configure(new OreFeatureConfig(
-                    OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
+    private static final PlacedFeature GLEAMING_ORE = new PlacedFeature(() ->
+            Feature.ORE.configure(new OreFeatureConfig(OreConfiguredFeatures.BASE_STONE_OVERWORLD,
                     ThingsBlocks.GLEAMING_ORE.getDefaultState(),
-                    3))
-            .decorate(Decorator.RANGE.configure(new RangeDecoratorConfig(UniformHeightProvider.create(
-                    YOffset.fixed(0),
-                    YOffset.fixed(15)))))
-            .spreadHorizontally().repeat(5);
+                    3)),
+            List.of(CountPlacementModifier.of(3),
+                    SquarePlacementModifier.of(),
+                    HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(15)),
+                    BiomePlacementModifier.of()));
 
     static {
         DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
@@ -77,11 +79,10 @@ public class ThingsCommon implements ModInitializer {
 
         Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
-        RegistryKey<ConfiguredFeature<?, ?>> oreGleamingOverworld = RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY,
-                id("ore_gleaming_overworld"));
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, oreGleamingOverworld.getValue(), ORE_GLEAMING_OVERWORLD);
+        RegistryKey<PlacedFeature> gleamingOre = RegistryKey.of(Registry.PLACED_FEATURE_KEY, id("ore_gleaming"));
+        Registry.register(BuiltinRegistries.PLACED_FEATURE, gleamingOre, GLEAMING_ORE);
 
-        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, oreGleamingOverworld);
+        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
 
         ServerPlayNetworking.registerGlobalReceiver(PlaceItemC2SPacket.ID, PlaceItemC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
@@ -94,7 +95,7 @@ public class ThingsCommon implements ModInitializer {
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             if (!isPatchouliLoaded()) return ActionResult.PASS;
 
-            if (playerEntity.getMainHandStack().getItem() == Items.BOOK && world.getBlockState(blockHitResult.getBlockPos()).isOf(ThingsBlocks.GLEAMING_ORE)) {
+            if (playerEntity.getMainHandStack().isOf(Items.BOOK) && world.getBlockState(blockHitResult.getBlockPos()).isOf(ThingsBlocks.GLEAMING_ORE)) {
                 if (!world.isClient) {
                     playerEntity.getMainHandStack().decrement(1);
 

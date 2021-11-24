@@ -1,6 +1,6 @@
 package com.glisco.things.blocks;
 
-import com.glisco.owo.registration.reflect.BlockRegistryContainer;
+import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import com.glisco.things.ThingsCommon;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
