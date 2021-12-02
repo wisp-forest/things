@@ -1,6 +1,7 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -15,7 +16,7 @@ import java.util.List;
 public class MiningGlovesItem extends TrinketItemWithOptionalTooltip {
 
     public MiningGlovesItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override
@@ -27,6 +28,7 @@ public class MiningGlovesItem extends TrinketItemWithOptionalTooltip {
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        player.addStatusEffect(new StatusEffectInstance(ThingsCommon.MOMENTUM, 5, ThingsCommon.CONFIG.miningGloveMomentumLevel - 1, true, false, true));
+        player.addStatusEffect(new StatusEffectInstance(ThingsCommon.MOMENTUM, 5,
+                ThingsCommon.CONFIG.effectLevels.miningGloveMomentum - 1, true, false, true));
     }
 }

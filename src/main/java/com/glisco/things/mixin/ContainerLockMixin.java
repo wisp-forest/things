@@ -1,6 +1,6 @@
 package com.glisco.things.mixin;
 
-import com.glisco.things.items.ContainerKeyItem;
+import com.glisco.things.items.generic.ContainerKeyItem;
 import net.minecraft.inventory.ContainerLock;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -20,8 +20,8 @@ public class ContainerLockMixin {
     @Inject(method = "canOpen", at = @At("HEAD"), cancellable = true)
     public void checkOpen(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (!(stack.getItem() instanceof ContainerKeyItem)) return;
-        if (String.valueOf(stack.getNbt().getInt("Lock")).equals(key)) {
-            cir.setReturnValue(true);
-        }
+        if (!String.valueOf(stack.getNbt().getInt("Lock")).equals(key)) return;
+
+        cir.setReturnValue(true);
     }
 }

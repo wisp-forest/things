@@ -1,4 +1,4 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;

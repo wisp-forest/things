@@ -1,9 +1,9 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,8 +12,10 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3f;
@@ -21,23 +23,18 @@ import net.minecraft.util.math.Vec3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
+public class HadesCrystalItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     private static final List<Text> TOOLTIP;
 
     static {
         TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Makes you float in water."));
-        TOOLTIP.add(new LiteralText("§7And apparently also really fast"));
+        TOOLTIP.add(new LiteralText("§7Grants permanent Fire Resistance"));
+        TOOLTIP.add(new LiteralText("§7Wear together with a §6Wax Gland §7for extra awesomeness"));
     }
 
-    public EnchantedWaxGlandItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
-    }
-
-    @Override
-    public boolean hasGlint(ItemStack stack) {
-        return true;
+    public HadesCrystalItem() {
+        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1).fireproof());
     }
 
     @Override
@@ -47,13 +44,10 @@ public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implem
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        if (!(entity instanceof PlayerEntity player)) return;
+        if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        if (player.isTouchingWater()) {
-            player.addVelocity(0, 0.005, 0);
-        } else if (player.isInLava() && TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.HADES_CRYSTAL)) {
-            player.addVelocity(0, 0.02, 0);
-        }
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 5, 0, true, false, true));
+        if (player.isOnFire()) player.setFireTicks(0);
     }
 
     @Override
@@ -61,8 +55,7 @@ public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implem
     public void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToChest(matrices, model, player);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
         matrices.scale(.5f, .5f, .5f);
-        matrices.translate(0, -.6, .585);
+        matrices.translate(0, .4, -.05);
     }
 }

@@ -1,6 +1,7 @@
-package com.glisco.things.items;
+package com.glisco.things.items.generic;
 
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.items.ItemWithExtendableTooltip;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -31,7 +32,7 @@ public class InfernalScepterItem extends ItemWithExtendableTooltip {
     }
 
     public InfernalScepterItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability).fireproof());
+        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability).fireproof());
     }
 
     @Override

@@ -20,9 +20,9 @@ public class UpdateDisplacementTomeS2CPacket {
     public static void onPacket(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {
         NbtCompound tag = buffer.readNbt();
         client.execute(() -> {
-            if (client.currentScreen instanceof DisplacementTomeScreen) {
-                ((DisplacementTomeScreenHandler) ((DisplacementTomeScreen) client.currentScreen).getScreenHandler()).setBook(ItemStack.fromNbt(tag));
-                ((DisplacementTomeScreen) client.currentScreen).update();
+            if (client.currentScreen instanceof final DisplacementTomeScreen currentScreen) {
+                currentScreen.getScreenHandler().setBook(ItemStack.fromNbt(tag));
+                currentScreen.update();
             }
         });
     }

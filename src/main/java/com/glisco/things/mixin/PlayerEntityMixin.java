@@ -28,8 +28,5 @@ public class PlayerEntityMixin {
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 400, 0));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 2, 0));
         player.removeStatusEffect(StatusEffects.POISON);
-
     }
-
-
 }

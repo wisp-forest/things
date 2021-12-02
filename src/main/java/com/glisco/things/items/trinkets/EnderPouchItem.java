@@ -1,8 +1,9 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.client.ThingsClient;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,7 +23,7 @@ import java.util.List;
 public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public EnderPouchItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override

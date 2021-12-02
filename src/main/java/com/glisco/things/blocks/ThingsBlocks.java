@@ -1,7 +1,7 @@
 package com.glisco.things.blocks;
 
-import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import com.glisco.things.ThingsCommon;
+import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ public class ThingsBlocks implements BlockRegistryContainer {
     public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
 
     public static final Block DIAMOND_PRESSURE_PLATE = new DiamondPressurePlateBlock();
-    public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_ITEMS)) {
+    public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_GROUP)) {
         @Override
         public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
             tooltip.add(new LiteralText("Players only").formatted(Formatting.GRAY));
@@ -43,7 +43,7 @@ public class ThingsBlocks implements BlockRegistryContainer {
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {
-        return block == DIAMOND_PRESSURE_PLATE ? DIAMOND_PRESSURE_PLATE_ITEM : new BlockItem(block, new Item.Settings().group(ThingsCommon.THINGS_ITEMS));
+        return block == DIAMOND_PRESSURE_PLATE ? DIAMOND_PRESSURE_PLATE_ITEM : new BlockItem(block, new Item.Settings().group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override

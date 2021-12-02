@@ -24,7 +24,8 @@
     ],
     "main": [
       "com.glisco.things.ThingsCommon"
-    ],"modmenu": [
+    ],
+    "modmenu": [
       "com.glisco.things.ModMenuIntegration"
     ],
     "rei_plugins": [
@@ -37,9 +38,11 @@
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": "*",
-    "trinkets": "*",
-    "owo": ">=0.3.2+1.17"
+    "minecraft": ">=1.18",
+    "trinkets": ">=3.1.0",
+    "owo": ">=0.3.8+1.18",
+    "cloth-config2": ">=6.0.0",
+    "patchouli": "*"
   },
   "custom": {
     "modmenu": {

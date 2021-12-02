@@ -1,6 +1,7 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -13,22 +14,21 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 
-public class RiotGauntletItem extends TrinketItemWithOptionalTooltip {
+public class RabbitFootCharmItem extends TrinketItemWithOptionalTooltip {
 
-    public RiotGauntletItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+    public RabbitFootCharmItem() {
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override
     public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText("§7Grants permanent Strength"));
+        return Collections.singletonList(new LiteralText("§7Grants permanent Jump Boost II"));
     }
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 5, 0, true, false, true));
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 5, 1, true, false, true));
     }
-
 }

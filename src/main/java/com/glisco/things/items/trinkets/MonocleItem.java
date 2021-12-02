@@ -1,7 +1,8 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
@@ -19,42 +20,41 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3f;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class HadesCrystalItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
+public class MonocleItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
-    private static final List<Text> TOOLTIP;
-
-    static {
-        TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Grants permanent Fire Resistance"));
-        TOOLTIP.add(new LiteralText("§7Wear together with a §6Wax Gland §7for extra awesomeness"));
-    }
-
-    public HadesCrystalItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1).fireproof());
+    public MonocleItem() {
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override
     public List<Text> getExtendedTooltip() {
-        return TOOLTIP;
+        return Collections.singletonList(new LiteralText("§7Grants permanent Night Vision"));
     }
 
     @Override
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 5, 0, true, false, true));
-        if (player.isOnFire()) player.setFireTicks(0);
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 610, 0, true, false, true));
+    }
+
+    @Override
+    public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
+
+        player.removeStatusEffect(StatusEffects.NIGHT_VISION);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
     public void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
-        TrinketRenderer.translateToChest(matrices, model, player);
+        TrinketRenderer.translateToFace(matrices, model, player, headYaw, headPitch);
+
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
         matrices.scale(.5f, .5f, .5f);
-        matrices.translate(0, .4, -.05);
+        matrices.translate(.25, -.215, -.05f);
     }
 }

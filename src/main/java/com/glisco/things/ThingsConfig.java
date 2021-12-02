@@ -17,10 +17,6 @@ public class ThingsConfig implements ConfigData {
     @Comment("The base durability of the infernal scepter")
     public int infernalScepterDurability = 64;
 
-    @Comment("The momentum level the mining glove produces")
-    @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
-    public int miningGloveMomentumLevel = 2;
-
     @Comment("Whether Things should prevent beacons from giving someone haste when they already have momentum")
     public boolean nerfBeaconsWithMomentum = true;
 
@@ -30,6 +26,17 @@ public class ThingsConfig implements ConfigData {
     @Comment("Only disables trinket rendering for apples")
     public boolean renderAppleTrinket = true;
 
-    @Comment("Whether players should receive a Things guide when they first enter a world")
-    public boolean giveGuideOnWorldEntry = true;
+    @ConfigEntry.Gui.CollapsibleObject
+    public EffectLevels effectLevels = new EffectLevels();
+
+    public static class EffectLevels {
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        public int mossNecklaceRegen = 2;
+
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        public int miningGloveMomentum = 2;
+
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        public int riotGauntletStrength = 1;
+    }
 }

@@ -1,4 +1,4 @@
-package com.glisco.things.items;
+package com.glisco.things.items.generic;
 
 import com.glisco.things.ThingsCommon;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class BaterWucketItem extends BucketItem {
 
     public BaterWucketItem() {
-        super(Fluids.WATER, new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
+        super(Fluids.WATER, new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
     }
 
     @Override

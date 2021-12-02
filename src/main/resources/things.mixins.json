@@ -16,7 +16,6 @@
     "ItemAccessor",
     "LivingEntityMixin",
     "LockableContainerBlockEntityAccessor",
-    "PlayerAdvancementTrackerMixin",
     "PlayerEntityMixin",
     "PotionItemMixin",
     "StatusEffectUtilMixin"

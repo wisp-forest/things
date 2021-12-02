@@ -1,6 +1,7 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
@@ -18,7 +19,7 @@ public class PlaceboItem extends TrinketItemWithOptionalTooltip {
     }
 
     public PlaceboItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override

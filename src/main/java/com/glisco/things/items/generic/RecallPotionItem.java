@@ -1,7 +1,7 @@
-package com.glisco.things.items;
+package com.glisco.things.items.generic;
 
-import io.wispforest.owo.ops.WorldOps;
 import com.glisco.things.ThingsCommon;
+import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class RecallPotionItem extends Item {
 
     public RecallPotionItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(16));
+        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(16));
     }
 
     @Override

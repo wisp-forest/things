@@ -2,9 +2,9 @@ package com.glisco.things.client;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.blocks.ThingsBlocks;
-import com.glisco.things.items.AppleTrinket;
-import com.glisco.things.items.DisplacementTomeItem;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.items.generic.DisplacementTomeItem;
+import com.glisco.things.items.trinkets.AppleTrinket;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;

@@ -13,17 +13,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -47,7 +43,7 @@ public class ThingsCommon implements ModInitializer {
 
     public static ThingsConfig CONFIG;
 
-    public static final ItemGroup THINGS_ITEMS = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
+    public static final ItemGroup THINGS_GROUP = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
     public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
 
@@ -65,8 +61,6 @@ public class ThingsCommon implements ModInitializer {
     static {
         DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
     }
-
-    private static boolean isPatchouliLoaded;
 
     @Override
     public void onInitialize() {
@@ -89,29 +83,6 @@ public class ThingsCommon implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
 
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
-
-        isPatchouliLoaded = FabricLoader.getInstance().isModLoaded("patchouli");
-
-        UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
-            if (!isPatchouliLoaded()) return ActionResult.PASS;
-
-            if (playerEntity.getMainHandStack().isOf(Items.BOOK) && world.getBlockState(blockHitResult.getBlockPos()).isOf(ThingsBlocks.GLEAMING_ORE)) {
-                if (!world.isClient) {
-                    playerEntity.getMainHandStack().decrement(1);
-
-                    ItemStack book = new ItemStack(Registry.ITEM.get(new Identifier("patchouli", "guide_book")));
-                    book.getOrCreateNbt().putString("patchouli:book", "things:things_guide");
-                    playerEntity.getInventory().offerOrDrop(book);
-                }
-                return ActionResult.SUCCESS;
-            } else {
-                return ActionResult.PASS;
-            }
-        });
-    }
-
-    public static boolean isPatchouliLoaded() {
-        return isPatchouliLoaded;
     }
 
     public static Identifier id(String path) {

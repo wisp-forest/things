@@ -4,7 +4,6 @@ plugins {
     id 'io.github.juuxel.loom-quiltflower-mini' version '1.1.0'
 }
 
-// TODO: declare mc dependency correctly
 version = "${project.mod_version}+${project.minecraft_base_version}"
 group = project.maven_group
 
@@ -31,16 +30,16 @@ dependencies {
 
     modImplementation "dev.emi:trinkets:${trinkets_version}"
 
-    modRuntime "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
-    modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+    modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
 
-    modRuntime 'com.ptsmods:devlogin:1.2.1'
+    modLocalRuntime 'com.ptsmods:devlogin:1.2.1'
 }
 
 processResources {

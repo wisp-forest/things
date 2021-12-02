@@ -1,7 +1,7 @@
 package com.glisco.things;
 
-import com.glisco.things.items.DisplacementTomeItem;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.items.generic.DisplacementTomeItem;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -73,7 +73,8 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     public void addPoint(String name) {
         player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
         sendContentUpdates();
-        DisplacementTomeItem.storeTeleportTargetInBook(book, new DisplacementTomeItem.TargetLocation(player.getBlockPos(), player.world.getRegistryKey(), player.getHeadYaw(), player.getPitch()), name, false);
+        DisplacementTomeItem.storeTeleportTargetInBook(book,
+                DisplacementTomeItem.TargetLocation.fromPlayer((ServerPlayerEntity) player), name, false);
         updateClient();
     }
 

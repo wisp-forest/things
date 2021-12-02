@@ -1,7 +1,8 @@
-package com.glisco.things.items;
+package com.glisco.things.items.generic;
 
 import com.glisco.things.DisplacementTomeScreenHandler;
 import com.glisco.things.ThingsCommon;
+import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
@@ -31,14 +32,14 @@ import java.util.List;
 public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     public DisplacementTomeItem() {
-        super(new Settings().group(ThingsCommon.THINGS_ITEMS).maxCount(1));
+        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
     }
 
     public static void storeTeleportTargetInBook(ItemStack stack, TargetLocation target, String name, boolean replaceIfExisting) {
         NbtCompound targets = stack.getOrCreateSubNbt("Targets");
 
         if (targets.contains(name) && !replaceIfExisting) {
-            throw new IllegalArgumentException("This teleport point already exists and replaceIfExisting was not set");
+            throw new IllegalArgumentException("Teleport point '" + name + "' already exists and replaceIfExisting was not set");
         }
 
         targets.put(name, target.toTag());
@@ -85,9 +86,9 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
             user.getInventory().setStack(enderPearlSlot, ItemStack.EMPTY);
             user.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1, 2);
         } else {
-            user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) -> {
-                return new DisplacementTomeScreenHandler(i, playerInventory, user.getStackInHand(hand));
-            }, new LiteralText("help")));
+            user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) ->
+                    new DisplacementTomeScreenHandler(i, playerInventory, user.getStackInHand(hand)), new LiteralText("help")));
+
             if (user instanceof ServerPlayerEntity) {
                 ((ServerPlayerEntity) user).networkHandler.connection.send(UpdateDisplacementTomeS2CPacket.create(user.getStackInHand(hand)));
             } else {
@@ -109,7 +110,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
         private final float headYaw;
         private final float headPitch;
 
-        public TargetLocation(BlockPos pos, RegistryKey<World> world, float headYaw, float headPitch) {
+        private TargetLocation(BlockPos pos, RegistryKey<World> world, float headYaw, float headPitch) {
             this.pos = pos;
             this.world = world;
             this.headYaw = headYaw;

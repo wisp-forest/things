@@ -1,7 +1,8 @@
-package com.glisco.things.items;
+package com.glisco.things.items.trinkets;
 
 import com.glisco.things.ThingsCommon;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
+import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
@@ -26,7 +27,7 @@ import java.util.List;
 public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public MossNecklaceItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_ITEMS));
+        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
     }
 
     @Override
@@ -41,13 +42,12 @@ public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements 
         int daytime = (int) player.world.getTimeOfDay() % 24000;
         if (player.world.getLightLevel(LightType.BLOCK, player.getBlockPos()) > 7 ||
                 (player.world.getLightLevel(LightType.SKY, player.getBlockPos()) > 7 && (daytime > 23500 || daytime < 12500))) {
-            if (player.getStatusEffect(StatusEffects.REGENERATION) != null) {
-                if (player.getStatusEffect(StatusEffects.REGENERATION).getDuration() < 10) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, 1, true, false, true));
-                }
-            } else {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, 1, true, false, true));
-            }
+
+            if (player.getStatusEffect(StatusEffects.REGENERATION) != null
+                    && player.getStatusEffect(StatusEffects.REGENERATION).getDuration() > 10) return;
+
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610,
+                    ThingsCommon.CONFIG.effectLevels.mossNecklaceRegen - 1, true, false, true));
         }
     }
 
