@@ -1,6 +1,7 @@
 package com.glisco.things;
 
 import com.glisco.things.items.DisplacementTomeItem;
+import com.glisco.things.ThingsCommon;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,7 +47,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     public void requestTeleport(String location) {
         int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
 
-        if (currentFuel <= 0) {
+        if (currentFuel < ThingsCommon.CONFIG.displacementTomeFuelConsumption) {
             player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
             return;
         }
@@ -54,7 +55,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
         NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
         if (!bookTargetsTag.contains(location)) return;
 
-        currentFuel--;
+        currentFuel = currentFuel - ThingsCommon.CONFIG.displacementTomeFuelConsumption;
         book.getOrCreateNbt().putInt("Fuel", currentFuel);
 
         DisplacementTomeItem.TargetLocation target = DisplacementTomeItem.TargetLocation.fromTag(bookTargetsTag.getCompound(location));

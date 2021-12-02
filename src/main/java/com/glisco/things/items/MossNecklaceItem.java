@@ -43,10 +43,10 @@ public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements 
                 (player.world.getLightLevel(LightType.SKY, player.getBlockPos()) > 7 && (daytime > 23500 || daytime < 12500))) {
             if (player.getStatusEffect(StatusEffects.REGENERATION) != null) {
                 if (player.getStatusEffect(StatusEffects.REGENERATION).getDuration() < 10) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, 1, true, false, true));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, ThingsCommon.CONFIG.mossNecklaceRegenerationLevel - 1, true, false, true));
                 }
             } else {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, 1, true, false, true));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610, ThingsCommon.CONFIG.mossNecklaceRegenerationLevel - 1, true, false, true));
             }
         }
     }

@@ -21,6 +21,14 @@ public class ThingsConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
     public int miningGloveMomentumLevel = 2;
 
+    @Comment("The regeneration level the moss necklace produces")
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+    public int mossNecklaceRegenerationLevel = 2;
+
+    @Comment("How many ender pearls the displacement tome uses per teleport")
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 999)
+    public int displacementTomeFuelConsumption = 1;
+
     @Comment("Whether Things should prevent beacons from giving someone haste when they already have momentum")
     public boolean nerfBeaconsWithMomentum = true;
 
