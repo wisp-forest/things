@@ -88,6 +88,7 @@
   "text.autoconfig.things.option.renderTrinkets": "Render Trinkets",
   "text.autoconfig.things.option.renderAppleTrinket": "Render Apple Trinket",
   "text.autoconfig.things.option.giveGuideOnWorldEntry": "Give guide on world entry",
+  "text.autoconfig.things.option.displacementTomeFuelConsumption": "Displacement Tome Fuel Consumption",
 
   "text.autoconfig.things.option.effectLevels": "Trinket Status Effects",
   "text.autoconfig.things.option.effectLevels.miningGloveMomentum": "Mining Glove Momentum Level",
