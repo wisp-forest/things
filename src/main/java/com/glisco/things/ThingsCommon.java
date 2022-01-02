@@ -50,12 +50,13 @@ public class ThingsCommon implements ModInitializer {
     public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
     private static final PlacedFeature GLEAMING_ORE = new PlacedFeature(() ->
-            Feature.ORE.configure(new OreFeatureConfig(OreConfiguredFeatures.BASE_STONE_OVERWORLD,
-                    ThingsBlocks.GLEAMING_ORE.getDefaultState(),
+            Feature.ORE.configure(new OreFeatureConfig(List.of(
+                    OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, ThingsBlocks.GLEAMING_ORE.getDefaultState()),
+                    OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, ThingsBlocks.DEEPSLATE_GLEAMING_ORE.getDefaultState())),
                     3)),
             List.of(CountPlacementModifier.of(3),
                     SquarePlacementModifier.of(),
-                    HeightRangePlacementModifier.uniform(YOffset.fixed(0), YOffset.fixed(15)),
+                    HeightRangePlacementModifier.uniform(YOffset.fixed(-15), YOffset.fixed(15)),
                     BiomePlacementModifier.of()));
 
     static {
