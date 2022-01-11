@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
@@ -26,12 +26,7 @@ import java.util.List;
 public class MonocleItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public MonocleItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText("§7Grants permanent Night Vision"));
+        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override

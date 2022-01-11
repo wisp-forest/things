@@ -1,6 +1,6 @@
 package com.glisco.things.items.generic;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,16 +23,9 @@ import java.util.List;
 
 public class InfernalScepterItem extends ItemWithExtendableTooltip {
 
-    private static final List<Text> TOOLTIP;
-
-    static {
-        TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Shoots Fireballs"));
-        TOOLTIP.add(new LiteralText("§7Uses Fire Charges as ammunition"));
-    }
 
     public InfernalScepterItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1).maxDamage(ThingsCommon.CONFIG.infernalScepterDurability).fireproof());
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability).fireproof());
     }
 
     @Override
@@ -76,10 +69,5 @@ public class InfernalScepterItem extends ItemWithExtendableTooltip {
     @Override
     public int getMaxUseTime(ItemStack stack) {
         return 72000;
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return TOOLTIP;
     }
 }

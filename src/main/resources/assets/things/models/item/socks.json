@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "things:item/socks"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "jumpy": 1
+      },
+      "model": "things:item/jumpy_socks"
+    }
+  ]
+}

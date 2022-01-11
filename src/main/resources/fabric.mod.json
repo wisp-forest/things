@@ -23,13 +23,16 @@
       "com.glisco.things.client.ThingsClient"
     ],
     "main": [
-      "com.glisco.things.ThingsCommon"
+      "com.glisco.things.Things"
     ],
     "modmenu": [
-      "com.glisco.things.ModMenuIntegration"
+      "com.glisco.things.misc.ModMenuIntegration"
     ],
     "rei_plugins": [
       "com.glisco.things.compat.rei.ThingsPlugin"
+    ],
+    "cardinal-components-entity": [
+      "com.glisco.things.Things"
     ]
   },
   "mixins": [
@@ -49,6 +52,9 @@
       "links": {
         "modmenu.discord": "https://discord.gg/xrwHKktV2d"
       }
-    }
+    },
+    "cardinal-components": [
+      "things:sock_data"
+    ]
   }
 }

@@ -1,7 +1,7 @@
 package com.glisco.things.client;
 
-import com.glisco.things.DisplacementTomeScreenHandler;
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
 
 public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(ThingsCommon.MOD_ID, "textures/gui/displacement_tome.png");
+    private static final Identifier TEXTURE = new Identifier(Things.MOD_ID, "textures/gui/displacement_tome.png");
 
     private final List<ButtonWidget> buttons = new ArrayList<>();
     private TextFieldWidget nameField;

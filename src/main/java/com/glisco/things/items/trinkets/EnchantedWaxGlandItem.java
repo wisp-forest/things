@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
@@ -25,26 +25,13 @@ import java.util.List;
 
 public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
-    private static final List<Text> TOOLTIP;
-
-    static {
-        TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Makes you float in water."));
-        TOOLTIP.add(new LiteralText("§7And apparently also really fast"));
-    }
-
     public EnchantedWaxGlandItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override
     public boolean hasGlint(ItemStack stack) {
         return true;
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return TOOLTIP;
     }
 
     @Override

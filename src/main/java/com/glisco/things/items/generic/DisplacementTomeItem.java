@@ -1,7 +1,7 @@
 package com.glisco.things.items.generic;
 
-import com.glisco.things.DisplacementTomeScreenHandler;
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
+import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
@@ -32,7 +32,7 @@ import java.util.List;
 public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     public DisplacementTomeItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     public static void storeTeleportTargetInBook(ItemStack stack, TargetLocation target, String name, boolean replaceIfExisting) {
@@ -96,11 +96,6 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
             }
         }
         return TypedActionResult.success(user.getStackInHand(hand));
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText("§7A fancy tool used for teleportation"));
     }
 
     public static class TargetLocation {

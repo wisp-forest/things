@@ -1,5 +1,6 @@
-package com.glisco.things;
+package com.glisco.things.misc;
 
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
@@ -24,7 +25,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public DisplacementTomeScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack book) {
-        super(ThingsCommon.DISPLACEMENT_TOME_SCREEN_HANDLER, syncId);
+        super(Things.DISPLACEMENT_TOME_SCREEN_HANDLER, syncId);
         this.book = book;
         this.player = playerInventory.player;
     }
@@ -46,7 +47,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     public void requestTeleport(String location) {
         int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
 
-        if (currentFuel < ThingsCommon.CONFIG.displacementTomeFuelConsumption) {
+        if (currentFuel < Things.CONFIG.displacementTomeFuelConsumption) {
             player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
             return;
         }
@@ -54,7 +55,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
         NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
         if (!bookTargetsTag.contains(location)) return;
 
-        currentFuel -= ThingsCommon.CONFIG.displacementTomeFuelConsumption;
+        currentFuel -= Things.CONFIG.displacementTomeFuelConsumption;
         book.getOrCreateNbt().putInt("Fuel", currentFuel);
 
         DisplacementTomeItem.TargetLocation target = DisplacementTomeItem.TargetLocation.fromTag(bookTargetsTag.getCompound(location));

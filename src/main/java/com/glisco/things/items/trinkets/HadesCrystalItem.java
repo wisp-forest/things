@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
@@ -25,21 +25,8 @@ import java.util.List;
 
 public class HadesCrystalItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
-    private static final List<Text> TOOLTIP;
-
-    static {
-        TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Grants permanent Fire Resistance"));
-        TOOLTIP.add(new LiteralText("§7Wear together with a §6Wax Gland §7for extra awesomeness"));
-    }
-
     public HadesCrystalItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1).fireproof());
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return TOOLTIP;
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1).fireproof());
     }
 
     @Override

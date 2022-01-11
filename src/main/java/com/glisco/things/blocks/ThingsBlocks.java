@@ -1,6 +1,6 @@
 package com.glisco.things.blocks;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import io.wispforest.owo.registration.reflect.BlockRegistryContainer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -32,7 +31,7 @@ public class ThingsBlocks implements BlockRegistryContainer {
     public static final Block DEEPSLATE_GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
 
     public static final Block DIAMOND_PRESSURE_PLATE = new DiamondPressurePlateBlock();
-    public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(ThingsCommon.THINGS_GROUP)) {
+    public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(Things.THINGS_GROUP)) {
         @Override
         public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
             tooltip.add(new LiteralText("Players only").formatted(Formatting.GRAY));
@@ -44,11 +43,11 @@ public class ThingsBlocks implements BlockRegistryContainer {
 
     @Override
     public BlockItem createBlockItem(Block block, String identifier) {
-        return block == DIAMOND_PRESSURE_PLATE ? DIAMOND_PRESSURE_PLATE_ITEM : new BlockItem(block, new Item.Settings().group(ThingsCommon.THINGS_GROUP));
+        return block == DIAMOND_PRESSURE_PLATE ? DIAMOND_PRESSURE_PLATE_ITEM : new BlockItem(block, new Item.Settings().group(Things.THINGS_GROUP));
     }
 
     @Override
     public void afterFieldProcessing() {
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, ThingsCommon.id("placed_item"), PLACED_ITEM_BLOCK_ENTITY);
+        Registry.register(Registry.BLOCK_ENTITY_TYPE, Things.id("placed_item"), PLACED_ITEM_BLOCK_ENTITY);
     }
 }

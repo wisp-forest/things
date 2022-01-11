@@ -1,7 +1,7 @@
 package com.glisco.things.network;
 
-import com.glisco.things.DisplacementTomeScreenHandler;
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
+import com.glisco.things.Things;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 public class RequestTomeActionC2SPacket {
 
-    public static final Identifier ID = new Identifier(ThingsCommon.MOD_ID, "request-tome-action");
+    public static final Identifier ID = new Identifier(Things.MOD_ID, "request-tome-action");
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static void onPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {

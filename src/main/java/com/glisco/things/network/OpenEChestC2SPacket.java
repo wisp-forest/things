@@ -1,6 +1,6 @@
 package com.glisco.things.network;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.netty.buffer.Unpooled;
@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 public class OpenEChestC2SPacket {
 
-    public static final Identifier ID = new Identifier(ThingsCommon.MOD_ID, "openechest");
+    public static final Identifier ID = new Identifier(Things.MOD_ID, "openechest");
     private static Logger LOGGER = LogManager.getLogger();
 
     public static void onPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {

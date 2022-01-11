@@ -1,16 +1,19 @@
 package com.glisco.things.client;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
 import com.glisco.things.items.trinkets.AppleTrinket;
+import com.glisco.things.items.trinkets.SocksItem;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import io.wispforest.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.ServerParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,6 +27,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -39,10 +43,11 @@ public class ThingsClient implements ClientModInitializer {
     public void onInitializeClient() {
         BlockEntityRendererRegistry.register(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY, PlacedItemBlockEntityRenderer::new);
 
-        ScreenRegistry.register(ThingsCommon.DISPLACEMENT_TOME_SCREEN_HANDLER, DisplacementTomeScreen::new);
+        ScreenRegistry.register(Things.DISPLACEMENT_TOME_SCREEN_HANDLER, DisplacementTomeScreen::new);
         ClientPlayNetworking.registerGlobalReceiver(UpdateDisplacementTomeS2CPacket.ID, UpdateDisplacementTomeS2CPacket::onPacket);
 
         FabricModelPredicateProviderRegistry.register(ThingsItems.DISPLACEMENT_TOME, new Identifier("pages"), new DisplacementTomeItem.PredicateProvider());
+        FabricModelPredicateProviderRegistry.register(ThingsItems.SOCKS, new Identifier("jumpy"), (stack, world, entity, seed) -> stack.getOrCreateNbt().getBoolean(SocksItem.JUMPY_KEY) ? 1 : 0);
 
         TrinketRendererRegistry.registerRenderer(Items.APPLE, new AppleTrinket.Renderer());
 
@@ -82,6 +87,13 @@ public class ThingsClient implements ClientModInitializer {
                     client.getNetworkHandler().sendPacket(OpenEChestC2SPacket.create());
                 }
             }
+        });
+
+        ServerParticles.registerClientSideHandler(Things.id("toggle_jump_boost"), (client, pos, data) -> {
+            client.execute(() -> {
+                ClientParticles.setParticleCount(25);
+                ClientParticles.spawnPrecise(ParticleTypes.WAX_OFF, client.world, pos.add(0, 1, 0), 1, 2, 1);
+            });
         });
     }
 

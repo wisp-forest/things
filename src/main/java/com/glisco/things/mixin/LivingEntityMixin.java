@@ -1,6 +1,6 @@
 package com.glisco.things.mixin;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -9,7 +9,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ShieldItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,15 +18,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin {
+public abstract class LivingEntityMixin {
 
     @Inject(method = "takeShieldHit", at = @At("HEAD"))
     public void onShieldHit(LivingEntity attacker, CallbackInfo ci) {
 
         LivingEntity user = (LivingEntity) (Object) this;
 
-        if (!(user.getActiveItem().getItem() instanceof ShieldItem)) return;
-        if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(ThingsCommon.RETRIBUTION)) return;
+        if (!Things.isShield(user.getActiveItem().getItem())) return;
+        if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(Things.RETRIBUTION)) return;
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
 
@@ -38,8 +37,8 @@ public class LivingEntityMixin {
 
         LivingEntity user = (LivingEntity) (Object) this;
 
-        if (!(user.getActiveItem().getItem() instanceof ShieldItem)) return;
-        if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(ThingsCommon.RETRIBUTION)) return;
+        if (!Things.isShield(user.getActiveItem().getItem())) return;
+        if (!EnchantmentHelper.fromNbt(user.getActiveItem().getEnchantments()).containsKey(Things.RETRIBUTION)) return;
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
 
@@ -50,7 +49,7 @@ public class LivingEntityMixin {
 
         if (!TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.ENCHANTED_WAX_GLAND)) return j;
 
-        return j * ThingsCommon.CONFIG.waxGlandMultiplier;
+        return j * Things.CONFIG.waxGlandMultiplier;
     }
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
@@ -60,7 +59,7 @@ public class LivingEntityMixin {
 
         if (TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.ENCHANTED_WAX_GLAND) && TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.HADES_CRYSTAL)) {
             int depthStrider = EnchantmentHelper.getDepthStrider(player);
-            return 0.0175f * ThingsCommon.CONFIG.waxGlandMultiplier + 0.1f * depthStrider;
+            return 0.0175f * Things.CONFIG.waxGlandMultiplier + 0.1f * depthStrider;
         }
 
         return speed;

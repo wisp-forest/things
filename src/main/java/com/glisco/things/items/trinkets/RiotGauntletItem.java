@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import net.minecraft.entity.LivingEntity;
@@ -17,12 +17,7 @@ import java.util.List;
 public class RiotGauntletItem extends TrinketItemWithOptionalTooltip {
 
     public RiotGauntletItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText("§7Grants permanent Strength"));
+        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override
@@ -30,7 +25,7 @@ public class RiotGauntletItem extends TrinketItemWithOptionalTooltip {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 5,
-                ThingsCommon.CONFIG.effectLevels.riotGauntletStrength - 1, true, false, true));
+                Things.CONFIG.effectLevels.riotGauntletStrength - 1, true, false, true));
     }
 
 }

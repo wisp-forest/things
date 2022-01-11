@@ -1,29 +1,43 @@
 package com.glisco.things;
 
+import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.misc.*;
 import com.glisco.things.network.OpenEChestC2SPacket;
 import com.glisco.things.network.PlaceItemC2SPacket;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
+import com.mojang.brigadier.arguments.FloatArgumentType;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
+import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
+import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
+import io.wispforest.owo.Owo;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.decorator.BiomePlacementModifier;
@@ -36,8 +50,12 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.PlacedFeature;
 
 import java.util.List;
+import java.util.function.Predicate;
 
-public class ThingsCommon implements ModInitializer {
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
+
+public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final String MOD_ID = "things";
 
@@ -46,6 +64,9 @@ public class ThingsCommon implements ModInitializer {
     public static final ItemGroup THINGS_GROUP = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
     public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
+
+    public static final ComponentKey<SockDataComponent> SOCK_DATA =
+            ComponentRegistry.getOrCreate(id("sock_data"), SockDataComponent.class);
 
     public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
@@ -63,6 +84,8 @@ public class ThingsCommon implements ModInitializer {
         DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
     }
 
+    private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
+
     @Override
     public void onInitialize() {
 
@@ -77,17 +100,53 @@ public class ThingsCommon implements ModInitializer {
         RegistryKey<PlacedFeature> gleamingOre = RegistryKey.of(Registry.PLACED_FEATURE_KEY, id("ore_gleaming"));
         Registry.register(BuiltinRegistries.PLACED_FEATURE, gleamingOre, GLEAMING_ORE);
 
-        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
+        BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
+
+        Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
+        Registry.register(Registry.RECIPE_SERIALIZER, id("sock_upgrade_crafting"), SockUpgradeRecipe.Serializer.INSTANCE);
+
+        Registry.register(Registry.RECIPE_TYPE, id("jumpy_sock_crafting"), JumpySocksRecipe.Type.INSTANCE);
+        Registry.register(Registry.RECIPE_SERIALIZER, id("jumpy_sock_crafting"), JumpySocksRecipe.Serializer.INSTANCE);
 
         ServerPlayNetworking.registerGlobalReceiver(PlaceItemC2SPacket.ID, PlaceItemC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
         ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
 
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
+
+        if (FabricLoader.getInstance().isModLoaded("fabricshieldlib")) {
+            SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
+        }
+
+        if (Owo.DEBUG) {
+            CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+                dispatcher.register(literal("things:set_walk_speed_modifier")
+                        .then(argument("speed", FloatArgumentType.floatArg()).executes(context -> {
+                            float speed = FloatArgumentType.getFloat(context, "speed");
+                            SOCK_DATA.get(context.getSource().getPlayer()).setModifier(speed);
+                            return 0;
+                        })));
+            });
+        }
+    }
+
+    public static Predicate<BiomeSelectionContext> notNetherOrEndSelector() {
+        return context -> {
+            var category = context.getBiome().getCategory();
+            return category != Biome.Category.THEEND && category != Biome.Category.NETHER && category != Biome.Category.NONE;
+        };
+    }
+
+    public static boolean isShield(Item item) {
+        return SHIELD_PREDICATE.test(item);
     }
 
     public static Identifier id(String path) {
         return new Identifier(MOD_ID, path);
     }
 
+    @Override
+    public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
+        registry.registerForPlayers(SOCK_DATA, SockDataComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+    }
 }

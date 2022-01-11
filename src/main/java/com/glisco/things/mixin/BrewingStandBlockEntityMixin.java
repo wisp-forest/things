@@ -10,6 +10,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,10 +22,12 @@ public class BrewingStandBlockEntityMixin {
 
     @Inject(method = "canCraft", at = @At("HEAD"), cancellable = true)
     private static void checkCraft(DefaultedList<ItemStack> slots, CallbackInfoReturnable<Boolean> cir) {
-        if (!slots.get(3).getItem().equals(Items.ENDER_PEARL)) return;
+        if (!slots.get(3).isOf(Items.ENDER_PEARL)) return;
+
         for (int i = 0; i < 3; i++) {
             if (!(slots.get(i).getItem() instanceof PotionItem)) continue;
             if (!PotionUtil.getPotion(slots.get(i)).equals(Potions.AWKWARD)) continue;
+
             cir.setReturnValue(true);
             return;
         }
@@ -32,18 +35,19 @@ public class BrewingStandBlockEntityMixin {
 
     @Inject(method = "craft", at = @At("HEAD"), cancellable = true)
     private static void doCraft(World world, BlockPos pos, DefaultedList<ItemStack> slots, CallbackInfo ci) {
-        ItemStack ingredient = slots.get(3);
+        var addition = slots.get(3);
 
-        if (!ingredient.getItem().equals(Items.ENDER_PEARL)) return;
-        ingredient.decrement(1);
+        if (!addition.isOf(Items.ENDER_PEARL)) return;
+        addition.decrement(1);
 
         for (int i = 0; i < 3; i++) {
             if (!(slots.get(i).getItem() instanceof PotionItem)) continue;
             if (!PotionUtil.getPotion(slots.get(i)).equals(Potions.AWKWARD)) continue;
+
             slots.set(i, new ItemStack(ThingsItems.RECALL_POTION));
         }
 
-        world.syncWorldEvent(1035, pos, 0);
+        world.syncWorldEvent(WorldEvents.BREWING_STAND_BREWS, pos, 0);
         ci.cancel();
     }
 

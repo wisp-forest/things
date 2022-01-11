@@ -15,9 +15,13 @@ public abstract class TrinketItemWithOptionalTooltip extends TrinketItem impleme
         super(settings);
     }
 
+    @Override
+    public String tooltipTranslationKey() {
+        return this.getTranslationKey() + ".tooltip";
+    }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        append(tooltip);
+        tryAppend(tooltip);
     }
 }

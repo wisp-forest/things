@@ -12,6 +12,7 @@
     "ContainerLockAccessor",
     "ContainerLockMixin",
     "EnchantmentHelperMixin",
+    "EntityMixin",
     "ForgingScreenHandlerAccessor",
     "ItemAccessor",
     "LivingEntityMixin",

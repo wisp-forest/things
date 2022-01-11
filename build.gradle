@@ -17,6 +17,8 @@ repositories {
     maven { url = "https://ladysnake.jfrog.io/artifactory/mods" }
 
     maven { url 'https://maven.blamejared.com' }
+
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -32,12 +34,14 @@ dependencies {
 
     modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
+
+    modCompileOnly "com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}"
 
     modLocalRuntime 'com.ptsmods:devlogin:1.2.1'
 }

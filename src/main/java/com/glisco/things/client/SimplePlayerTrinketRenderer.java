@@ -1,6 +1,6 @@
 package com.glisco.things.client;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
@@ -24,7 +24,7 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
     @Environment(EnvType.CLIENT)
     @SuppressWarnings("unchecked")
     default void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (!ThingsCommon.CONFIG.renderTrinkets) return;
+        if (!Things.CONFIG.renderTrinkets) return;
         if (!(entity instanceof ClientPlayerEntity player)) return;
 
         align(player, (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, matrices, headYaw, headPitch);

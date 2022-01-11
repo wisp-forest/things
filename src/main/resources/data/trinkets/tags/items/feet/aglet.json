@@ -2,6 +2,7 @@
   "replaces": "false",
   "values": [
     "things:enchanted_wax_gland",
-    "things:rabbit_foot_charm"
+    "things:rabbit_foot_charm",
+    "things:socks"
   ]
 }

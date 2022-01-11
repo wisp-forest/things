@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.Trinket;
@@ -43,7 +43,7 @@ public class AppleTrinket implements Trinket {
 
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-            if (!ThingsCommon.CONFIG.renderAppleTrinket) return;
+            if (!Things.CONFIG.renderAppleTrinket) return;
             SimplePlayerTrinketRenderer.super.render(stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
         }
 

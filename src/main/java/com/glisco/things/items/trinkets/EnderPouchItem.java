@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.client.ThingsClient;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
@@ -12,24 +12,21 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Language;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3f;
 
-import java.util.Collections;
 import java.util.List;
 
 public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public EnderPouchItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
+        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override
-    public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText(String.format("§7Press §6%s §7to open Ender Chest Inventory",
-                Language.getInstance().get(KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText().getString()))));
+    public void append(List<Text> tooltip) {
+        tooltip.add(new TranslatableText(tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText()));
     }
 
     @Override

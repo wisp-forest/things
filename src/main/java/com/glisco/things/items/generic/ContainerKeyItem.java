@@ -1,6 +1,6 @@
 package com.glisco.things.items.generic;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.mixin.ContainerLockAccessor;
 import com.glisco.things.mixin.LockableContainerBlockEntityAccessor;
@@ -32,17 +32,8 @@ import java.util.Random;
 
 public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
-    private static final List<Text> TOOLTIP;
-
-    static {
-        TOOLTIP = new ArrayList<>();
-        TOOLTIP.add(new LiteralText("§7Used to lock containers"));
-        TOOLTIP.add(new LiteralText("§7 - Sneak-click to lock/unlock"));
-        TOOLTIP.add(new LiteralText("§7 - Required to open a locked container"));
-    }
-
     public ContainerKeyItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override
@@ -153,10 +144,5 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
         if (!(potentialChest instanceof ChestBlockEntity)) return null;
         if (potentialChest.getCachedState().get(Properties.CHEST_TYPE) == ChestType.SINGLE) return null;
         return (ChestBlockEntity) potentialChest.getWorld().getBlockEntity(potentialChest.getPos().offset(ChestBlock.getFacing(potentialChest.getCachedState())));
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return TOOLTIP;
     }
 }

@@ -16,7 +16,12 @@ public abstract class ItemWithExtendableTooltip extends Item implements Extendab
     }
 
     @Override
+    public String tooltipTranslationKey() {
+        return this.getTranslationKey() + ".tooltip";
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        append(tooltip);
+        tryAppend(tooltip);
     }
 }

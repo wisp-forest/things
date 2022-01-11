@@ -1,5 +1,8 @@
 package com.glisco.things.enchantments;
 
+import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
+import com.glisco.things.Things;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -34,6 +37,6 @@ public class RetributionEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ShieldItem;
+        return Things.isShield(stack.getItem());
     }
 }

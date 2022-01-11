@@ -1,4 +1,4 @@
-package com.glisco.things;
+package com.glisco.things.misc;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;

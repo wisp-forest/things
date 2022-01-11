@@ -1,4 +1,4 @@
-package com.glisco.things;
+package com.glisco.things.misc;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

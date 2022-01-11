@@ -1,6 +1,6 @@
 package com.glisco.things.items.trinkets;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
@@ -27,12 +27,7 @@ import java.util.List;
 public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public MossNecklaceItem() {
-        super(new Settings().maxCount(1).group(ThingsCommon.THINGS_GROUP));
-    }
-
-    @Override
-    public List<Text> getExtendedTooltip() {
-        return Collections.singletonList(new LiteralText("§7Grants Regeneration II when in light"));
+        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override
@@ -47,7 +42,7 @@ public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements 
                     && player.getStatusEffect(StatusEffects.REGENERATION).getDuration() > 10) return;
 
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610,
-                    ThingsCommon.CONFIG.effectLevels.mossNecklaceRegen - 1, true, false, true));
+                    Things.CONFIG.effectLevels.mossNecklaceRegen - 1, true, false, true));
         }
     }
 

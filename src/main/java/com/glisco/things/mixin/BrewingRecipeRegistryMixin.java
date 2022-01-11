@@ -13,7 +13,7 @@ public class BrewingRecipeRegistryMixin {
 
     @Inject(method = "isValidIngredient", at = @At("HEAD"), cancellable = true)
     private static void allowEnderPearl(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.getItem().equals(Items.ENDER_PEARL)) cir.setReturnValue(true);
+        if (stack.isOf(Items.ENDER_PEARL)) cir.setReturnValue(true);
     }
 
 }

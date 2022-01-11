@@ -1,6 +1,6 @@
 package com.glisco.things.mixin;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
@@ -19,7 +19,7 @@ public class StatusEffectUtilMixin {
 
     @Inject(method = "hasHaste", at = @At("HEAD"), cancellable = true)
     private static void hasMomentum(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (entity.hasStatusEffect(ThingsCommon.MOMENTUM)) cir.setReturnValue(true);
+        if (entity.hasStatusEffect(Things.MOMENTUM)) cir.setReturnValue(true);
     }
 
     @Inject(method = "getHasteAmplifier", at = @At("HEAD"))
@@ -31,8 +31,8 @@ public class StatusEffectUtilMixin {
     private static int getMomentumAmplifier(int i) {
         LivingEntity entity = cachedEntity.get();
 
-        if (entity.hasStatusEffect(ThingsCommon.MOMENTUM)) {
-            i += entity.getStatusEffect(ThingsCommon.MOMENTUM).getAmplifier();
+        if (entity.hasStatusEffect(Things.MOMENTUM)) {
+            i += entity.getStatusEffect(Things.MOMENTUM).getAmplifier();
             if (entity.hasStatusEffect(StatusEffects.HASTE) && i == 0) i++;
         }
         cachedEntity.set(null);

@@ -1,6 +1,6 @@
 package com.glisco.things.items.generic;
 
-import com.glisco.things.ThingsCommon;
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -27,7 +27,7 @@ import java.util.Random;
 public class ItemMagnetItem extends Item {
 
     public ItemMagnetItem() {
-        super(new Settings().group(ThingsCommon.THINGS_GROUP).maxCount(1));
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override
