@@ -1,20 +1,13 @@
 package com.glisco.things.items.trinkets;
 
 import com.glisco.things.Things;
-import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ops.WorldOps;
 import io.wispforest.owo.particles.ServerParticles;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -80,10 +73,12 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
 
     @Override
     public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        Things.SOCK_DATA.get(entity).jumpySocksEquipped = false;
+
         if (!(entity instanceof ServerPlayerEntity player)) return;
         int speed = stack.getOrCreateNbt().getInt(SocksItem.SPEED_KEY);
 
-        Things.SOCK_DATA.get(player).modifySpeed(-.02f * (speed + 1));
+        Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier * (speed + 1));
         Things.SOCK_DATA.get(player).clearSockSpeed(slot.index());
     }
 

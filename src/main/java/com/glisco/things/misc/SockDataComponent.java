@@ -1,5 +1,6 @@
 package com.glisco.things.misc;
 
+import com.glisco.things.Things;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -26,10 +27,10 @@ public class SockDataComponent implements Component {
     public void updateSockSpeed(int slot, int speed) {
         if (this.sockSpeeds.get(slot) == speed) return;
 
-        this.modifySpeed(-.02f * this.sockSpeeds.get(slot));
+        this.modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier * this.sockSpeeds.get(slot));
 
         this.sockSpeeds.put(slot, speed);
-        this.modifySpeed(.02f * speed);
+        this.modifySpeed(Things.CONFIG.sockPerLevelSpeedAmplifier * speed);
     }
 
     public void modifySpeed(float amount) {

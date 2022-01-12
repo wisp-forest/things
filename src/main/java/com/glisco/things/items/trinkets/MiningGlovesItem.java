@@ -7,11 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-
-import java.util.Collections;
-import java.util.List;
 
 public class MiningGlovesItem extends TrinketItemWithOptionalTooltip {
 

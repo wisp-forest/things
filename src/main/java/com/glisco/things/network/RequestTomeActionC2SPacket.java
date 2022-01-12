@@ -1,7 +1,7 @@
 package com.glisco.things.network;
 
-import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import com.glisco.things.Things;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;

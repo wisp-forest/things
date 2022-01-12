@@ -1,13 +1,10 @@
 package com.glisco.things.enchantments;
 
-import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShield;
 import com.glisco.things.Things;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
 
 public class RetributionEnchantment extends Enchantment {
 

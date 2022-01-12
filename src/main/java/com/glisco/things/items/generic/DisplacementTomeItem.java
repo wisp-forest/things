@@ -1,8 +1,8 @@
 package com.glisco.things.items.generic;
 
-import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
@@ -16,7 +16,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -25,9 +24,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collections;
-import java.util.List;
 
 public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 

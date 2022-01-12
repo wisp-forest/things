@@ -1,8 +1,8 @@
 package com.glisco.things.client;
 
-import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import com.glisco.things.network.RequestTomeActionC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;

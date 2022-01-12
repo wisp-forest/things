@@ -30,6 +30,9 @@ public class ThingsConfig implements ConfigData {
     @ConfigEntry.BoundedDiscrete(min = 1, max = 128)
     public int displacementTomeFuelConsumption = 1;
 
+    @Comment("How much walking speed the socks should add per level, base is 0.1, default is 0.02")
+    public float sockPerLevelSpeedAmplifier = .02f;
+
     @ConfigEntry.Gui.CollapsibleObject
     public EffectLevels effectLevels = new EffectLevels();
 

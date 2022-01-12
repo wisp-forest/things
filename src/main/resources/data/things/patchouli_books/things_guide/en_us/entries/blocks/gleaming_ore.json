@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "$(item)Gleaming Ore$() is most important in the majority of endeavours aiming to create a $(thing)Thing$(). It can be found deep within the bowels of the earth, and will drop some $(l:things:items/gleaming_materials)Gleaming Powder$() if harvested using at least a $(item)Diamond Pickaxe$(). Enchanting this tool with $(thing)Fortune$() could prove useful when ore is sparse, although the increase in yield might disappoint."
+      "text": "$(item)Gleaming Ore$() is most important in the majority of endeavours aiming to create a $(thing)Thing$(). It can be found deep within the bowels of the earth where the stones meet, and will drop some $(l:things:items/gleaming_materials)Gleaming Powder$() if harvested using at least a $(item)Diamond Pickaxe$(). Enchanting this tool with $(thing)Fortune$() could prove useful when ore is sparse, although the increase in yield might disappoint."
     },
     {
       "type": "image",
