@@ -2,10 +2,13 @@ package com.glisco.things.blocks;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
+import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -20,7 +23,7 @@ import net.minecraft.world.WorldView;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
-public class GlowstoneFixtureBlock extends FacingBlock {
+public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable {
 
     private static final VoxelShape BASE_DOWN = Block.createCuboidShape(5, 0, 5, 11, 1, 11);
     private static final VoxelShape GLOWSTONE_DOWN = Block.createCuboidShape(6, 1, 6, 10, 2, 10);
@@ -46,15 +49,16 @@ public class GlowstoneFixtureBlock extends FacingBlock {
 
     public GlowstoneFixtureBlock() {
         super(FabricBlockSettings.of(Material.STONE).nonOpaque().luminance(15).requiresTool().hardness(1));
+        this.setDefaultState(this.getDefaultState().with(Properties.WATERLOGGED, false));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
-        stateManager.add(Properties.FACING);
+        stateManager.add(Properties.FACING, Properties.WATERLOGGED);
     }
 
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getSide().getOpposite());
+        return this.getDefaultState().with(Properties.FACING, ctx.getSide().getOpposite()).with(Properties.WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).isIn(FluidTags.WATER));
     }
 
     @Override
@@ -67,6 +71,11 @@ public class GlowstoneFixtureBlock extends FacingBlock {
             case SOUTH -> SHAPE_SOUTH;
             default -> SHAPE_DOWN;
         };
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(Properties.WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
     @Override
@@ -93,6 +102,10 @@ public class GlowstoneFixtureBlock extends FacingBlock {
     }
 
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
+        if (state.get(Properties.WATERLOGGED)) {
+            world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        }
+
         return direction == state.get(FACING) && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : state;
     }
 
