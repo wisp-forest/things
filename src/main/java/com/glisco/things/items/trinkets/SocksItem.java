@@ -57,7 +57,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
                 sockData.sneakTicks = 0;
 
                 WorldOps.playSound(player.world, player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
-                Things.TOGGLE_JUMP_BOOST_PARTICLES.execute(player.world, player.getPos());
+                Things.TOGGLE_JUMP_BOOST_PARTICLES.spawn(player.world, player.getPos());
             }
         } else {
             sockData.sneakTicks = 0;
