@@ -1,6 +1,7 @@
 package com.glisco.things.mixin;
 
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.mixin.access.ForgingScreenHandlerAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AnvilScreenHandler;

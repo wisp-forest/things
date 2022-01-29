@@ -3,6 +3,7 @@ package com.glisco.things.misc;
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
+import com.glisco.things.network.ThingsNetwork;
 import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -89,6 +90,10 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
         ((ServerPlayerEntity) player).networkHandler.connection.send(UpdateDisplacementTomeS2CPacket.create(book));
     }
 
+    public ItemStack getBook() {
+        return book;
+    }
+
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (!(player instanceof ServerPlayerEntity)) {
@@ -97,7 +102,41 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
         return true;
     }
 
-    public ItemStack getBook() {
-        return book;
+    static {
+        ThingsNetwork.CHANNEL.registerServerbound(Packet.class, (message, access) -> {
+            if (!(access.player().currentScreenHandler instanceof DisplacementTomeScreenHandler handler)) return;
+            final var action = message.action();
+
+            switch (action) {
+                case TELEPORT -> handler.requestTeleport(message.data());
+                case CREATE_POINT -> handler.addPoint(message.data());
+                case DELETE_POINT -> {
+                    if (!handler.deletePoint(message.data())) ThingsNetwork.LOGGER.warn("Received invalid DELETE_POINT request");
+                }
+                case RENAME_POINT -> {
+                    if (!handler.renamePoint(message.data())) ThingsNetwork.LOGGER.warn("Received invalid RENAME_POINT request");
+                }
+            }
+        });
+    }
+
+    public static final record Packet(Action action, String data) {
+        public enum Action {TELEPORT, DELETE_POINT, RENAME_POINT, CREATE_POINT}
+
+        public static Packet teleport(String where) {
+            return new Packet(Action.TELEPORT, where);
+        }
+
+        public static Packet create(String what) {
+            return new Packet(Action.CREATE_POINT, what);
+        }
+
+        public static Packet rename(String which) {
+            return new Packet(Action.RENAME_POINT, which);
+        }
+
+        public static Packet delete(String which) {
+            return new Packet(Action.DELETE_POINT, which);
+        }
     }
 }

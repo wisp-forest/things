@@ -6,7 +6,6 @@ import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ops.WorldOps;
-import io.wispforest.owo.particles.ServerParticles;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -14,7 +13,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
@@ -59,7 +57,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
                 sockData.sneakTicks = 0;
 
                 WorldOps.playSound(player.world, player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
-                ServerParticles.issueEvent((ServerWorld) player.world, player.getPos(), Things.id("toggle_jump_boost"));
+                Things.TOGGLE_JUMP_BOOST_PARTICLES.execute(player.world, player.getPos());
             }
         } else {
             sockData.sneakTicks = 0;

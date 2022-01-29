@@ -2,8 +2,8 @@ package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
-import com.glisco.things.mixin.ContainerLockAccessor;
-import com.glisco.things.mixin.LockableContainerBlockEntityAccessor;
+import com.glisco.things.mixin.access.ContainerLockAccessor;
+import com.glisco.things.mixin.access.LockableContainerBlockEntityAccessor;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;

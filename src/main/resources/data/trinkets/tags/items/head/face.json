@@ -1,7 +1,6 @@
 {
   "replaces": "false",
   "values": [
-    "things:monocle",
-    "minecraft:apple"
+    "things:monocle"
   ]
 }

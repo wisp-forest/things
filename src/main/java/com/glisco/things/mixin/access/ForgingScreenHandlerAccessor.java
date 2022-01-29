@@ -1,4 +1,4 @@
-package com.glisco.things.mixin;
+package com.glisco.things.mixin.access;
 
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;

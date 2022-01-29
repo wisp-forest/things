@@ -43,7 +43,7 @@
     "fabric": "*",
     "minecraft": ">=1.18",
     "trinkets": ">=3.1.0",
-    "owo": ">=0.3.8+1.18",
+    "owo": ">=0.5.0+1.18",
     "cloth-config2": ">=6.0.0",
     "patchouli": "*"
   },

@@ -9,20 +9,20 @@
     "BrewingRecipeRegistryMixin",
     "BrewingStandBlockEntityMixin",
     "BucketItemMixin",
-    "ContainerLockAccessor",
+    "access.ContainerLockAccessor",
     "ContainerLockMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
-    "ForgingScreenHandlerAccessor",
-    "ItemAccessor",
+    "access.ForgingScreenHandlerAccessor",
+    "access.ItemAccessor",
     "LivingEntityMixin",
-    "LockableContainerBlockEntityAccessor",
+    "access.LockableContainerBlockEntityAccessor",
     "PlayerEntityMixin",
     "PotionItemMixin",
     "StatusEffectUtilMixin"
   ],
   "client": [
-    "ScreenAccessor"
+    "access.ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -5,16 +5,19 @@ import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.*;
-import com.glisco.things.network.OpenEChestC2SPacket;
-import com.glisco.things.network.PlaceItemC2SPacket;
-import com.glisco.things.network.RequestTomeActionC2SPacket;
+import com.glisco.things.network.ThingsNetwork;
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import dev.emi.trinkets.api.TrinketComponent;
+import dev.emi.trinkets.api.TrinketsApi;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import io.wispforest.owo.Owo;
+import io.wispforest.owo.particles.ClientParticles;
+import io.wispforest.owo.particles.systems.ParticleSystem;
+import io.wispforest.owo.particles.systems.ParticleSystemController;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
@@ -23,15 +26,16 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -86,6 +90,12 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
 
+    private static final ParticleSystemController CONTROLLER = new ParticleSystemController(id("particles"));
+    public static final ParticleSystem<Void> TOGGLE_JUMP_BOOST_PARTICLES = CONTROLLER.register(Void.class, (world, pos, data) -> {
+        ClientParticles.setParticleCount(25);
+        ClientParticles.spawnPrecise(ParticleTypes.WAX_OFF, world, pos.add(0, 1, 0), 1, 2, 1);
+    });
+
     @Override
     public void onInitialize() {
 
@@ -108,11 +118,9 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         Registry.register(Registry.RECIPE_TYPE, id("jumpy_sock_crafting"), JumpySocksRecipe.Type.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, id("jumpy_sock_crafting"), JumpySocksRecipe.Serializer.INSTANCE);
 
-        ServerPlayNetworking.registerGlobalReceiver(PlaceItemC2SPacket.ID, PlaceItemC2SPacket::onPacket);
-        ServerPlayNetworking.registerGlobalReceiver(OpenEChestC2SPacket.ID, OpenEChestC2SPacket::onPacket);
-        ServerPlayNetworking.registerGlobalReceiver(RequestTomeActionC2SPacket.ID, RequestTomeActionC2SPacket::onPacket);
-
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
+
+        ThingsNetwork.init();
 
         if (FabricLoader.getInstance().isModLoaded("fabricshieldlib")) {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
@@ -139,6 +147,15 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static boolean isShield(Item item) {
         return SHIELD_PREDICATE.test(item);
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public static TrinketComponent getTrinkets(LivingEntity entity) {
+        return TrinketsApi.getTrinketComponent(entity).get();
+    }
+
+    public static boolean hasTrinket(LivingEntity entity, Item trinket) {
+        return getTrinkets(entity).isEquipped(trinket);
     }
 
     public static Identifier id(String path) {

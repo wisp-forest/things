@@ -3,16 +3,18 @@ package com.glisco.things.items;
 import com.glisco.things.Things;
 import com.glisco.things.items.generic.*;
 import com.glisco.things.items.trinkets.*;
-import com.glisco.things.mixin.ItemAccessor;
+import com.glisco.things.mixin.access.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
+import io.wispforest.owo.util.TagInjector;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +53,7 @@ public class ThingsItems implements ItemRegistryContainer {
     public void afterFieldProcessing() {
         if (Things.CONFIG.appleTrinket) {
             TrinketsApi.registerTrinket(Items.APPLE, new AppleTrinket());
+            TagInjector.injectItems(new Identifier("trinkets", "head/face"), Items.APPLE);
         }
 
         ((ItemAccessor) BATER_WUCKET).things$setRecipeRemainder(BATER_WUCKET);

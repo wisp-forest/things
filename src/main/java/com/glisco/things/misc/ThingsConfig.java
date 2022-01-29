@@ -8,6 +8,7 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 @Config(name = "things")
 public class ThingsConfig implements ConfigData {
 
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("Disables trinket support for apples")
     public boolean appleTrinket = true;
 
@@ -33,7 +34,7 @@ public class ThingsConfig implements ConfigData {
     @Comment("How much walking speed the socks should add per level, base is 0.1, default is 0.02")
     public float sockPerLevelSpeedAmplifier = .02f;
 
-    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
     public EffectLevels effectLevels = new EffectLevels();
 
     public static class EffectLevels {

@@ -1,4 +1,4 @@
-package com.glisco.things.mixin;
+package com.glisco.things.mixin.access;
 
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.inventory.ContainerLock;
