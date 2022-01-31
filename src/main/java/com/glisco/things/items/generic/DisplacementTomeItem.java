@@ -1,9 +1,9 @@
 package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
+import com.glisco.things.ThingsNetwork;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
-import com.glisco.things.network.UpdateDisplacementTomeS2CPacket;
 import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -86,7 +86,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
                     new DisplacementTomeScreenHandler(i, playerInventory, user.getStackInHand(hand)), new LiteralText("help")));
 
             if (user instanceof ServerPlayerEntity) {
-                ((ServerPlayerEntity) user).networkHandler.connection.send(UpdateDisplacementTomeS2CPacket.create(user.getStackInHand(hand)));
+                ThingsNetwork.CHANNEL.serverHandle(user).send(new DisplacementTomeScreenHandler.UpdateClientPacket(user.getStackInHand(hand)));
             } else {
                 user.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1, 1);
             }

@@ -1,13 +1,18 @@
 package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
-import net.minecraft.entity.player.PlayerEntity;
+import com.glisco.things.items.ThingsItems;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LeveledCauldronBlock;
+import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
+import net.minecraft.util.ActionResult;
+import net.minecraft.world.event.GameEvent;
 
 public class BaterWucketItem extends BucketItem {
 
@@ -16,12 +21,21 @@ public class BaterWucketItem extends BucketItem {
     }
 
     @Override
-    public void onEmptied(@Nullable PlayerEntity player, World world, ItemStack stack, BlockPos pos) {
-        super.onEmptied(player, world, stack, pos);
-    }
-
-    @Override
     public boolean hasGlint(ItemStack stack) {
         return true;
+    }
+
+    public static void registerCauldronBehavior() {
+        CauldronBehavior.EMPTY_CAULDRON_BEHAVIOR.put(ThingsItems.BATER_WUCKET, (state, world, pos, player, hand, stack) -> {
+            if (world.isClient) return ActionResult.SUCCESS;
+
+            world.setBlockState(pos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
+            player.incrementStat(Stats.FILL_CAULDRON);
+            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
+            world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
+
+            return ActionResult.CONSUME;
+        });
     }
 }

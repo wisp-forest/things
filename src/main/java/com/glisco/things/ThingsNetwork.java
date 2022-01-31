@@ -1,9 +1,10 @@
-package com.glisco.things.network;
+package com.glisco.things;
 
-import com.glisco.things.Things;
 import com.glisco.things.blocks.PlacedItemBlockEntity;
 import com.glisco.things.blocks.ThingsBlocks;
+import com.glisco.things.client.DisplacementTomeScreen;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.ops.ItemOps;
@@ -36,6 +37,28 @@ public class ThingsNetwork {
             }
 
             player.openHandledScreen(ENDER_POUCH_FACTORY);
+        });
+
+        CHANNEL.registerServerbound(DisplacementTomeScreenHandler.ActionPacket.class, (message, access) -> {
+            if (!(access.player().currentScreenHandler instanceof DisplacementTomeScreenHandler handler)) return;
+            final var action = message.action();
+
+            switch (action) {
+                case TELEPORT -> handler.requestTeleport(message.data());
+                case CREATE_POINT -> handler.addPoint(message.data());
+                case DELETE_POINT -> {
+                    if (!handler.deletePoint(message.data())) ThingsNetwork.LOGGER.warn("Received invalid DELETE_POINT request");
+                }
+                case RENAME_POINT -> {
+                    if (!handler.renamePoint(message.data())) ThingsNetwork.LOGGER.warn("Received invalid RENAME_POINT request");
+                }
+            }
+        });
+
+        CHANNEL.registerClientbound(DisplacementTomeScreenHandler.UpdateClientPacket.class, (message, access) -> {
+            if (!(access.runtime().currentScreen instanceof final DisplacementTomeScreen tomeScreen)) return;
+            tomeScreen.getScreenHandler().setBook(message.tome());
+            tomeScreen.update();
         });
 
         CHANNEL.registerServerbound(PlaceItemPacket.class, (message, access) -> {

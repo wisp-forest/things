@@ -5,7 +5,6 @@ import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.*;
-import com.glisco.things.network.ThingsNetwork;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;

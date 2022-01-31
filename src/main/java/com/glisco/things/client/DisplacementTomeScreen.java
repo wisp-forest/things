@@ -3,7 +3,7 @@ package com.glisco.things.client;
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
-import com.glisco.things.network.ThingsNetwork;
+import com.glisco.things.ThingsNetwork;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -112,7 +112,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
             int idx = 0;
             for (String s : targets.getKeys()) {
                 final var widget = new ButtonWithMessageWidget(x + 6, y + 21 + idx * 17, 133, 13, 0, 179, TEXTURE, button -> {
-                    ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.Packet.teleport(s));
+                    ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.ActionPacket.teleport(s));
                 });
                 widget.setTextColor(0x001054);
                 widget.setMessage(Text.of(s));
@@ -204,7 +204,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     }
 
     private void finishRenaming(String text) {
-        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.Packet.
+        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.ActionPacket.
                 rename(buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString() + ":" + text));
         this.nameField.visible = false;
         this.nameField.active = false;
@@ -216,7 +216,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     }
 
     private void delete() {
-        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.Packet.
+        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.ActionPacket.
                 delete(buttons.get((Integer) currentInputEventData.get(0)).getMessage().getString()));
         this.nameField.visible = false;
         this.nameField.active = false;
@@ -228,7 +228,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     }
 
     private void finishCreating(String text) {
-        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.Packet.create(text));
+        ThingsNetwork.CHANNEL.clientHandle().send(DisplacementTomeScreenHandler.ActionPacket.create(text));
         playerInventory.getStack(playerInventory.getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
         this.nameField.visible = false;
         this.nameField.active = false;

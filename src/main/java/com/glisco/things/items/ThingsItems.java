@@ -56,6 +56,7 @@ public class ThingsItems implements ItemRegistryContainer {
             TagInjector.injectItems(new Identifier("trinkets", "head/face"), Items.APPLE);
         }
 
+        BaterWucketItem.registerCauldronBehavior();
         ((ItemAccessor) BATER_WUCKET).things$setRecipeRemainder(BATER_WUCKET);
         ((ItemAccessor) Items.POTION).things$setRecipeRemainder(Items.GLASS_BOTTLE);
     }
