@@ -1,5 +1,6 @@
 package com.glisco.things.mixin;
 
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.mixin.access.ForgingScreenHandlerAccessor;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,11 +41,16 @@ public class AnvilScreenHandlerMixin {
     public void setOutput(CallbackInfo ci) {
         ForgingScreenHandlerAccessor forgingHandler = (ForgingScreenHandlerAccessor) this;
 
-        if (!forgingHandler.things$getInput().getStack(1).getItem().equals(ThingsItems.HARDENING_CATALYST)) return;
-        if (forgingHandler.things$getInput().getStack(0).getItem().getMaxDamage() == 0) return;
-        if (forgingHandler.things$getInput().getStack(0).getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
+        final var inputInventory = forgingHandler.things$getInput();
+        if (!inputInventory.getStack(1).getItem().equals(ThingsItems.HARDENING_CATALYST)) return;
 
-        ItemStack newOutput = forgingHandler.things$getInput().getStack(0).copy();
+        final var baseStack = inputInventory.getStack(0);
+
+        if (baseStack.getItem().getMaxDamage() == 0
+                || Things.HARDENING_CATALYST_BLACKLIST.contains(baseStack.getItem())) return;
+        if (baseStack.getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
+
+        ItemStack newOutput = baseStack.copy();
         newOutput.getOrCreateNbt().putByte("Unbreakable", (byte) 1);
 
         if (!StringUtils.isBlank(newItemName)) {

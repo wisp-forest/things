@@ -1,0 +1,11 @@
+{
+  "name": "Retribution",
+  "icon": "minecraft:enchanted_book",
+  "category": "things:items",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(thing)Shield$() is, of course, one of the most advantageous pieces of battle equipment. On the contrary, there seems to be a lack enchantments for it. $(thing)Retribution$() is here to fill that gap. A $(thing)treasure enchantment$() only obtained through exploration, it can be applied to $(item)Shields$() and bestows $(thing)2 seconds of strength$() onto the user $(thing)upon successfully blocking an incoming attack$()."
+    }
+  ]
+}
