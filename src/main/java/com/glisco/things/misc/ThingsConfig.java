@@ -9,6 +9,10 @@ import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 public class ThingsConfig implements ConfigData {
 
     @ConfigEntry.Gui.RequiresRestart
+    @Comment("Whether gleaming ore should generate. Unless you plan on making custom recipes, turning this off is a bad idea")
+    public boolean generateGleamingOre = true;
+
+    @ConfigEntry.Gui.RequiresRestart
     @Comment("Disables trinket support for apples")
     public boolean appleTrinket = true;
 

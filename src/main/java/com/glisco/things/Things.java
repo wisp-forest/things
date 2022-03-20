@@ -109,7 +109,9 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         RegistryKey<PlacedFeature> gleamingOre = RegistryKey.of(Registry.PLACED_FEATURE_KEY, id("ore_gleaming"));
         Registry.register(BuiltinRegistries.PLACED_FEATURE, gleamingOre, GLEAMING_ORE);
 
-        BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
+        if (CONFIG.generateGleamingOre) {
+            BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
+        }
 
         Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, id("sock_upgrade_crafting"), SockUpgradeRecipe.Serializer.INSTANCE);

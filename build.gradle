@@ -1,7 +1,7 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.11-SNAPSHOT'
     id 'maven-publish'
-    id 'io.github.juuxel.loom-quiltflower-mini' version '1.1.0'
+    id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
 }
 
 version = "${project.mod_version}+${project.minecraft_base_version}"
@@ -19,6 +19,13 @@ repositories {
     maven { url 'https://maven.blamejared.com' }
 
     maven { url 'https://jitpack.io' }
+
+    maven {
+        url 'https://api.modrinth.com/maven'
+        content {
+            includeGroup "modrinth.maven"
+        }
+    }
 }
 
 dependencies {
