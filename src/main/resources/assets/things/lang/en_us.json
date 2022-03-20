@@ -59,6 +59,7 @@
   "itemGroup.things.things": "Things",
   "trinkets.slot.feet.charm": "Charm",
   "category.things.things": "Things",
+  "gui.things.displacement_tome.charges": "Charges: %1$d",
   "text.things.tooltip_hint": "§7Hold §6SHIFT §7for info",
   "text.things.crafting_component": "Crafting component",
 

@@ -1,9 +1,9 @@
 package com.glisco.things.client;
 
 import com.glisco.things.Things;
+import com.glisco.things.ThingsNetwork;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
-import com.glisco.things.ThingsNetwork;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
@@ -78,7 +79,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         NbtCompound tag = this.handler.getBook().getOrCreateNbt();
         int fuelLevel = tag.contains("Fuel") ? tag.getInt("Fuel") : 0;
-        this.textRenderer.draw(matrices, new LiteralText("Charges: " + fuelLevel), titleX, titleY, 0xFFFFFF);
+        this.textRenderer.draw(matrices, new TranslatableText("gui.things.displacement_tome.charges", fuelLevel), titleX, titleY, 0xFFFFFF);
     }
 
     public void onNameFieldChange(String text) {

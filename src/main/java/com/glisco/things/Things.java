@@ -26,6 +26,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.api.tag.TagFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
@@ -36,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -82,6 +84,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
                     SquarePlacementModifier.of(),
                     HeightRangePlacementModifier.uniform(YOffset.fixed(-15), YOffset.fixed(15)),
                     BiomePlacementModifier.of()));
+
+    public static final Tag<Item> HARDENING_CATALYST_BLACKLIST = TagFactory.ITEM.create(id("hardening_catalyst_blacklist"));
 
     static {
         DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
