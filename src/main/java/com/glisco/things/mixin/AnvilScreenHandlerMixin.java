@@ -46,8 +46,7 @@ public class AnvilScreenHandlerMixin {
 
         final var baseStack = inputInventory.getStack(0);
 
-        if (baseStack.getItem().getMaxDamage() == 0
-                || Things.HARDENING_CATALYST_BLACKLIST.contains(baseStack.getItem())) return;
+        if (baseStack.getItem().getMaxDamage() == 0 || baseStack.isIn(Things.HARDENING_CATALYST_BLACKLIST)) return;
         if (baseStack.getOrCreateNbt().getByte("Unbreakable") == (byte) 1) return;
 
         ItemStack newOutput = baseStack.copy();

@@ -51,7 +51,7 @@ dependencies {
 
     modCompileOnly "com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}"
 
-    modLocalRuntime 'com.ptsmods:devlogin:1.2.1'
+    modLocalRuntime 'com.ptsmods:devlogin:2.0.0'
 }
 
 processResources {
