@@ -70,8 +70,8 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
+    public void close() {
+        super.close();
         client.keyboard.setRepeatEvents(false);
     }
 

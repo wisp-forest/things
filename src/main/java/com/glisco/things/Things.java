@@ -39,20 +39,16 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.decorator.BiomePlacementModifier;
-import net.minecraft.world.gen.decorator.CountPlacementModifier;
-import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
-import net.minecraft.world.gen.decorator.SquarePlacementModifier;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreConfiguredFeatures;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
-import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -75,15 +71,16 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
 
-    private static final PlacedFeature GLEAMING_ORE = new PlacedFeature(() ->
-            Feature.ORE.configure(new OreFeatureConfig(List.of(
+    private static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> CONFIGURED_GLEAMING_ORE = ConfiguredFeatures.register("things:ore_gleaming",
+            Feature.ORE, new OreFeatureConfig(List.of(
                     OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, ThingsBlocks.GLEAMING_ORE.getDefaultState()),
                     OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, ThingsBlocks.DEEPSLATE_GLEAMING_ORE.getDefaultState())),
-                    3)),
-            List.of(CountPlacementModifier.of(3),
-                    SquarePlacementModifier.of(),
-                    HeightRangePlacementModifier.uniform(YOffset.fixed(-15), YOffset.fixed(15)),
-                    BiomePlacementModifier.of()));
+                    3));
+
+    private static final RegistryEntry<PlacedFeature> GLEAMING_ORE = PlacedFeatures.register("things:ore_gleaming", CONFIGURED_GLEAMING_ORE, List.of(CountPlacementModifier.of(3),
+            SquarePlacementModifier.of(),
+            HeightRangePlacementModifier.uniform(YOffset.fixed(-15), YOffset.fixed(15)),
+            BiomePlacementModifier.of()));
 
     public static final Tag<Item> HARDENING_CATALYST_BLACKLIST = TagFactory.ITEM.create(id("hardening_catalyst_blacklist"));
 
@@ -110,11 +107,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
         Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
-        RegistryKey<PlacedFeature> gleamingOre = RegistryKey.of(Registry.PLACED_FEATURE_KEY, id("ore_gleaming"));
-        Registry.register(BuiltinRegistries.PLACED_FEATURE, gleamingOre, GLEAMING_ORE);
-
         if (CONFIG.generateGleamingOre) {
-            BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, gleamingOre);
+            BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
         }
 
         Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
@@ -145,7 +139,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static Predicate<BiomeSelectionContext> notNetherOrEndSelector() {
         return context -> {
-            var category = context.getBiome().getCategory();
+            var category = Biome.getCategory(context.getBiomeRegistryEntry());
             return category != Biome.Category.THEEND && category != Biome.Category.NETHER && category != Biome.Category.NONE;
         };
     }

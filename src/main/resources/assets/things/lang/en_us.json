@@ -105,6 +105,7 @@
   "advancement.things.rabbit_foot_charm.description": "Craft a Rabbit Foot Charm",
 
   "text.autoconfig.things.title": "Things Config",
+  "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",
   "text.autoconfig.things.option.appleTrinket": "Apple Trinket enabled",
   "text.autoconfig.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
   "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability",
