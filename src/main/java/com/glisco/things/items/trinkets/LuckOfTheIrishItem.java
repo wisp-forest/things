@@ -7,7 +7,6 @@ import dev.emi.trinkets.api.client.TrinketRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3f;
@@ -20,7 +19,7 @@ public class LuckOfTheIrishItem extends TrinketItemWithOptionalTooltip implement
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
+    public void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToChest(matrices, model, player);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
         matrices.scale(.25f, .25f, .25f);

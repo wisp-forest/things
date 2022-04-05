@@ -9,7 +9,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -31,7 +30,7 @@ public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements Si
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
+    public void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToChest(matrices, model, player);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
         matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-90));

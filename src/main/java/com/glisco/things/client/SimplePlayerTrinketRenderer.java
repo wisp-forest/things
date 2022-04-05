@@ -7,7 +7,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -25,7 +24,7 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
     @SuppressWarnings("unchecked")
     default void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         if (!Things.CONFIG.renderTrinkets) return;
-        if (!(entity instanceof ClientPlayerEntity player)) return;
+        if (!(entity instanceof AbstractClientPlayerEntity player)) return;
 
         align(player, (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, matrices, headYaw, headPitch);
 
@@ -33,5 +32,5 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
     }
 
     @Environment(EnvType.CLIENT)
-    void align(ClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch);
+    void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch);
 }
