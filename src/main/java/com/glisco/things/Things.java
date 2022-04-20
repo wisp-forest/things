@@ -162,6 +162,6 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(SOCK_DATA, SockDataComponent::new, RespawnCopyStrategy.LOSSLESS_ONLY);
+        registry.registerForPlayers(SOCK_DATA, SockDataComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }
 }

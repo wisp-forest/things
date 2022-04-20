@@ -9,17 +9,18 @@
     "BrewingRecipeRegistryMixin",
     "BrewingStandBlockEntityMixin",
     "BucketItemMixin",
-    "access.ContainerLockAccessor",
     "ContainerLockMixin",
+    "Copenhagen",
     "EnchantmentHelperMixin",
     "EntityMixin",
-    "access.ForgingScreenHandlerAccessor",
-    "access.ItemAccessor",
     "LivingEntityMixin",
-    "access.LockableContainerBlockEntityAccessor",
     "PlayerEntityMixin",
     "PotionItemMixin",
-    "StatusEffectUtilMixin"
+    "StatusEffectUtilMixin",
+    "access.ContainerLockAccessor",
+    "access.ForgingScreenHandlerAccessor",
+    "access.ItemAccessor",
+    "access.LockableContainerBlockEntityAccessor"
   ],
   "client": [
     "access.ScreenAccessor"

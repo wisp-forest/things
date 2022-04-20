@@ -2,6 +2,7 @@ package com.glisco.things.misc;
 
 import com.glisco.things.Things;
 import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -9,10 +10,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
-public class SockDataComponent implements Component {
+public class SockDataComponent implements Component, ServerTickingComponent {
 
     private final PlayerEntity bearer;
+    private RegistryKey<World> lastWorld = null;
 
     public int sneakTicks = 0;
     public boolean jumpySocksEquipped = false;
@@ -80,4 +84,18 @@ public class SockDataComponent implements Component {
         tag.put("SockSpeeds", list);
     }
 
+    @Override
+    public void serverTick() {
+        final var playerWorld = this.bearer.world.getRegistryKey();
+        if (this.lastWorld == null) {
+            this.lastWorld = playerWorld;
+        } else if (playerWorld != this.lastWorld) {
+            // ugly hack that's needed to get the fov to be normal after
+            // switching worlds without a full player respawn
+            final float lastModifier = this.speedModification;
+            this.setModifier(0);
+            this.setModifier(lastModifier);
+            this.lastWorld = playerWorld;
+        }
+    }
 }
