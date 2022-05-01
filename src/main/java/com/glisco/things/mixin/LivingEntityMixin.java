@@ -2,6 +2,7 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +11,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -42,6 +44,7 @@ public abstract class LivingEntityMixin {
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
 
+    @SuppressWarnings("InvalidInjectorMethodSignature")
     @ModifyVariable(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 1), ordinal = 1)
     public float waxGlandWater(float j) {
         LivingEntity entity = (LivingEntity) (Object) this;
@@ -69,5 +72,27 @@ public abstract class LivingEntityMixin {
     public float airAgility(LivingEntity livingEntity) {
         return 0.05f;
     }*/
+
+    @SuppressWarnings("InvalidInjectorMethodSignature")
+    @ModifyVariable(method = "handleFallDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;computeFallDamage(FF)I"))
+    private int decreaseFallDamage(int originalFallDamage) {
+        if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
+            return originalFallDamage / 4;
+        } else {
+            return originalFallDamage;
+        }
+    }
+
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
+    private float decreaseKineticDamage(DamageSource source, float damage) {
+        if (source != DamageSource.FLY_INTO_WALL)
+            return damage;
+
+        if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
+            return damage / 4;
+        } else {
+            return damage;
+        }
+    }
 
 }

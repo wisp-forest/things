@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "WPW",
+        "PCP",
+        "WPW"
+    ],
+    "key": {
+        "W": {
+            "tag": "minecraft:wool"
+        },
+        "C": {
+            "item": "things:gleaming_compound"
+        },
+        "P": {
+            "item": "minecraft:phantom_membrane"
+        }
+    },
+    "result": {
+        "item": "things:shock_absorber"
+    }
+}

@@ -1,7 +1,7 @@
 plugins {
     id 'fabric-loom' version '0.11-SNAPSHOT'
     id 'maven-publish'
-    id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+    id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
 }
 
 version = "${project.mod_version}+${project.minecraft_base_version}"
@@ -26,6 +26,13 @@ repositories {
             includeGroup "modrinth.maven"
         }
     }
+
+    maven {
+        url "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup "com.jamieswhiteshirt"
+        }
+    }
 }
 
 dependencies {
@@ -48,6 +55,8 @@ dependencies {
 
     modImplementation "io.wispforest:owo-lib:${project.owo_version}"
     include "io.wispforest:owo-sentinel:${project.owo_version}"
+
+    include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attrs_version}")
 
     modCompileOnly "com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}"
 

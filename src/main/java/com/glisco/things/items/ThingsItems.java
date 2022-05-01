@@ -45,6 +45,8 @@ public class ThingsItems implements ItemRegistryContainer {
     public static final Item LUCK_OF_THE_IRISH = new LuckOfTheIrishItem();
     public static final Item HARDENING_CATALYST = new HardeningCatalystItem();
     public static final Item SOCKS = new SocksItem();
+    public static final Item ARM_EXTENDER = new ArmExtenderItem();
+    public static final Item SHOCK_ABSORBER = new ShockAbsorberItem();
 
     public static final Item GLEAMING_POWDER = new GleamingItem();
     public static final Item GLEAMING_COMPOUND = new GleamingItem();
