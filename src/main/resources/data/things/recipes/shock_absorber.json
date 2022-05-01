@@ -1,9 +1,9 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "WPW",
-        "PCP",
-        "WPW"
+        "WCW",
+        "CPC",
+        "WCW"
     ],
     "key": {
         "W": {

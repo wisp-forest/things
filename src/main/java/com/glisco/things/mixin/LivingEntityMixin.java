@@ -2,16 +2,16 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
-import dev.emi.trinkets.api.TrinketComponent;
+import com.glisco.things.util.ExtendedStatusEffectInstance;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -95,4 +95,20 @@ public abstract class LivingEntityMixin {
         }
     }
 
+    @ModifyArg(method = "readCustomDataFromNbt", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), index = 1)
+    private Object attachPlayerToEffect(Object effect) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+
+        return effect;
+    }
+
+    @Inject(method = "onStatusEffectApplied", at = @At("HEAD"))
+    private void attachPlayerToEffect(StatusEffectInstance effect, Entity source, CallbackInfo ci) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+    }
+
+    @Inject(method = "onStatusEffectUpgraded", at = @At("HEAD"))
+    private void attachPlayerToEffect(StatusEffectInstance effect, boolean reapplyEffect, Entity source, CallbackInfo ci) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+    }
 }
