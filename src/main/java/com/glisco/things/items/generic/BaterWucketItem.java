@@ -2,6 +2,8 @@ package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.misc.BaterWucketStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.block.cauldron.CauldronBehavior;
@@ -18,6 +20,9 @@ public class BaterWucketItem extends BucketItem {
 
     public BaterWucketItem() {
         super(Fluids.WATER, new Settings().group(Things.THINGS_GROUP).maxCount(1));
+
+        //noinspection UnstableApiUsage
+        FluidStorage.ITEM.registerForItems((stack, ctx) -> new BaterWucketStorage(), this);
     }
 
     @Override

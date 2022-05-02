@@ -1,7 +1,7 @@
 {
   "name": "Socks",
   "icon": "things:socks",
-  "category": "things:items",
+  "category": "things:trinkets",
   "pages": [
     {
       "type": "patchouli:text",

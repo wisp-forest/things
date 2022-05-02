@@ -2,8 +2,10 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.util.ExtendedStatusEffectInstance;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -42,6 +44,7 @@ public abstract class LivingEntityMixin {
         user.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 40, 0));
     }
 
+    @SuppressWarnings("InvalidInjectorMethodSignature")
     @ModifyVariable(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 1), ordinal = 1)
     public float waxGlandWater(float j) {
         LivingEntity entity = (LivingEntity) (Object) this;
@@ -70,4 +73,42 @@ public abstract class LivingEntityMixin {
         return 0.05f;
     }*/
 
+    @SuppressWarnings("InvalidInjectorMethodSignature")
+    @ModifyVariable(method = "handleFallDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;computeFallDamage(FF)I"))
+    private int decreaseFallDamage(int originalFallDamage) {
+        if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
+            return originalFallDamage / 4;
+        } else {
+            return originalFallDamage;
+        }
+    }
+
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
+    private float decreaseKineticDamage(DamageSource source, float damage) {
+        if (source != DamageSource.FLY_INTO_WALL)
+            return damage;
+
+        if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
+            return damage / 4;
+        } else {
+            return damage;
+        }
+    }
+
+    @ModifyArg(method = "readCustomDataFromNbt", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), index = 1)
+    private Object attachPlayerToEffect(Object effect) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+
+        return effect;
+    }
+
+    @Inject(method = "onStatusEffectApplied", at = @At("HEAD"))
+    private void attachPlayerToEffect(StatusEffectInstance effect, Entity source, CallbackInfo ci) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+    }
+
+    @Inject(method = "onStatusEffectUpgraded", at = @At("HEAD"))
+    private void attachPlayerToEffect(StatusEffectInstance effect, boolean reapplyEffect, Entity source, CallbackInfo ci) {
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+    }
 }

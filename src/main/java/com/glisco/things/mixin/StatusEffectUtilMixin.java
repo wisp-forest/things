@@ -1,7 +1,10 @@
 package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
+import com.glisco.things.items.ThingsItems;
+import com.glisco.things.util.ExtendedStatusEffectInstance;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,4 +42,13 @@ public class StatusEffectUtilMixin {
         return i;
     }
 
+    @ModifyVariable(method = "durationToString", at = @At(value = "HEAD"), argsOnly = true)
+    private static float extendTime(float multiplier, StatusEffectInstance instance, float unused) {
+        var entity = ((ExtendedStatusEffectInstance) instance).things$getAttachedEntity();
+        if (entity != null && Things.hasTrinket(entity, ThingsItems.BROKEN_WATCH)) {
+            return multiplier * 1.5F;
+        } else {
+            return multiplier;
+        }
+    }
 }

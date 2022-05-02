@@ -17,6 +17,7 @@
     "PlayerEntityMixin",
     "PotionItemMixin",
     "StatusEffectUtilMixin",
+    "StatusEffectInstanceMixin",
     "access.ContainerLockAccessor",
     "access.ForgingScreenHandlerAccessor",
     "access.ItemAccessor",

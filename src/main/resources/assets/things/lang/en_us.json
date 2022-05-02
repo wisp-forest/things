@@ -49,6 +49,12 @@
   "item.things.socks.speed_1": "Speedy",
   "item.things.socks.speed_2": "Usain Bolt",
   "item.things.socks.speed_illegal": "Naughty",
+  "item.things.arm_extender": "Arm Extender",
+  "item.things.arm_extender.tooltip": "Extends your reach by 2 blocks",
+  "item.things.shock_absorber": "Shock Absorber",
+  "item.things.shock_absorber.tooltip": "Decreases fall and kinetic damage by 75%%",
+  "item.things.broken_watch": "Broken Watch",
+  "item.things.broken_watch.tooltip": "Increases status effect duration by 50%%",
 
   "effect.things.momentum": "Momentum",
 
@@ -103,6 +109,12 @@
   "advancement.things.riot_gauntlet.description": "missingno",
   "advancement.things.rabbit_foot_charm.title": "Who doesn\u0027t like b-hopping?",
   "advancement.things.rabbit_foot_charm.description": "Craft a Rabbit Foot Charm",
+  "advancement.things.shock_absorber.title": "Budget cat reflexes",
+  "advancement.things.shock_absorber.description": "Craft a Shock Absorber",
+  "advancement.things.arm_extender.title": "Hard to reach no more",
+  "advancement.things.arm_extender.description": "Craft an Arm Extender",
+  "advancement.things.broken_watch.title": "Right twice a day",
+  "advancement.things.broken_watch.description": "Craft a Broken Watch",
 
   "text.autoconfig.things.title": "Things Config",
   "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",

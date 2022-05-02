@@ -2,6 +2,8 @@
   "replaces": "false",
   "values": [
     "things:riot_gauntlet",
-    "things:mining_gloves"
+    "things:mining_gloves",
+    "things:arm_extender",
+    "things:broken_watch"
   ]
 }
