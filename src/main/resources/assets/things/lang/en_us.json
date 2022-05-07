@@ -118,6 +118,10 @@
   "advancement.things.arm_extender.description": "Craft an Arm Extender",
   "advancement.things.broken_watch.title": "Right twice a day",
   "advancement.things.broken_watch.description": "Craft a Broken Watch",
+  "advancement.things.empty_agglomeration.title": "Balance? Who cares about balance?",
+  "advancement.things.empty_agglomeration.description": "Craft an Empty Agglomeration",
+  "advancement.things.agglomerate.title": "Twice the trinkets, twice the fun",
+  "advancement.things.agglomerate.description": "Combine two trinkets for fun and profit",
 
   "text.autoconfig.things.title": "Things Config",
   "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",
