@@ -55,6 +55,9 @@
   "item.things.shock_absorber.tooltip": "Decreases fall and kinetic damage by 75%%",
   "item.things.broken_watch": "Broken Watch",
   "item.things.broken_watch.tooltip": "Increases status effect duration by 50%%",
+  "item.things.agglomeration": "Agglomeration",
+  "item.things.empty_agglomeration": "Empty Agglomeration",
+  "item.things.empty_agglomeration.tooltip": "Combine with two trinkets to agglomerate them",
 
   "effect.things.momentum": "Momentum",
 

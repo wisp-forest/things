@@ -49,6 +49,9 @@ public class ThingsItems implements ItemRegistryContainer {
     public static final Item SHOCK_ABSORBER = new ShockAbsorberItem();
     public static final Item BROKEN_WATCH = new BrokenWatchItem();
 
+    public static final Item EMPTY_AGGLOMERATION = new EmptyAgglomerationItem();
+    public static final Item AGGLOMERATION = new AgglomerationItem();
+
     public static final Item GLEAMING_POWDER = new GleamingItem();
     public static final Item GLEAMING_COMPOUND = new GleamingItem();
 
@@ -83,6 +86,12 @@ public class ThingsItems implements ItemRegistryContainer {
         @Override
         public boolean hasGlint(ItemStack stack) {
             return true;
+        }
+    }
+
+    private static final class EmptyAgglomerationItem extends ItemWithExtendableTooltip {
+        public EmptyAgglomerationItem() {
+            super(new Item.Settings().group(Things.THINGS_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
         }
     }
 }

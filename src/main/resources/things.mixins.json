@@ -21,7 +21,8 @@
     "access.ContainerLockAccessor",
     "access.ForgingScreenHandlerAccessor",
     "access.ItemAccessor",
-    "access.LockableContainerBlockEntityAccessor"
+    "access.LockableContainerBlockEntityAccessor",
+    "trinkets.LivingEntityTrinketComponentMixin"
   ],
   "client": [
     "access.ScreenAccessor"
