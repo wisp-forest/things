@@ -72,6 +72,10 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         return stack;
     }
 
+    public static List<ItemStack> getStacks(ItemStack stack) {
+        return getDataFor(stack).subStacks;
+    }
+
     public static boolean hasStack(ItemStack stack, Predicate<ItemStack> predicate) {
         var data = getDataFor(stack);
 
