@@ -1,5 +1,6 @@
 package com.glisco.things.items.trinkets;
 
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -177,6 +178,8 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     @Environment(EnvType.CLIENT)
     @Override
     public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        if (!Things.CONFIG.renderAgglomerationTrinket) return;
+
         var data = getDataFor(stack);
 
         for (int i = 0; i < data.subStacks.size(); i++) {

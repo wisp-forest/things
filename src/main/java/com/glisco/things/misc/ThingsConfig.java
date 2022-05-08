@@ -31,6 +31,9 @@ public class ThingsConfig implements ConfigData {
     @Comment("Only disables trinket rendering for apples")
     public boolean renderAppleTrinket = true;
 
+    @Comment("Only disables trinket rendering for agglomerations")
+    public boolean renderAgglomerationTrinket = true;
+
     @Comment("How many ender pearls the displacement tome uses per teleport")
     @ConfigEntry.BoundedDiscrete(min = 1, max = 128)
     public int displacementTomeFuelConsumption = 1;
