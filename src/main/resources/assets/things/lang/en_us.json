@@ -126,6 +126,7 @@
   "text.autoconfig.things.option.renderAppleTrinket": "Render Apple Trinket",
   "text.autoconfig.things.option.displacementTomeFuelConsumption": "Displacement Tome Fuel Consumption",
   "text.autoconfig.things.option.sockPerLevelSpeedAmplifier": "Socks speed amplifier",
+  "text.autoconfig.things.option.makeLockedContainersUnbreakable": "Unbreakable Locked Containers",
 
   "text.autoconfig.things.option.effectLevels": "Trinket Status Effects",
   "text.autoconfig.things.option.effectLevels.miningGloveMomentum": "Mining Glove Momentum Level",
