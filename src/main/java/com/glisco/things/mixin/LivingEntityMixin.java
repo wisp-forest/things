@@ -2,7 +2,7 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
-import com.glisco.things.util.ExtendedStatusEffectInstance;
+import com.glisco.things.misc.ExtendedStatusEffectInstance;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

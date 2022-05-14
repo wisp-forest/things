@@ -1,4 +1,4 @@
-package com.glisco.things.util;
+package com.glisco.things.misc;
 
 import net.minecraft.entity.LivingEntity;
 

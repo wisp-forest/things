@@ -33,6 +33,9 @@ public class ThingsConfig implements ConfigData {
 
     @Comment("Only disables trinket rendering for agglomerations")
     public boolean renderAgglomerationTrinket = true;
+  
+    @Comment("Whether container blocks locked by a Container Key should be unbreakable")
+    public boolean makeLockedContainersUnbreakable = false;
 
     @Comment("How many ender pearls the displacement tome uses per teleport")
     @ConfigEntry.BoundedDiscrete(min = 1, max = 128)
