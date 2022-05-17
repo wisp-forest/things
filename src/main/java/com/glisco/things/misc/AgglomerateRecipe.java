@@ -23,7 +23,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
 
         if (firstTrinket == null) return false;
 
-        return matchOnce(inventory, stack -> stack != firstTrinket && isValidItem(stack));
+        return matchOnce(inventory, stack -> !ItemStack.areItemsEqual(stack, firstTrinket) && isValidItem(stack));
 
     }
 
