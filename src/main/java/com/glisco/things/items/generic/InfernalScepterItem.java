@@ -19,7 +19,6 @@ import java.util.Collections;
 
 public class InfernalScepterItem extends ItemWithExtendableTooltip {
 
-
     public InfernalScepterItem() {
         super(new Settings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability).fireproof());
     }
@@ -41,7 +40,8 @@ public class InfernalScepterItem extends ItemWithExtendableTooltip {
         if (!(user instanceof PlayerEntity player)) return;
         if (72000 - remainingUseTicks < 20) return;
 
-        if (!player.getInventory().containsAny(Collections.singleton(Items.FIRE_CHARGE))) return;
+        final var inventory = player.getInventory();
+        if (!inventory.containsAny(Collections.singleton(Items.FIRE_CHARGE))) return;
 
         if (!world.isClient) {
             Vec3d vec3d = player.getRotationVec(0.0F);
@@ -59,7 +59,14 @@ public class InfernalScepterItem extends ItemWithExtendableTooltip {
             });
         }
 
-        player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(Items.FIRE_CHARGE))).decrement(1);
+        for (int slot = 0; slot < inventory.size(); slot++) {
+            final var ammoStack = inventory.getStack(slot);
+
+            if (ammoStack.isOf(Items.FIRE_CHARGE)) {
+                ammoStack.decrement(1);
+                break;
+            }
+        }
     }
 
     @Override
