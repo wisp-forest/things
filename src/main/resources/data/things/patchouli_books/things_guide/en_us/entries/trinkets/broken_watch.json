@@ -1,0 +1,18 @@
+{
+  "name": "Broken Watch",
+  "icon": "things:broken_watch",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "One would be forgiven for assuming that a $(item)Broken Watch$() isn't of much use. However, preserving one using $(l:things:items/gleaming_materials)Gleaming Compound$() turns out to have a positive outcome for any active $(thing)Potion Effects$(). In fact, it $(thing)extends their duration by 50%$(). Given the immense force required for breaking a $(item)Clock$(), simply using a $(thing)Crafting Table$() is not an option. Instead, throw some $(item)Leather$(), a $(item)Clock$() as well as a piece of"
+    },
+    {
+      "type": "image",
+      "images": [
+        "things:textures/gui/watch_patchouli.png"
+      ],
+      "text": "$(thing)Gleaming Compound$() onto the ground and $(thing)crush them with a piston$()."
+    }
+  ]
+}

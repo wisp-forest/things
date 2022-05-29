@@ -1,0 +1,15 @@
+{
+  "name": "Shock Absorber",
+  "icon": "things:shock_absorber",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Everyone knows the pain of smashing one's head into a wall or feet into the ground at terminal velocity. Conveniently, the $(item)Shock Absorber$() exists to lessen the impact. Being a stylish pair of shoes made mostly of $(item)Phantom Membrane$() and $(item)Wool$(), held together by some $(l:things:items/gleaming_materials)Gleaming Compound$(), it is capable of $(thing)reducing both fall and kinetic damage by 75%$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:shock_absorber"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.*;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -30,10 +31,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
+import net.minecraft.item.*;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.tag.TagKey;
@@ -50,6 +48,7 @@ import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -88,6 +87,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
     }
 
     private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
+    private static Set<Item> BROKEN_WATCH_RECIPE;
 
     private static final ParticleSystemController CONTROLLER = new ParticleSystemController(id("particles"));
     public static final ParticleSystem<Void> TOGGLE_JUMP_BOOST_PARTICLES = CONTROLLER.register(Void.class, (world, pos, data) -> {
@@ -124,6 +124,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
         }
 
+        BROKEN_WATCH_RECIPE =  ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
+
         if (Owo.DEBUG) {
             CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
                 dispatcher.register(literal("things:set_walk_speed_modifier")
@@ -145,6 +147,10 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static boolean isShield(Item item) {
         return SHIELD_PREDICATE.test(item);
+    }
+
+    public static Set<Item> brokenWatchRecipe() {
+        return BROKEN_WATCH_RECIPE;
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

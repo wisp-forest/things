@@ -52,7 +52,7 @@
   "item.things.arm_extender": "Arm Extender",
   "item.things.arm_extender.tooltip": "Extends your reach by 2 blocks",
   "item.things.shock_absorber": "Shock Absorber",
-  "item.things.shock_absorber.tooltip": "Decreases fall and kinetic damage by 75%%",
+  "item.things.shock_absorber.tooltip": "Decrease fall and kinetic damage by 75%%",
   "item.things.broken_watch": "Broken Watch",
   "item.things.broken_watch.tooltip": "Increases status effect duration by 50%%",
 

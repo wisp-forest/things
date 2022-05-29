@@ -1,0 +1,15 @@
+{
+  "name": "Arm Extender",
+  "icon": "things:arm_extender",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Given that punching foes and rock is apparently one of the most exercised activities in a game of Minecraft, $(thing)having extended reach$() would no doubt ease one's everyday life. Almost like it was purpose-made, the $(item)Arm Extender$() exists to fulfill that job. More-or-less equivalent to strapping a $(o)really heavy piston$() to the end of your arm, it $(thing)extends your reach by two blocks$()."
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:arm_extender"
+    }
+  ]
+}
