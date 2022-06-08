@@ -7,7 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.Property;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,7 +53,7 @@ public class AnvilScreenHandlerMixin {
         newOutput.getOrCreateNbt().putByte("Unbreakable", (byte) 1);
 
         if (!StringUtils.isBlank(newItemName)) {
-            newOutput.setCustomName(new LiteralText(newItemName));
+            newOutput.setCustomName(Text.literal(newItemName));
         } else {
             newOutput.removeCustomName();
         }

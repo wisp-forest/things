@@ -12,7 +12,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
@@ -26,6 +25,7 @@ public class ThingsBlocks implements BlockRegistryContainer {
 
     public static final Block STONE_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
     public static final Block QUARTZ_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
+    public static final Block DEEPSLATE_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
 
     public static final Block GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
     public static final Block DEEPSLATE_GLEAMING_ORE = new OreBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
@@ -34,7 +34,7 @@ public class ThingsBlocks implements BlockRegistryContainer {
     public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new Item.Settings().group(Things.THINGS_GROUP)) {
         @Override
         public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-            tooltip.add(new LiteralText("Players only").formatted(Formatting.GRAY));
+            tooltip.add(Text.literal("Players only").formatted(Formatting.GRAY));
         }
     };
 

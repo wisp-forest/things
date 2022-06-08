@@ -2,13 +2,11 @@ package com.glisco.things.mixin;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
-import io.wispforest.owo.ops.ItemOps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;

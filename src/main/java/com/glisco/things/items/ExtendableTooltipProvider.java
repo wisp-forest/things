@@ -4,7 +4,6 @@ import io.wispforest.owo.ops.TextOps;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 public interface ExtendableTooltipProvider {
 
-    Text TOOLTIP_HINT = new TranslatableText("text.things.tooltip_hint");
+    Text TOOLTIP_HINT = Text.translatable("text.things.tooltip_hint");
 
     String tooltipTranslationKey();
 

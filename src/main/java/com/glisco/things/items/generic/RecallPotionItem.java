@@ -11,7 +11,7 @@ import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -62,10 +62,10 @@ public class RecallPotionItem extends Item {
                 if (posOptional.isPresent()) {
                     WorldOps.teleportToWorld(serverPlayer, spawnWorld, posOptional.get());
                 } else {
-                    serverPlayer.sendMessage(new LiteralText("No respawn point"), true);
+                    serverPlayer.sendMessage(Text.literal("No respawn point"), true);
                 }
             } else {
-                serverPlayer.sendMessage(new LiteralText("No respawn point"), true);
+                serverPlayer.sendMessage(Text.literal("No respawn point"), true);
             }
         }
 

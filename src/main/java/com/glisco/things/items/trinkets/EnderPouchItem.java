@@ -12,7 +12,6 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3f;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements Si
 
     @Override
     public void append(List<Text> tooltip) {
-        tooltip.add(new TranslatableText(tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText()));
+        tooltip.add(Text.translatable(tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText()));
     }
 
     @Override

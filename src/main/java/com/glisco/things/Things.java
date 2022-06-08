@@ -19,13 +19,14 @@ import io.wispforest.owo.particles.ClientParticles;
 import io.wispforest.owo.particles.systems.ParticleSystem;
 import io.wispforest.owo.particles.systems.ParticleSystemController;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
+import io.wispforest.owo.util.Maldenhagen;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
@@ -34,11 +35,11 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.*;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.tag.BiomeTags;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.feature.*;
@@ -107,7 +108,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
         if (CONFIG.generateGleamingOre) {
-            BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
+            BiomeModifications.addFeature(overworldSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
+            Maldenhagen.injectCopium(ThingsBlocks.GLEAMING_ORE);
         }
 
         Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
@@ -124,10 +126,10 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
         }
 
-        BROKEN_WATCH_RECIPE =  ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
+        BROKEN_WATCH_RECIPE = ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
 
         if (Owo.DEBUG) {
-            CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+            CommandRegistrationCallback.EVENT.register((dispatcher, access, environment) -> {
                 dispatcher.register(literal("things:set_walk_speed_modifier")
                         .then(argument("speed", FloatArgumentType.floatArg()).executes(context -> {
                             float speed = FloatArgumentType.getFloat(context, "speed");
@@ -138,11 +140,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         }
     }
 
-    public static Predicate<BiomeSelectionContext> notNetherOrEndSelector() {
-        return context -> {
-            var category = Biome.getCategory(context.getBiomeRegistryEntry());
-            return category != Biome.Category.THEEND && category != Biome.Category.NETHER && category != Biome.Category.NONE;
-        };
+    public static Predicate<BiomeSelectionContext> overworldSelector() {
+        return context -> context.getBiomeRegistryEntry().isIn(BiomeTags.IS_OVERWORLD);
     }
 
     public static boolean isShield(Item item) {

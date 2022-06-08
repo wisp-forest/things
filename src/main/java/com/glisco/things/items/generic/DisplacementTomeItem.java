@@ -15,7 +15,7 @@ import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -83,7 +83,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
             user.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 1, 2);
         } else {
             user.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) ->
-                    new DisplacementTomeScreenHandler(i, playerInventory, user.getStackInHand(hand)), new LiteralText("help")));
+                    new DisplacementTomeScreenHandler(i, playerInventory, user.getStackInHand(hand)), Text.literal("help")));
 
             if (user instanceof ServerPlayerEntity) {
                 ThingsNetwork.CHANNEL.serverHandle(user).send(new DisplacementTomeScreenHandler.UpdateClientPacket(user.getStackInHand(hand)));

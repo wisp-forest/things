@@ -18,16 +18,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
 
 public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
@@ -73,7 +72,7 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
                 MutableText containerName =
                         (MutableText) ((LockableContainerBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos())).getDisplayName();
-                context.getPlayer().sendMessage(containerName.append(new LiteralText(" is locked with another key!")), true);
+                context.getPlayer().sendMessage(containerName.append(Text.literal(" is locked with another key!")), true);
             }
 
             return ActionResult.SUCCESS;
@@ -89,7 +88,7 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         var nbt = stack.getOrCreateNbt();
         if (nbt.contains("Lock", NbtElement.INT_TYPE)) {
-            tooltip.add(new LiteralText("§9Key: §7#" + Integer.toHexString(nbt.getInt("Lock"))));
+            tooltip.add(Text.literal("§9Key: §7#" + Integer.toHexString(nbt.getInt("Lock"))));
         }
 
         super.appendTooltip(stack, world, tooltip, context);
@@ -118,7 +117,7 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
         ctx.getPlayer().playSound(SoundEvents.BLOCK_CHEST_LOCKED, 1, 1);
 
         MutableText containerName = (MutableText) ((LockableContainerBlockEntity) ctx.getWorld().getBlockEntity(ctx.getBlockPos())).getDisplayName();
-        ctx.getPlayer().sendMessage(containerName.append(new LiteralText(locked ? " locked!" : " unlocked!")), true);
+        ctx.getPlayer().sendMessage(containerName.append(Text.literal(locked ? " locked!" : " unlocked!")), true);
     }
 
     private static void setLock(LockableContainerBlockEntity entity, String lock) {

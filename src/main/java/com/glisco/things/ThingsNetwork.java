@@ -12,7 +12,7 @@ import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +25,7 @@ public class ThingsNetwork {
 
     private static final NamedScreenHandlerFactory ENDER_POUCH_FACTORY = new SimpleNamedScreenHandlerFactory((syncId, inv, player) ->
             GenericContainerScreenHandler.createGeneric9x3(syncId, inv, player.getEnderChestInventory()),
-            new TranslatableText("container.enderpouch"));
+            Text.translatable("container.enderpouch"));
 
     public static void init() {
         CHANNEL.registerServerbound(OpenEnderChestPacket.class, (message, access) -> {

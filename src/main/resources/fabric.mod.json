@@ -32,7 +32,7 @@
     "modmenu": [
       "com.glisco.things.misc.ModMenuIntegration"
     ],
-    "rei_plugins": [
+    "rei_client": [
       "com.glisco.things.compat.rei.ThingsPlugin"
     ],
     "cardinal-components-entity": [
@@ -48,8 +48,7 @@
     "minecraft": ">=1.18.2",
     "trinkets": ">=3.3.0",
     "owo": ">=0.5.4+1.18",
-    "cloth-config": ">=6.0.0",
-    "patchouli": "*"
+    "cloth-config": ">=6.0.0"
   },
   "custom": {
     "modmenu": {

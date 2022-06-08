@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -99,7 +98,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
                     .append(TextOps.withColor(" (" + speed + ")", TextOps.color(Formatting.RED))));
         }
 
-        tooltip.add(new LiteralText(" "));
+        tooltip.add(Text.literal(" "));
 
         super.appendTooltip(stack, world, tooltip, context);
     }

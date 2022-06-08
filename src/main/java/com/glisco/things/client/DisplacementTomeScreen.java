@@ -12,9 +12,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
 
@@ -79,7 +77,7 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         NbtCompound tag = this.handler.getBook().getOrCreateNbt();
         int fuelLevel = tag.contains("Fuel") ? tag.getInt("Fuel") : 0;
-        this.textRenderer.draw(matrices, new TranslatableText("gui.things.displacement_tome.charges", fuelLevel), titleX, titleY, 0xFFFFFF);
+        this.textRenderer.draw(matrices, Text.translatable("gui.things.displacement_tome.charges", fuelLevel), titleX, titleY, 0xFFFFFF);
     }
 
     public void onNameFieldChange(String text) {
@@ -129,12 +127,12 @@ public class DisplacementTomeScreen extends HandledScreen<DisplacementTomeScreen
     }
 
     public void addDefaultButtons() {
-        ButtonWidget okButton = new ButtonWidget(x + 150, y + 80, 70, 20, new LiteralText(""), button -> finishInputEvent());
+        ButtonWidget okButton = new ButtonWidget(x + 150, y + 80, 70, 20, Text.literal(""), button -> finishInputEvent());
         okButton.active = false;
         okButton.visible = false;
         this.addButton(okButton);
 
-        ButtonWidget deleteButton = new ButtonWidget(x + 223, y + 80, 70, 20, new LiteralText("Delete"), button -> delete());
+        ButtonWidget deleteButton = new ButtonWidget(x + 223, y + 80, 70, 20, Text.literal("Delete"), button -> delete());
         deleteButton.active = false;
         deleteButton.visible = false;
         this.addButton(deleteButton);
