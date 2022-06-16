@@ -82,11 +82,13 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         for (int i = 0; i < data.subStacks.size(); i++) {
             var subStack = data.subStacks.get(i);
 
-            if (predicate.test(subStack))
+            if (predicate.test(subStack)) {
                 return true;
+            }
 
-            if (subStack.isOf(ThingsItems.AGGLOMERATION) && hasStack(subStack, predicate))
+            if (subStack.isOf(ThingsItems.AGGLOMERATION) && hasStack(subStack, predicate)) {
                 return true;
+            }
         }
 
         return false;
@@ -140,11 +142,13 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         for (int i = 0; i < data.subStacks.size(); i++) {
             ItemStack subStack = data.subStacks.get(i);
 
-            if (!TrinketsApi.evaluatePredicateSet(slot.inventory().getSlotType().getValidatorPredicates(), subStack, slot, entity))
+            if (!TrinketsApi.evaluatePredicateSet(slot.inventory().getSlotType().getValidatorPredicates(), subStack, slot, entity))  {
                 return false;
+            }
 
-            if (!TrinketsApi.getTrinket(subStack.getItem()).canEquip(subStack, slot, entity))
+            if (!TrinketsApi.getTrinket(subStack.getItem()).canEquip(subStack, slot, entity)) {
                 return false;
+            }
         }
 
         return super.canEquip(stack, slot, entity);
@@ -157,8 +161,9 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         for (int i = 0; i < data.subStacks.size(); i++) {
             ItemStack subStack = data.subStacks.get(i);
 
-            if (!TrinketsApi.getTrinket(subStack.getItem()).canUnequip(subStack, slot, entity))
+            if (!TrinketsApi.getTrinket(subStack.getItem()).canUnequip(subStack, slot, entity)) {
                 return false;
+            }
         }
 
         return super.canUnequip(stack, slot, entity);
