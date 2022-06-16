@@ -56,6 +56,9 @@
   "item.things.shock_absorber.tooltip": "Decrease fall and kinetic damage by 75%%",
   "item.things.broken_watch": "Broken Watch",
   "item.things.broken_watch.tooltip": "Increases status effect duration by 50%%",
+  "item.things.agglomeration": "Agglomeration",
+  "item.things.empty_agglomeration": "Empty Agglomeration",
+  "item.things.empty_agglomeration.tooltip": "Combine with two trinkets to agglomerate them",
 
   "effect.things.momentum": "Momentum",
 
@@ -116,6 +119,10 @@
   "advancement.things.arm_extender.description": "Craft an Arm Extender",
   "advancement.things.broken_watch.title": "Right twice a day",
   "advancement.things.broken_watch.description": "Craft a Broken Watch",
+  "advancement.things.empty_agglomeration.title": "Balance? Who cares about balance?",
+  "advancement.things.empty_agglomeration.description": "Craft an Empty Agglomeration",
+  "advancement.things.agglomerate.title": "Twice the trinkets, twice the fun",
+  "advancement.things.agglomerate.description": "Combine two trinkets for fun and profit",
 
   "text.autoconfig.things.title": "Things Config",
   "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",
@@ -125,6 +132,7 @@
   "text.autoconfig.things.option.nerfBeaconsWithMomentum": "Nerf Beacons",
   "text.autoconfig.things.option.renderTrinkets": "Render Trinkets",
   "text.autoconfig.things.option.renderAppleTrinket": "Render Apple Trinket",
+  "text.autoconfig.things.option.renderAgglomerationTrinket": "Render Agglomeration Trinket",
   "text.autoconfig.things.option.displacementTomeFuelConsumption": "Displacement Tome Fuel Consumption",
   "text.autoconfig.things.option.sockPerLevelSpeedAmplifier": "Socks speed amplifier",
   "text.autoconfig.things.option.makeLockedContainersUnbreakable": "Unbreakable Locked Containers",

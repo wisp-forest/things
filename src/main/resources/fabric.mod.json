@@ -48,7 +48,9 @@
     "minecraft": ">=1.18.2",
     "trinkets": ">=3.3.0",
     "owo": ">=0.5.4+1.18",
-    "cloth-config": ">=6.0.0"
+    "cloth-config": ">=6.0.0",
+    "patchouli": "*",
+    "reach-entity-attributes": "*"
   },
   "custom": {
     "modmenu": {

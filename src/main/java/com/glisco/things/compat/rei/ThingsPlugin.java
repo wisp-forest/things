@@ -6,7 +6,10 @@ import com.glisco.things.items.trinkets.SocksItem;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ExclusionZones;
+import me.shedaniel.rei.api.common.entry.EntryStack;
+import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.displays.brewing.DefaultBrewingDisplay;
@@ -52,6 +55,11 @@ public class ThingsPlugin implements REIClientPlugin {
 
             return Collections.singletonList(new Rectangle(x + 160, y + 50, 130, 60));
         });
+    }
+
+    @Override
+    public void registerEntries(EntryRegistry registry) {
+        registry.removeEntry(EntryStacks.of(ThingsItems.AGGLOMERATION));
     }
 
     private static class SockDisplay extends DefaultCraftingDisplay<ShapelessRecipe> {

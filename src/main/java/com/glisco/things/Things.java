@@ -118,6 +118,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         Registry.register(Registry.RECIPE_TYPE, id("jumpy_sock_crafting"), JumpySocksRecipe.Type.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, id("jumpy_sock_crafting"), JumpySocksRecipe.Serializer.INSTANCE);
 
+        Registry.register(Registry.RECIPE_SERIALIZER, id("agglomerate"), AgglomerateRecipe.Serializer.INSTANCE);
+
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
 
         ThingsNetwork.init();

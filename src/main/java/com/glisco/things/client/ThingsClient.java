@@ -53,6 +53,7 @@ public class ThingsClient implements ClientModInitializer {
         registerRenderedTrinket(ThingsItems.LUCK_OF_THE_IRISH);
         registerRenderedTrinket(ThingsItems.MONOCLE);
         registerRenderedTrinket(ThingsItems.MOSS_NECKLACE);
+        registerRenderedTrinket(ThingsItems.AGGLOMERATION);
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (PLACE_ITEM.wasPressed()) {
