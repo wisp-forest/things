@@ -31,6 +31,9 @@ public class ThingsConfig implements ConfigData {
     @Comment("Only disables trinket rendering for apples")
     public boolean renderAppleTrinket = true;
 
+    @Comment("Only disables trinket rendering for agglomerations")
+    public boolean renderAgglomerationTrinket = true;
+  
     @Comment("Whether container blocks locked by a Container Key should be unbreakable")
     public boolean makeLockedContainersUnbreakable = false;
 
