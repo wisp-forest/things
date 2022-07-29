@@ -19,11 +19,13 @@
     "infernal_scepter": {
       "trigger": "minecraft:item_durability_changed",
       "conditions": {
-        "item": {
-          "items": [
-            "things:infernal_scepter"
-          ]
-        },
+        "items": [
+          {
+            "items":[
+              "things:infernal_scepter"
+            ]
+          }
+        ],
         "delta": {
           "max": 0,
           "min": -100

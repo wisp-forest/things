@@ -16,6 +16,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,7 +60,7 @@ public class ThingsItems implements ItemRegistryContainer {
     public void afterFieldProcessing() {
         if (Things.CONFIG.appleTrinket) {
             TrinketsApi.registerTrinket(Items.APPLE, new AppleTrinket());
-            TagInjector.injectItems(new Identifier("trinkets", "head/face"), Items.APPLE);
+            TagInjector.inject(Registry.ITEM, new Identifier("trinkets", "head/face"), Items.APPLE);
         }
 
         BaterWucketItem.registerCauldronBehavior();

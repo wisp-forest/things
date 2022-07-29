@@ -4,13 +4,15 @@ import com.glisco.things.Things;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import vazkii.patchouli.api.PatchouliAPI;
+import vazkii.patchouli.common.base.PatchouliSounds;
+import vazkii.patchouli.common.book.Book;
+import vazkii.patchouli.common.book.BookRegistry;
 
 public class ThingsAlmanacItem extends Item {
 
@@ -23,15 +25,11 @@ public class ThingsAlmanacItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-//        Book book = BookRegistry.INSTANCE.books.get(THINGS_GUIDE);
+        Book book = BookRegistry.INSTANCE.books.get(THINGS_GUIDE);
 
         if (!world.isClient()) {
-            player.sendMessage(Text.literal("Patchouli support is currently not implemented, click this link instead")
-                    .styled(style -> style
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://guides.wispforest.io/things/"))
-                            .withFormatting(Formatting.UNDERLINE)));
-//            PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
-//            player.playSound(PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN), 1, (float) (0.7 + Math.random() * 0.4));
+            PatchouliAPI.get().openBookGUI((ServerPlayerEntity) player, book.id);
+            player.playSound(PatchouliSounds.getSound(book.openSound, PatchouliSounds.BOOK_OPEN), 1, (float) (0.7 + Math.random() * 0.4));
         }
 
         return TypedActionResult.success(stack);

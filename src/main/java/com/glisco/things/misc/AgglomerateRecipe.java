@@ -2,12 +2,19 @@ package com.glisco.things.misc;
 
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.AgglomerationItem;
+import dev.emi.trinkets.api.SlotType;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class AgglomerateRecipe extends SpecialCraftingRecipe {
@@ -19,16 +26,34 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingInventory inventory, World world) {
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.EMPTY_AGGLOMERATION))) return false;
 
-        ItemStack firstTrinket = matchOne(inventory, AgglomerateRecipe::isValidItem);
+        ItemStack firstStack = matchOne(inventory, AgglomerateRecipe::isValidItem);
+        if (firstStack == null) return false;
 
-        if (firstTrinket == null) return false;
+        var firstValidSlots = new ArrayList<SlotType>();
 
-        return matchOnce(inventory, stack -> !ItemStack.areItemsEqual(stack, firstTrinket) && isValidItem(stack));
+        TrinketsApi.getPlayerSlots().forEach((groupName, slotGroup) -> {
+            slotGroup.getSlots().forEach((slotName, slotType) -> {
+                if (firstStack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("trinkets", groupName + "/" + slotName)))) {
+                    firstValidSlots.add(slotType);
+                }
+            });
+        });
 
+        return matchOnce(inventory, stack -> {
+            boolean anyCompatibleSlot = false;
+            for (var slotType : firstValidSlots) {
+                if (stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("trinkets", slotType.getGroup() + "/" + slotType.getName())))) {
+                    anyCompatibleSlot = true;
+                }
+            }
+
+            return anyCompatibleSlot && !ItemStack.areItemsEqual(stack, firstStack) && isValidItem(stack);
+        });
     }
 
     private static boolean isValidItem(ItemStack stack) {
-        return !stack.isEmpty() && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION) && !stack.isOf(ThingsItems.AGGLOMERATION);
+        return !stack.isEmpty() && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION) && !stack.isOf(ThingsItems.AGGLOMERATION)
+                && TrinketsApi.getTrinket(stack.getItem()) != TrinketsApi.getDefaultTrinket();
     }
 
     @Override

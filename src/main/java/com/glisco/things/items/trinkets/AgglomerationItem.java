@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
@@ -198,9 +197,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             if (renderer != null) {
                 matrices.push();
-
                 renderer.render(subStack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
-
                 matrices.pop();
             }
         }
@@ -215,9 +212,9 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             for (int j = 0; j < subTooltip.size(); j++) {
                 if (j == 0) {
-                    tooltip.add(new LiteralText("• ").append(subTooltip.get(j)));
+                    tooltip.add(Text.literal("• ").append(subTooltip.get(j)));
                 } else {
-                    tooltip.add(new LiteralText("  ").append(subTooltip.get(j)));
+                    tooltip.add(Text.literal("  ").append(subTooltip.get(j)));
                 }
             }
         }
