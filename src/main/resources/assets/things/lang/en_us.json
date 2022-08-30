@@ -16,7 +16,17 @@
   "item.things.container_key.tooltip": "Used to lock containers, sneak-click to lock/unlock. Required to open a locked container",
   "item.things.bater_wucket": "Bater Wucket",
   "item.things.ender_pouch": "Ender Pouch",
-  "item.things.ender_pouch.tooltip": "§7Press §6%1$s §7to open Ender Chest inventory",
+  "item.things.ender_pouch.tooltip": [
+    {
+      "text": "Press ",
+      "color": "gray"
+    },
+    {
+      "index": 0,
+      "color": "white"
+    },
+    " to open ender Chest inventory"
+  ],
   "item.things.monocle": "Monocle",
   "item.things.monocle.tooltip": "Grants permanent Night Vision",
   "item.things.moss_necklace": "Mossy Necklace",
@@ -35,7 +45,7 @@
   "item.things.gleaming_powder": "Gleaming Powder",
   "item.things.gleaming_compound": "Gleaming Compound",
   "item.things.hades_crystal": "Hades Crystal",
-  "item.things.hades_crystal.tooltip": "Grants permanent Fire Resistance, wear together with a §6Wax Gland §7for extra awesomeness",
+  "item.things.hades_crystal.tooltip": "Grants permanent Fire Resistance. Wear together with a §fWax Gland §7for extra awesomeness",
   "item.things.enchanted_wax_gland": "Enchanted Wax Gland",
   "item.things.enchanted_wax_gland.tooltip": "Makes you float in water. And apparently also really fast",
   "item.things.item_magnet": "Item Magnet",
@@ -85,7 +95,17 @@
   "trinkets.slot.feet.charm": "Charm",
   "category.things.things": "Things",
   "gui.things.displacement_tome.charges": "Charges: %1$d",
-  "text.things.tooltip_hint": "§7Hold §6SHIFT §7for info",
+  "text.things.tooltip_hint": [
+    {
+      "text": "Hold ",
+      "color": "gray"
+    },
+    {
+      "text": "SHIFT",
+      "color": "gold"
+    },
+    " for more info"
+  ],
   "text.things.crafting_component": "Crafting component",
 
   "key.things.openenderchest": "Open Ender Pouch",

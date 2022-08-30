@@ -43,9 +43,9 @@
     "things.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.10.1+build.209",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.18.2",
+    "minecraft": ">=1.19",
     "trinkets": ">=3.3.0",
     "owo": ">=0.5.4+1.18",
     "cloth-config": ">=6.0.0",
