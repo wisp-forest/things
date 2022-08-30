@@ -5,11 +5,12 @@
   "pages": [
     {
       "type": "text",
-      "text": "The $(item)Item Magnet$() is an invaluable tool for cleaning up litter and/or theft. When $(thing)Right-Clicked$(), it casts a ray that, through usage of it's inbuilt Ender Pearl, teleports all items in it vicinity to the user. Neat!"
+      "text": "The $(item)Item Magnet$() is an invaluable tool for cleaning up litter and/or theft. When $(thing)Right-Clicked$(), it casts a ray that, through usage of it's inbuilt Ender Pearl, teleports all items in it vicinity to the user."
     },
     {
       "type": "crafting",
-      "recipe": "things:item_magnet"
+      "recipe": "things:item_magnet",
+      "text": "Mild caution is advised when using your item magnet - depleting its charge too far will cause its pickup range and recharge speed to drastically decrease for a while."
     }
   ]
 }

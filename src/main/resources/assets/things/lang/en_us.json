@@ -1,6 +1,6 @@
 {
   "item.things.things_almanac": "Things Almanac",
-  "item.things.guide_book.landing": "A mod about $(thing)Things$()",
+  "item.things.guide_book.landing": "A mod about $(thing)Things$()$(p)Should you have problems or discover a bug, feel free to join the $(l:https://discord.com/invite/xrwHKktV2d)Wisp Forest Discord$() or report them on $(l:https://github.com/wisp-forest/things/issues)GitHub$().",
 
   "block.things.stone_glowstone_fixture": "Stone Glowstone Fixture",
   "block.things.quartz_glowstone_fixture": "Quartz Glowstone Fixture",
@@ -39,6 +39,21 @@
   "item.things.enchanted_wax_gland": "Enchanted Wax Gland",
   "item.things.enchanted_wax_gland.tooltip": "Makes you float in water. And apparently also really fast",
   "item.things.item_magnet": "Item Magnet",
+  "item.things.item_magnet.tooltip": [
+    "",
+    {
+      "text": "⚡ ",
+      "color": "#8000ff"
+    },
+    {
+      "text": "Charge: ",
+      "color": "gray"
+    },
+    {
+      "index": 0,
+      "color": "dark_gray"
+    }
+  ],
   "item.things.rabbit_foot_charm": "Rabbit Foot Charm",
   "item.things.rabbit_foot_charm.tooltip": "Grants permanent Jump Boost II",
   "item.things.luck_of_the_irish": "Luck of the Irish",
