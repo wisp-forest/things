@@ -108,7 +108,10 @@ public class PlacedItemBlock extends BlockWithEntity {
 
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        if (world.getBlockEntity(pos) != null) return ((PlacedItemBlockEntity) world.getBlockEntity(pos)).getItem().copy();
-        return super.getPickStack(world, pos, state);
+        if (world.getBlockEntity(pos) instanceof PlacedItemBlockEntity placedItem) {
+            return placedItem.getItem().copy();
+        } else {
+            return super.getPickStack(world, pos, state);
+        }
     }
 }

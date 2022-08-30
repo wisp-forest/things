@@ -29,6 +29,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
@@ -65,6 +66,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
     public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
 
+    public static final AnAmazinglyExpensiveMistakeCriterion AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION = new AnAmazinglyExpensiveMistakeCriterion();
+
     public static final ComponentKey<SockDataComponent> SOCK_DATA =
             ComponentRegistry.getOrCreate(id("sock_data"), SockDataComponent.class);
 
@@ -82,6 +85,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             BiomePlacementModifier.of()));
 
     public static final TagKey<Item> HARDENING_CATALYST_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("hardening_catalyst_blacklist"));
+    public static final TagKey<Item> AGLOMERATION_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("agglomeration_blacklist"));
 
     static {
         DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
@@ -121,6 +125,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         Registry.register(Registry.RECIPE_SERIALIZER, id("agglomerate"), AgglomerateRecipe.Serializer.INSTANCE);
 
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
+
+        Criteria.register(AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION);
 
         ThingsNetwork.init();
 

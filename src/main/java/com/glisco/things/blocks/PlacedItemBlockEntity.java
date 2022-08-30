@@ -9,42 +9,41 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PlacedItemBlockEntity extends BlockEntity {
 
-    private ItemStack item;
+    private @NotNull ItemStack item = ItemStack.EMPTY;
     private int rotation = 0;
 
     public PlacedItemBlockEntity(BlockPos pos, BlockState state) {
         super(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY, pos, state);
     }
 
-    public void setItem(ItemStack item) {
+    public void setItem(@NotNull ItemStack item) {
         this.item = item;
     }
 
-    public ItemStack getItem() {
+    public @NotNull ItemStack getItem() {
         return item;
     }
 
     @Override
     public void writeNbt(NbtCompound tag) {
         super.writeNbt(tag);
-        if (item != null) {
-            NbtCompound itemTag = new NbtCompound();
-            item.writeNbt(itemTag);
-            tag.put("Item", itemTag);
-        }
+
+        var itemNbt = new NbtCompound();
+        item.writeNbt(itemNbt);
+        tag.put("Item", itemNbt);
+
         tag.putInt("Rotation", rotation);
     }
 
     @Override
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
-        if (tag.contains("Item")) {
-            item = ItemStack.fromNbt(tag.getCompound("Item"));
-        }
+        if (tag.contains("Item")) item = ItemStack.fromNbt(tag.getCompound("Item"));
         this.rotation = tag.getInt("Rotation");
     }
 

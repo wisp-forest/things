@@ -21,51 +21,49 @@ public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<Placed
 
     @Override
     public void render(PlacedItemBlockEntity entity, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        if (entity.getItem() != null) {
-            ItemStack item = entity.getItem();
-            BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0);
+        ItemStack item = entity.getItem();
+        BakedModel itemModel = MinecraftClient.getInstance().getItemRenderer().getModel(item, null, null, 0);
 
-            float scaleFactor = item.getItem() instanceof BlockItem ? 0.5f : 0.4f;
+        float scaleFactor = item.getItem() instanceof BlockItem ? 0.5f : 0.4f;
 
-            if (!entity.getWorld().getBlockState(entity.getPos()).isOf(ThingsBlocks.PLACED_ITEM)) return;
+        if (!entity.getWorld().getBlockState(entity.getPos()).isOf(ThingsBlocks.PLACED_ITEM)) return;
 
-            matrixStack.push();
-            switch (entity.getWorld().getBlockState(entity.getPos()).get(Properties.FACING)) {
-                case UP:
-                    matrixStack.translate(0.5, 0.97, 0.5);
-                    matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
-                    matrixStack.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.getRotation() * 45));
-                    break;
-                case DOWN:
-                    matrixStack.translate(0.5, 0.03, 0.5);
-                    matrixStack.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.getRotation() * 45));
-                    break;
-                case EAST:
-                    matrixStack.translate(0.97, 0.5, 0.5);
-                    matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90 - entity.getRotation() * 45));
-                    matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
-                    break;
-                case WEST:
-                    matrixStack.translate(0.03, 0.5, 0.5);
-                    matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90 + entity.getRotation() * 45));
-                    matrixStack.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(90));
-                    break;
-                case NORTH:
-                    matrixStack.translate(0.5, 0.5, 0.03);
-                    matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
-                    matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
-                    matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-entity.getRotation() * 45));
-                    break;
-                case SOUTH:
-                    matrixStack.translate(0.5, 0.5, 0.97);
-                    matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
-                    matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-entity.getRotation() * 45));
-                    break;
+        matrixStack.push();
+        switch (entity.getWorld().getBlockState(entity.getPos()).get(Properties.FACING)) {
+            case UP -> {
+                matrixStack.translate(0.5, 0.97, 0.5);
+                matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+                matrixStack.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.getRotation() * 45));
             }
-            matrixStack.scale(scaleFactor, scaleFactor, scaleFactor);
-            matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90f));
-            MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.FIXED, false, matrixStack, vertexConsumers, light, OverlayTexture.DEFAULT_UV, itemModel);
-            matrixStack.pop();
+            case DOWN -> {
+                matrixStack.translate(0.5, 0.03, 0.5);
+                matrixStack.multiply(Vec3f.NEGATIVE_Y.getDegreesQuaternion(entity.getRotation() * 45));
+            }
+            case EAST -> {
+                matrixStack.translate(0.97, 0.5, 0.5);
+                matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90 - entity.getRotation() * 45));
+                matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(90));
+            }
+            case WEST -> {
+                matrixStack.translate(0.03, 0.5, 0.5);
+                matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90 + entity.getRotation() * 45));
+                matrixStack.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(90));
+            }
+            case NORTH -> {
+                matrixStack.translate(0.5, 0.5, 0.03);
+                matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
+                matrixStack.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
+                matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-entity.getRotation() * 45));
+            }
+            case SOUTH -> {
+                matrixStack.translate(0.5, 0.5, 0.97);
+                matrixStack.multiply(Vec3f.NEGATIVE_X.getDegreesQuaternion(90));
+                matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(-entity.getRotation() * 45));
+            }
         }
+        matrixStack.scale(scaleFactor, scaleFactor, scaleFactor);
+        matrixStack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90f));
+        MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.FIXED, false, matrixStack, vertexConsumers, light, OverlayTexture.DEFAULT_UV, itemModel);
+        matrixStack.pop();
     }
 }

@@ -22,9 +22,11 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
@@ -38,10 +40,10 @@ import java.util.function.Predicate;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     private final static LoadingCache<ItemStack, StackData> CACHE = CacheBuilder.newBuilder()
-        .concurrencyLevel(1)
-        .maximumSize(200)
-        .weakKeys()
-        .build(CacheLoader.from(StackData::new));
+            .concurrencyLevel(1)
+            .maximumSize(200)
+            .weakKeys()
+            .build(CacheLoader.from(StackData::new));
 
     public AgglomerationItem() {
         super(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
@@ -102,7 +104,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             TrinketsApi.getTrinket(subStack.getItem()).onEquip(subStack, slot, entity);
 
-            data.updateStackIfNeeded(i);
+            data.updateStackIfNeeded(i, entity);
         }
     }
 
@@ -115,7 +117,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             TrinketsApi.getTrinket(subStack.getItem()).onUnequip(subStack, slot, entity);
 
-            data.updateStackIfNeeded(i);
+            data.updateStackIfNeeded(i, entity);
         }
     }
 
@@ -130,7 +132,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             TrinketsApi.getTrinket(subStack.getItem()).tick(subStack, slot, entity);
 
-            data.updateStackIfNeeded(i);
+            data.updateStackIfNeeded(i, entity);
         }
     }
 
@@ -141,7 +143,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         for (int i = 0; i < data.subStacks.size(); i++) {
             ItemStack subStack = data.subStacks.get(i);
 
-            if (!TrinketsApi.evaluatePredicateSet(slot.inventory().getSlotType().getValidatorPredicates(), subStack, slot, entity))  {
+            if (!TrinketsApi.evaluatePredicateSet(slot.inventory().getSlotType().getValidatorPredicates(), subStack, slot, entity)) {
                 return false;
             }
 
@@ -247,13 +249,15 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             return !Objects.equals(stack.getNbt(), defensiveNbtData);
         }
 
-        public void updateStackIfNeeded(int idx) {
+        public void updateStackIfNeeded(int idx, LivingEntity entity) {
             if (ItemStack.areEqual(subStacks.get(idx), defensiveCopies.get(idx))) return;
+            if (subStacks.get(idx).isOf(Items.AIR) && entity instanceof ServerPlayerEntity player) {
+                Things.AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION.trigger(player);
+            }
 
             defensiveCopies.set(idx, subStacks.get(idx).copy());
 
             var itemsTag = stack.getNbt().getList("Items", NbtElement.COMPOUND_TYPE);
-
             itemsTag.set(idx, subStacks.get(idx).writeNbt(new NbtCompound()));
 
             defensiveNbtData = stack.getNbt().copy();

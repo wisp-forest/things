@@ -123,6 +123,10 @@
   "advancement.things.empty_agglomeration.description": "Craft an Empty Agglomeration",
   "advancement.things.agglomerate.title": "Twice the trinkets, twice the fun",
   "advancement.things.agglomerate.description": "Combine two trinkets for fun and profit",
+  "advancement.things.agglomerate_apple.title": "Nourishing",
+  "advancement.things.agglomerate_apple.description": "A strange yet innovative idea",
+  "advancement.things.eat_agglomerated_apple.title": "Once",
+  "advancement.things.eat_agglomerated_apple.description": "It nourishes you once. And now it's broken",
 
   "text.autoconfig.things.title": "Things Config",
   "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",

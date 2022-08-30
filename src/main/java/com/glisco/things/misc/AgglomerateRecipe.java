@@ -1,5 +1,6 @@
 package com.glisco.things.misc;
 
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.AgglomerationItem;
 import dev.emi.trinkets.api.SlotType;
@@ -53,7 +54,8 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
 
     private static boolean isValidItem(ItemStack stack) {
         return !stack.isEmpty() && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION) && !stack.isOf(ThingsItems.AGGLOMERATION)
-                && TrinketsApi.getTrinket(stack.getItem()) != TrinketsApi.getDefaultTrinket();
+                && TrinketsApi.getTrinket(stack.getItem()) != TrinketsApi.getDefaultTrinket()
+                && !stack.isIn(Things.AGLOMERATION_BLACKLIST);
     }
 
     @Override
