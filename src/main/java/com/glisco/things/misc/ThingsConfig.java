@@ -37,6 +37,8 @@ public class ThingsConfig implements ConfigData {
     @Comment("Whether container blocks locked by a Container Key should be unbreakable")
     public boolean makeLockedContainersUnbreakable = false;
 
+    public boolean enableAgglomeration = true;
+
     @Comment("How many ender pearls the displacement tome uses per teleport")
     @ConfigEntry.BoundedDiscrete(min = 1, max = 128)
     public int displacementTomeFuelConsumption = 1;

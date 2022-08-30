@@ -1,5 +1,6 @@
 package com.glisco.things.compat.rei;
 
+import com.glisco.things.Things;
 import com.glisco.things.client.DisplacementTomeScreen;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.SocksItem;
@@ -60,6 +61,7 @@ public class ThingsPlugin implements REIClientPlugin {
     @Override
     public void registerEntries(EntryRegistry registry) {
         registry.removeEntry(EntryStacks.of(ThingsItems.AGGLOMERATION));
+        if (!Things.CONFIG.enableAgglomeration) registry.removeEntry(EntryStacks.of(ThingsItems.EMPTY_AGGLOMERATION));
     }
 
     private static class SockDisplay extends DefaultCraftingDisplay<ShapelessRecipe> {
