@@ -2,6 +2,9 @@
   "name": "Broken Watch",
   "icon": "things:broken_watch",
   "category": "things:trinkets",
+  "extra_recipe_mappings": {
+    "things:broken_watch": 0
+  },
   "pages": [
     {
       "type": "text",

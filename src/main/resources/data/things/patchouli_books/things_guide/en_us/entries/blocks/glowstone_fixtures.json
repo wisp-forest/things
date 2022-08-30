@@ -11,6 +11,10 @@
       "type": "crafting",
       "recipe": "things:quartz_glowstone_fixture",
       "recipe2": "things:stone_glowstone_fixture"
+    },
+    {
+      "type": "crafting",
+      "recipe": "things:deepslate_glowstone_fixture"
     }
   ]
 }

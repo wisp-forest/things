@@ -1,0 +1,20 @@
+{
+  "name": "Agglomeration",
+  "icon": "things:agglomeration",
+  "category": "things:trinkets",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "While building out one's supply of trinkets, a certain annoyance is often encountered - the need to choose between trinkets which occupy the same slot. Wouldn't it be $(o)truly$() great to wear two trinkets in a single slot? Luckily, the $(item)Agglomeration$() exists to fill precisely that purpose.$(p)To begin, one must craft themselves an $(item)Empty Agglomeration$() as shown on the"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "things:empty_agglomeration",
+      "text": "right. This must then be combined with two trinkets of choice in the next step. For obvious reasons, these trinkets $(thing)must share at least one slot$().$(p)It is recommended to take great care when choosing"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "which trinkets to combine, as historical attempts have shown that separating them afterwards is not possible."
+    }
+  ]
+}
