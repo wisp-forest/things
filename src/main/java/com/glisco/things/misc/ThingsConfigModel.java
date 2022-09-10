@@ -1,12 +1,12 @@
 package com.glisco.things.misc;
 
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
+import io.wispforest.owo.config.annotation.*;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(name = "things")
-public class ThingsConfig implements ConfigData {
+@Modmenu(modId = "things")
+@Config(name = "things", wrapperName = "ThingsConfig")
+public class ThingsConfigModel {
 
     @ConfigEntry.Gui.RequiresRestart
     @Comment("Whether gleaming ore should generate. Unless you plan on making custom recipes, turning this off is a bad idea")
@@ -40,23 +40,24 @@ public class ThingsConfig implements ConfigData {
     public boolean enableAgglomeration = true;
 
     @Comment("How many ender pearls the displacement tome uses per teleport")
-    @ConfigEntry.BoundedDiscrete(min = 1, max = 128)
+    @RangeConstraint(min = 1, max = 128)
     public int displacementTomeFuelConsumption = 1;
 
     @Comment("How much walking speed the socks should add per level, base is 0.1, default is 0.02")
     public float sockPerLevelSpeedAmplifier = .02f;
 
-    @ConfigEntry.Gui.CollapsibleObject(startExpanded = true)
+    @Nest
+    @Expanded
     public EffectLevels effectLevels = new EffectLevels();
 
     public static class EffectLevels {
-        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        @RangeConstraint(min = 1, max = 16)
         public int mossNecklaceRegen = 2;
 
-        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        @RangeConstraint(min = 1, max = 16)
         public int miningGloveMomentum = 2;
 
-        @ConfigEntry.BoundedDiscrete(min = 1, max = 16)
+        @RangeConstraint(min = 1, max = 16)
         public int riotGauntletStrength = 1;
     }
 }

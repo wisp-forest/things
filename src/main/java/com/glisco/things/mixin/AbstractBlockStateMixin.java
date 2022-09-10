@@ -16,7 +16,7 @@ public class AbstractBlockStateMixin {
 
     @Inject(method = "getHardness", at = @At("HEAD"), cancellable = true)
     private void disallowBreakingLockedContainers(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (!Things.CONFIG.makeLockedContainersUnbreakable) return;
+        if (!Things.CONFIG.makeLockedContainersUnbreakable()) return;
 
         if (!(world.getBlockEntity(pos) instanceof LockableContainerBlockEntityAccessor lockable) ||
                 ((ContainerLockAccessor) lockable.things$getLock()).things$getKey().isEmpty()) return;

@@ -58,7 +58,7 @@ public class ThingsNetwork {
         CHANNEL.registerClientbound(DisplacementTomeScreenHandler.UpdateClientPacket.class, (message, access) -> {
             if (!(access.runtime().currentScreen instanceof final DisplacementTomeScreen tomeScreen)) return;
             tomeScreen.getScreenHandler().setBook(message.tome());
-            tomeScreen.update();
+            tomeScreen.clearAndInit();
         });
 
         CHANNEL.registerServerbound(PlaceItemPacket.class, (message, access) -> {
@@ -84,7 +84,7 @@ public class ThingsNetwork {
     }
 
 
-    public static final record OpenEnderChestPacket() {}
+    public record OpenEnderChestPacket() {}
 
-    public static final record PlaceItemPacket(BlockHitResult target) {}
+    public record PlaceItemPacket(BlockHitResult target) {}
 }

@@ -46,44 +46,61 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public void requestTeleport(String location) {
-        int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
+        if (this.player instanceof ServerPlayerEntity) {
+            int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
 
-        if (currentFuel < Things.CONFIG.displacementTomeFuelConsumption) {
-            player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
-            return;
+            if (currentFuel < Things.CONFIG.displacementTomeFuelConsumption()) {
+                player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
+                return;
+            }
+
+            NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
+            if (!bookTargetsTag.contains(location)) return;
+
+            currentFuel -= Things.CONFIG.displacementTomeFuelConsumption();
+            book.getOrCreateNbt().putInt("Fuel", currentFuel);
+
+            DisplacementTomeItem.Target target = DisplacementTomeItem.Target.get(bookTargetsTag, location);
+            target.teleportPlayer((ServerPlayerEntity) player);
+            player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
+            player.closeHandledScreen();
+        } else {
+            ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.teleport(location));
         }
-
-        NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
-        if (!bookTargetsTag.contains(location)) return;
-
-        currentFuel -= Things.CONFIG.displacementTomeFuelConsumption;
-        book.getOrCreateNbt().putInt("Fuel", currentFuel);
-
-        DisplacementTomeItem.TargetLocation target = DisplacementTomeItem.TargetLocation.fromTag(bookTargetsTag.getCompound(location));
-        target.teleportPlayer((ServerPlayerEntity) player);
-        player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
-        ((ServerPlayerEntity) player).closeHandledScreen();
-        updateClient();
-    }
-
-    public boolean deletePoint(String name) {
-        boolean result = DisplacementTomeItem.deletePoint(book, name);
-        updateClient();
-        return result;
     }
 
     public void addPoint(String name) {
-        player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
-        sendContentUpdates();
-        DisplacementTomeItem.storeTeleportTargetInBook(book,
-                DisplacementTomeItem.TargetLocation.fromPlayer((ServerPlayerEntity) player), name, false);
-        updateClient();
+        if (this.player instanceof ServerPlayerEntity) {
+            player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
+            sendContentUpdates();
+            DisplacementTomeItem.storeTeleportTargetInBook(book,
+                    DisplacementTomeItem.Target.fromPlayer((ServerPlayerEntity) player), name, false);
+            updateClient();
+        } else {
+            ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.create(name));
+        }
+    }
+
+    public boolean deletePoint(String name) {
+        if (this.player instanceof ServerPlayerEntity) {
+            boolean result = DisplacementTomeItem.deletePoint(book, name);
+            updateClient();
+            return result;
+        } else {
+            ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.delete(name));
+            return true;
+        }
     }
 
     public boolean renamePoint(String data) {
-        boolean result = DisplacementTomeItem.rename(book, data);
-        updateClient();
-        return result;
+        if (this.player instanceof ServerPlayerEntity) {
+            boolean result = DisplacementTomeItem.rename(book, data);
+            updateClient();
+            return result;
+        } else {
+            ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.rename(data));
+            return true;
+        }
     }
 
     private void updateClient() {

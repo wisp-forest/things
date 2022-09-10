@@ -29,9 +29,6 @@
     "main": [
       "com.glisco.things.Things"
     ],
-    "modmenu": [
-      "com.glisco.things.misc.ModMenuIntegration"
-    ],
     "rei_client": [
       "com.glisco.things.compat.rei.ThingsPlugin"
     ],

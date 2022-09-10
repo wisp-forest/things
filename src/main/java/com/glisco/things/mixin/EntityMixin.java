@@ -28,45 +28,52 @@ public abstract class EntityMixin {
 
     @Shadow public float stepHeight;
 
-    @Shadow public abstract Vec3d getPos();
+    @Shadow
+    public abstract Vec3d getPos();
 
-    @Shadow public abstract boolean isRemoved();
+    @Shadow
+    public abstract boolean isRemoved();
 
     @Shadow public World world;
 
-    @Shadow public abstract BlockPos getBlockPos();
+    @Shadow
+    public abstract BlockPos getBlockPos();
 
-    @Shadow public abstract EntityType<?> getType();
+    @Shadow
+    public abstract EntityType<?> getType();
 
-    @Shadow public abstract double getX();
+    @Shadow
+    public abstract double getX();
 
-    @Shadow public abstract double getY();
+    @Shadow
+    public abstract double getY();
 
-    @Shadow public abstract double getZ();
+    @Shadow
+    public abstract double getZ();
 
-    @Unique private float things$prevStepHeight = -1;
+    @Unique private boolean things$stepHeightBoosted = false;
 
     @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("HEAD"))
     private void boostStepHeight(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
         if (!((Object) this instanceof PlayerEntity player)) return;
         if (!Things.SOCK_DATA.get(player).jumpySocksEquipped) return;
 
-        this.things$prevStepHeight = this.stepHeight;
-        this.stepHeight = this.stepHeight + .45f;
+        this.things$stepHeightBoosted = true;
+        this.stepHeight += .45f;
     }
 
     @Inject(method = "adjustMovementForCollisions(Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;", at = @At("RETURN"))
     private void resetStepHeight(Vec3d movement, CallbackInfoReturnable<Vec3d> cir) {
-        if (this.things$prevStepHeight == -1) return;
+        if (!this.things$stepHeightBoosted) return;
 
-        this.stepHeight = this.things$prevStepHeight;
-        this.things$prevStepHeight = -1;
+        this.things$stepHeightBoosted = false;
+        this.stepHeight -= .45f;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D", ordinal = 1), locals = LocalCapture.CAPTURE_FAILHARD)
     private void pistonCrushing(MovementType movementType, Vec3d movement, CallbackInfo ci, Vec3d vec3d) {
-        if (!((Object)this instanceof ItemEntity itemEntity)) return;
+        if (!((Object) this instanceof ItemEntity itemEntity)) return;
 
         if (movementType != MovementType.PISTON) return;
         if (vec3d.lengthSquared() != 0) return;

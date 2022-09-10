@@ -20,7 +20,7 @@ public class RiotGauntletItem extends TrinketItemWithOptionalTooltip {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 5,
-                Things.CONFIG.effectLevels.riotGauntletStrength - 1, true, false, true));
+                Things.CONFIG.effectLevels.riotGauntletStrength() - 1, true, false, true));
     }
 
 }

@@ -5,6 +5,7 @@ import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.enchantments.RetributionEnchantment;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.misc.*;
+import com.glisco.things.misc.ThingsConfig;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import dev.emi.trinkets.api.TrinketComponent;
@@ -20,15 +21,12 @@ import io.wispforest.owo.particles.systems.ParticleSystem;
 import io.wispforest.owo.particles.systems.ParticleSystemController;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
 import io.wispforest.owo.util.Maldenhagen;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantment;
@@ -61,7 +59,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final String MOD_ID = "things";
 
-    public static ThingsConfig CONFIG;
+    public static final ThingsConfig CONFIG = ThingsConfig.createAndLoad();
 
     public static final ItemGroup THINGS_GROUP = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
@@ -69,10 +67,9 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final AnAmazinglyExpensiveMistakeCriterion AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION = new AnAmazinglyExpensiveMistakeCriterion();
 
-    public static final ComponentKey<SockDataComponent> SOCK_DATA =
-            ComponentRegistry.getOrCreate(id("sock_data"), SockDataComponent.class);
+    public static final ComponentKey<SockDataComponent> SOCK_DATA = ComponentRegistry.getOrCreate(id("sock_data"), SockDataComponent.class);
 
-    public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER;
+    public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER = new ScreenHandlerType<>(DisplacementTomeScreenHandler::new);
 
     private static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> CONFIGURED_GLEAMING_ORE = ConfiguredFeatures.register("things:ore_gleaming",
             Feature.ORE, new OreFeatureConfig(List.of(
@@ -86,11 +83,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             BiomePlacementModifier.of()));
 
     public static final TagKey<Item> HARDENING_CATALYST_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("hardening_catalyst_blacklist"));
-    public static final TagKey<Item> AGLOMERATION_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("agglomeration_blacklist"));
-
-    static {
-        DISPLACEMENT_TOME_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id("displacement_tome"), DisplacementTomeScreenHandler::new);
-    }
+    public static final TagKey<Item> AGGLOMERATION_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("agglomeration_blacklist"));
+    public static final TagKey<Item> DISPLACEMENT_TOME_FUELS = TagKey.of(Registry.ITEM_KEY, id("displacement_tome_fuels"));
 
     private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
     private static Set<Item> BROKEN_WATCH_RECIPE;
@@ -103,16 +97,12 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     @Override
     public void onInitialize() {
-
-        AutoConfig.register(ThingsConfig.class, JanksonConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(ThingsConfig.class).getConfig();
-
         FieldRegistrationHandler.register(ThingsItems.class, MOD_ID, false);
         FieldRegistrationHandler.register(ThingsBlocks.class, MOD_ID, false);
 
         Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
-        if (CONFIG.generateGleamingOre) {
+        if (CONFIG.generateGleamingOre()) {
             BiomeModifications.addFeature(overworldSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
             Maldenhagen.injectCopium(ThingsBlocks.GLEAMING_ORE);
         }
@@ -127,6 +117,8 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
         Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
 
+        Registry.register(Registry.SCREEN_HANDLER, id("displacement_tome"), DISPLACEMENT_TOME_SCREEN_HANDLER);
+
         Criteria.register(AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION);
 
         ThingsNetwork.init();
@@ -135,7 +127,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
         }
 
-        ResourceConditions.register(Things.id("agglomeration_enabled"), jsonObject -> CONFIG.enableAgglomeration);
+        ResourceConditions.register(Things.id("agglomeration_enabled"), jsonObject -> CONFIG.enableAgglomeration());
 
         BROKEN_WATCH_RECIPE = ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
 

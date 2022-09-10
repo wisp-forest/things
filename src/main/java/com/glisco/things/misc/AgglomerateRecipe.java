@@ -55,7 +55,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
     private static boolean isValidItem(ItemStack stack) {
         return !stack.isEmpty() && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION) && !stack.isOf(ThingsItems.AGGLOMERATION)
                 && TrinketsApi.getTrinket(stack.getItem()) != TrinketsApi.getDefaultTrinket()
-                && !stack.isIn(Things.AGLOMERATION_BLACKLIST);
+                && !stack.isIn(Things.AGGLOMERATION_BLACKLIST);
     }
 
     @Override

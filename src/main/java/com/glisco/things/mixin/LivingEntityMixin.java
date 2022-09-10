@@ -52,7 +52,7 @@ public abstract class LivingEntityMixin {
 
         if (!TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.ENCHANTED_WAX_GLAND)) return j;
 
-        return j * Things.CONFIG.waxGlandMultiplier;
+        return j * Things.CONFIG.waxGlandMultiplier();
     }
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V"))
@@ -62,7 +62,7 @@ public abstract class LivingEntityMixin {
 
         if (TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.ENCHANTED_WAX_GLAND) && TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.HADES_CRYSTAL)) {
             int depthStrider = EnchantmentHelper.getDepthStrider(player);
-            return 0.0175f * Things.CONFIG.waxGlandMultiplier + 0.1f * depthStrider;
+            return 0.0175f * Things.CONFIG.waxGlandMultiplier() + 0.1f * depthStrider;
         }
 
         return speed;

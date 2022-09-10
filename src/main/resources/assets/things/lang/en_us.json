@@ -17,14 +17,8 @@
   "item.things.bater_wucket": "Bater Wucket",
   "item.things.ender_pouch": "Ender Pouch",
   "item.things.ender_pouch.tooltip": [
-    {
-      "text": "Press ",
-      "color": "gray"
-    },
-    {
-      "index": 0,
-      "color": "white"
-    },
+    {"text": "Press ", "color": "gray"},
+    {"index": 0, "color": "white"},
     " to open ender Chest inventory"
   ],
   "item.things.monocle": "Monocle",
@@ -34,7 +28,11 @@
   "item.things.placebo": "Placebo",
   "item.things.placebo.tooltip": "Grants a 25%% chance to not consume a potion when equipped",
   "item.things.displacement_tome": "Displacement Tome",
-  "item.things.displacement_tome.tooltip": "A fancy tool used for teleportation",
+  "item.things.displacement_tome.tooltip": "A fancy tool used for teleportation. Right click onto Ender Pearls to charge",
+  "item.things.displacement_tome.tooltip.charges": [
+    {"text": "Charges: ", "color": "gray"},
+    {"index": 0, "color": "#5800FF"}
+  ],
   "item.things.displacement_page": "Displacement Page",
   "item.things.mining_gloves": "Mining Glove",
   "item.things.mining_gloves.tooltip": "Grants permanent Haste II",
@@ -50,19 +48,16 @@
   "item.things.enchanted_wax_gland.tooltip": "Makes you float in water. And apparently also really fast",
   "item.things.item_magnet": "Item Magnet",
   "item.things.item_magnet.tooltip": [
-    "",
-    {
-      "text": "⚡ ",
-      "color": "#8000ff"
-    },
-    {
-      "text": "Charge: ",
-      "color": "gray"
-    },
-    {
-      "index": 0,
-      "color": "dark_gray"
-    }
+    {"text": "⚡ ", "color": "#8000ff"},
+    {"text": "Charge: ", "color": "gray"},
+    {"index": 0, "color": "dark_gray"}
+  ],
+  "item.things.consolation_cake.hint": "You may exchange this for a consolation cake",
+  "item.things.consolation_cake": [
+    {"italic": false, "text": ""},
+    {"text": "❤", "color": "#EB1D36"},
+    {"text": " Consolation Cake "},
+    {"text": "❤", "color": "#EB1D36"}
   ],
   "item.things.rabbit_foot_charm": "Rabbit Foot Charm",
   "item.things.rabbit_foot_charm.tooltip": "Grants permanent Jump Boost II",
@@ -94,7 +89,21 @@
   "itemGroup.things.things": "Things",
   "trinkets.slot.feet.charm": "Charm",
   "category.things.things": "Things",
-  "gui.things.displacement_tome.charges": "Charges: %1$d",
+
+  "gui.things.displacement_tome.charges": [
+    {"text": "Charges: ", "color": "gray"},
+    {"index": 0, "color": "white"}
+  ],
+  "gui.things.displacement_tome.edit_hint": "✎",
+  "gui.things.displacement_tome.create": "Create",
+  "gui.things.displacement_tome.rename": "Rename",
+  "gui.things.displacement_tome.delete": "Delete",
+  "gui.things.displacement_tome.no_pages": [
+    "",
+    {"text": "! ", "color": "yellow", "bold": true},
+    {"text": "No Displacement Pages", "color": "gray"}
+  ],
+
   "text.things.tooltip_hint": [
     {
       "text": "Hold ",
@@ -163,22 +172,22 @@
   "advancement.things.eat_agglomerated_apple.title": "Once",
   "advancement.things.eat_agglomerated_apple.description": "It nourishes you once. And now it's broken",
 
-  "text.autoconfig.things.title": "Things Config",
-  "text.autoconfig.things.option.generateGleamingOre": "Gleaming Ore Generation",
-  "text.autoconfig.things.option.appleTrinket": "Apple Trinket enabled",
-  "text.autoconfig.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
-  "text.autoconfig.things.option.infernalScepterDurability": "Infernal Scepter Durability",
-  "text.autoconfig.things.option.nerfBeaconsWithMomentum": "Nerf Beacons",
-  "text.autoconfig.things.option.renderTrinkets": "Render Trinkets",
-  "text.autoconfig.things.option.renderAppleTrinket": "Render Apple Trinket",
-  "text.autoconfig.things.option.renderAgglomerationTrinket": "Render Agglomeration Trinket",
-  "text.autoconfig.things.option.enableAgglomeration": "Enable Agglomeration",
-  "text.autoconfig.things.option.displacementTomeFuelConsumption": "Displacement Tome Fuel Consumption",
-  "text.autoconfig.things.option.sockPerLevelSpeedAmplifier": "Socks speed amplifier",
-  "text.autoconfig.things.option.makeLockedContainersUnbreakable": "Unbreakable Locked Containers",
+  "text.config.things.title": "Things Configuration",
+  "text.config.things.option.generateGleamingOre": "Gleaming Ore Generation",
+  "text.config.things.option.appleTrinket": "Apple Trinket enabled",
+  "text.config.things.option.waxGlandMultiplier": "Wax Gland Speed Multiplier",
+  "text.config.things.option.infernalScepterDurability": "Infernal Scepter Durability",
+  "text.config.things.option.nerfBeaconsWithMomentum": "Nerf Beacons",
+  "text.config.things.option.renderTrinkets": "Render Trinkets",
+  "text.config.things.option.renderAppleTrinket": "Render Apple Trinket",
+  "text.config.things.option.renderAgglomerationTrinket": "Render Agglomeration Trinket",
+  "text.config.things.option.enableAgglomeration": "Enable Agglomeration",
+  "text.config.things.option.displacementTomeFuelConsumption": "Displacement Tome Fuel Consumption",
+  "text.config.things.option.sockPerLevelSpeedAmplifier": "Socks speed amplifier",
+  "text.config.things.option.makeLockedContainersUnbreakable": "Unbreakable Locked Containers",
 
-  "text.autoconfig.things.option.effectLevels": "Trinket Status Effects",
-  "text.autoconfig.things.option.effectLevels.miningGloveMomentum": "Mining Glove Momentum Level",
-  "text.autoconfig.things.option.effectLevels.mossNecklaceRegen": "Mossy Necklace Regeneration Level",
-  "text.autoconfig.things.option.effectLevels.riotGauntletStrength": "Riot Gauntlet Strength Level"
+  "text.config.things.category.effectLevels": "Trinket Status Effects",
+  "text.config.things.option.effectLevels.miningGloveMomentum": "Mining Glove Momentum Level",
+  "text.config.things.option.effectLevels.mossNecklaceRegen": "Mossy Necklace Regeneration Level",
+  "text.config.things.option.effectLevels.riotGauntletStrength": "Riot Gauntlet Strength Level"
 }

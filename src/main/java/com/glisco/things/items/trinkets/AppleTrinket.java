@@ -42,7 +42,7 @@ public class AppleTrinket implements Trinket {
 
         @Override
         public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-            if (!Things.CONFIG.renderAppleTrinket) return;
+            if (!Things.CONFIG.renderAppleTrinket()) return;
             SimplePlayerTrinketRenderer.super.render(stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
         }
 

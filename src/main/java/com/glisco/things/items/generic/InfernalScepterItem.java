@@ -20,7 +20,7 @@ import java.util.Collections;
 public class InfernalScepterItem extends ItemWithExtendableTooltip {
 
     public InfernalScepterItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability).fireproof());
+        super(new Settings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability()).fireproof());
     }
 
     @Override

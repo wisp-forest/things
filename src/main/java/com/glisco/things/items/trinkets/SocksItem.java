@@ -75,7 +75,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         if (!(entity instanceof ServerPlayerEntity player)) return;
         int speed = stack.getOrCreateNbt().getInt(SocksItem.SPEED_KEY);
 
-        Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier * (speed + 1));
+        Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier() * (speed + 1));
         Things.SOCK_DATA.get(player).clearSockSpeed(slot.index());
     }
 

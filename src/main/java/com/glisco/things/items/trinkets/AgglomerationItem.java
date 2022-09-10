@@ -20,6 +20,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -28,7 +29,9 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +42,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
+
     private final static LoadingCache<ItemStack, StackData> CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
             .maximumSize(200)
@@ -93,6 +97,22 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         }
 
         return false;
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        var data = getDataFor(user.getStackInHand(hand));
+        for (var stack : data.subStacks) {
+            if (stack.isEmpty()) {
+                var cake = new ItemStack(Items.CAKE);
+                cake.setCustomName(Text.translatable("item.things.consolation_cake"));
+
+                user.getInventory().offerOrDrop(cake);
+                return TypedActionResult.success(ItemStack.EMPTY);
+            }
+        }
+
+        return super.use(world, user, hand);
     }
 
     @Override
@@ -188,7 +208,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     @Environment(EnvType.CLIENT)
     @Override
     public void render(ItemStack stack, SlotReference slotReference, EntityModel<? extends LivingEntity> contextModel, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, LivingEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (!Things.CONFIG.renderAgglomerationTrinket) return;
+        if (!Things.CONFIG.renderAgglomerationTrinket()) return;
 
         var data = getDataFor(stack);
 
@@ -219,6 +239,12 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
                     tooltip.add(Text.literal("  ").append(subTooltip.get(j)));
                 }
             }
+        }
+
+        for (var subStack : data.subStacks) {
+            if (!subStack.isEmpty()) continue;
+            tooltip.add(Text.empty());
+            tooltip.add(Text.translatable("item.things.consolation_cake.hint"));
         }
     }
 

@@ -31,10 +31,10 @@ public class SockDataComponent implements Component, ServerTickingComponent {
     public void updateSockSpeed(int slot, int speed) {
         if (this.sockSpeeds.get(slot) == speed) return;
 
-        this.modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier * this.sockSpeeds.get(slot));
+        this.modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier() * this.sockSpeeds.get(slot));
 
         this.sockSpeeds.put(slot, speed);
-        this.modifySpeed(Things.CONFIG.sockPerLevelSpeedAmplifier * speed);
+        this.modifySpeed(Things.CONFIG.sockPerLevelSpeedAmplifier() * speed);
     }
 
     public void modifySpeed(float amount) {

@@ -58,7 +58,7 @@ public class ThingsItems implements ItemRegistryContainer {
 
     @Override
     public void afterFieldProcessing() {
-        if (Things.CONFIG.appleTrinket) {
+        if (Things.CONFIG.appleTrinket()) {
             TrinketsApi.registerTrinket(Items.APPLE, new AppleTrinket());
             TagInjector.inject(Registry.ITEM, new Identifier("trinkets", "head/face"), Items.APPLE);
         }

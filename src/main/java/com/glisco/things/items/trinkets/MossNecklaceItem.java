@@ -36,7 +36,7 @@ public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements 
                     && player.getStatusEffect(StatusEffects.REGENERATION).getDuration() > 10) return;
 
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 610,
-                    Things.CONFIG.effectLevels.mossNecklaceRegen - 1, true, false, true));
+                    Things.CONFIG.effectLevels.mossNecklaceRegen() - 1, true, false, true));
         }
     }
 

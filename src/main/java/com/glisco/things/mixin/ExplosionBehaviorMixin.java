@@ -21,7 +21,7 @@ public class ExplosionBehaviorMixin {
 
     @Inject(method = "getBlastResistance", at = @At("HEAD"), cancellable = true)
     private void disallowBreakingLockedContainers(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, CallbackInfoReturnable<Optional<Float>> cir) {
-        if (!Things.CONFIG.makeLockedContainersUnbreakable) return;
+        if (!Things.CONFIG.makeLockedContainersUnbreakable()) return;
 
         if (!(world.getBlockEntity(pos) instanceof LockableContainerBlockEntityAccessor lockable) ||
                 ((ContainerLockAccessor) lockable.things$getLock()).things$getKey().isEmpty()) return;

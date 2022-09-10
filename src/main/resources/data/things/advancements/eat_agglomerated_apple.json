@@ -25,8 +25,5 @@
         [
             "has_agglomeration"
         ]
-    ],
-    "rewards": {
-        "function": "things:consolation"
-    }
+    ]
 }
