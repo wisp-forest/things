@@ -18,6 +18,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
 import java.util.HashSet;
@@ -34,8 +35,16 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
     }
 
     @Override
+    protected void init() {
+        this.uiAdapter = null;
+        super.init();
+    }
+
+    @Override
     @SuppressWarnings("ConstantConditions")
     protected void build(FlowLayout rootComponent) {
+        if (this.handler.getBook() == ItemStack.EMPTY) return;
+
         var bookNbt = this.handler.getBook().getOrCreateNbt();
         var buttonContainer = rootComponent.childById(FlowLayout.class, "button-container");
         var floatingAnchor = rootComponent.childById(FlowLayout.class, "floating-anchor");
