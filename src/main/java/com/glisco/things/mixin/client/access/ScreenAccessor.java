@@ -1,4 +1,4 @@
-package com.glisco.things.mixin.access;
+package com.glisco.things.mixin.client.access;
 
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
