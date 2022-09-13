@@ -2,6 +2,7 @@ package com.glisco.things.items.trinkets;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.mixin.ItemUsageContextAccessor;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -11,8 +12,12 @@ import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import io.wispforest.owo.network.ServerAccess;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -21,17 +26,19 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
@@ -51,6 +60,80 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     public AgglomerationItem() {
         super(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    }
+
+    //--------
+
+    @Override
+    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+        return getStackAndRun(stack, player, stack1 -> {
+            return stack1.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
+        });
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        return getStackAndRun(context.getStack(), context.getPlayer(), stack1 -> {
+            return stack1.useOnBlock(new ItemUsageContext(context.getWorld(), context.getPlayer(), context.getHand(), stack1, ((ItemUsageContextAccessor)context).things$getHitResult()));
+        });
+    }
+
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        return getStackAndRun(stack, user instanceof PlayerEntity player ? player : null, stack1 -> {
+            return stack1.finishUsing(world, user);
+        });
+    }
+
+    @Override
+    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+        return getStackAndRun(stack, player, stack1 -> stack1.onStackClicked(slot, clickType, player));
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return getStackAndRun(stack, attacker instanceof PlayerEntity player ? player : null, stack1 -> {
+            stack1.postHit(target, ((PlayerEntity) attacker));
+
+            return true;
+        });
+    }
+
+    @Override
+    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        return getStackAndRun(stack, miner instanceof PlayerEntity player ? player : null, stack1 -> {
+            stack1.postMine(world, state, pos, ((PlayerEntity) miner));
+
+            return true;
+        });
+    }
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        return getStackAndRun(stack, user, stack1 -> stack1.useOnEntity(user, entity, hand));
+    }
+
+    @Override
+    public boolean isUsedOnRelease(ItemStack stack) {
+        return getStackAndRun(stack, null, ItemStack::isUsedOnRelease);
+    }
+
+    //--------
+
+    public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru){
+        var data = getDataFor(stack);
+        var selectedTrinket = stack.getNbt().getByte("SelectedTrinket");
+
+        T value = methodPassthru.apply(data.subStacks.get(selectedTrinket));
+        data.updateStackIfNeeded(selectedTrinket, player);
+
+        return value;
+    }
+
+    public static void scrollSelectedStack(ItemStack stack){
+        NbtCompound nbtTag = stack.getOrCreateNbt();
+
+        nbtTag.putByte("SelectedTrinket", (byte) (nbtTag.contains("SelectedTrinket") && nbtTag.getByte("SelectedTrinket") == 0 ? 1 : 0));
     }
 
     private static StackData getDataFor(ItemStack stack) {
@@ -73,6 +156,8 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         for (ItemStack itemStack : items) {
             itemsTag.add(itemStack.writeNbt(new NbtCompound()));
         }
+
+        stack.getOrCreateNbt().putByte("SelectedTrinket", (byte) 0);
 
         return stack;
     }
@@ -234,7 +319,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             for (int j = 0; j < subTooltip.size(); j++) {
                 if (j == 0) {
-                    tooltip.add(Text.literal("• ").append(subTooltip.get(j)));
+                    tooltip.add(Text.literal(stack.hasNbt() && stack.getNbt().getByte("SelectedTrinket") == i ? "> " : "• ").append(subTooltip.get(j)));
                 } else {
                     tooltip.add(Text.literal("  ").append(subTooltip.get(j)));
                 }
@@ -287,6 +372,32 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             itemsTag.set(idx, subStacks.get(idx).writeNbt(new NbtCompound()));
 
             defensiveNbtData = stack.getNbt().copy();
+        }
+    }
+
+    public static record ScrollHandStackTrinket(boolean mainHandStack){
+
+        public static void scrollItemStack(ScrollHandStackTrinket message, ServerAccess access){
+            var stack = message.mainHandStack ? access.player().getMainHandStack() : access.player().getOffHandStack();
+
+            AgglomerationItem.scrollSelectedStack(stack);
+
+            var data = AgglomerationItem.getDataFor(stack);
+
+            //TODO: Better Solution for rendering this text similar to hover renderHeldItemTooltip()
+            access.player().sendMessageToClient(Text.literal("Selected: ")
+                    .append(Text.translatable(data.subStacks.get(stack.getOrCreateNbt().getByte("SelectedTrinket")).getTranslationKey())), true);
+        }
+    }
+
+    public static record ScrollStackFromSlotTrinket(int slotId){
+
+        public static void scrollItemStack(ScrollStackFromSlotTrinket message, ServerAccess access){
+            var stack = access.player().currentScreenHandler.getSlot(message.slotId).getStack();
+
+            if(stack == null) return;
+
+            AgglomerationItem.scrollSelectedStack(stack);
         }
     }
 }

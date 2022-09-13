@@ -67,6 +67,10 @@ dependencies {
 //    modLocalRuntime 'com.ptsmods:devlogin:2.1'
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/things.accesswidener")
+}
+
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"
