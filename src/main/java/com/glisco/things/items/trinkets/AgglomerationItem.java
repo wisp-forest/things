@@ -385,7 +385,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             var data = AgglomerationItem.getDataFor(stack);
 
             //TODO: Better Solution for rendering this text similar to hover renderHeldItemTooltip()
-            access.player().sendMessageToClient(Text.literal("Selected: ")
+            access.player().sendMessageToClient(Text.literal("> ")
                     .append(Text.translatable(data.subStacks.get(stack.getOrCreateNbt().getByte("SelectedTrinket")).getTranslationKey())), true);
         }
     }
