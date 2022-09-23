@@ -82,6 +82,8 @@ public class ThingsClient implements ClientModInitializer {
             ScreenMouseEvents.allowMouseScroll(screen).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
                 var slot = ((HandledScreenAccessor) screen1).thing$getSlotAt(mouseX, mouseY);
 
+                if(slot == null) return true;
+
                 var slotStack = slot.getStack();
                 int slotIndex = slot.id;
 
