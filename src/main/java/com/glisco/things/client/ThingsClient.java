@@ -77,7 +77,7 @@ public class ThingsClient implements ClientModInitializer {
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            if(!(screen instanceof HandledScreen)) return;
+            if(!(screen instanceof HandledScreen) || !Things.CONFIG.enableAgglomerationInvScrollSelection()) return;
 
             ScreenMouseEvents.allowMouseScroll(screen).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
                 var slot = ((HandledScreenAccessor) screen1).thing$getSlotAt(mouseX, mouseY);

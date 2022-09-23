@@ -24,7 +24,7 @@ public class MouseMixin {
     private void beforePlayerScrollHotbar(long window, double horizontal, double vertical, CallbackInfo ci, double verticalAmount, int i) {
         ClientPlayerEntity player = this.client.player;
 
-        if(!player.shouldCancelInteraction() || !Things.CONFIG.enableAgglomerationInvScrollSelection()) return;
+        if(!player.shouldCancelInteraction()) return;
 
         boolean scrollMainHandStack;
 
