@@ -10,7 +10,7 @@ group = project.maven_group
 repositories {
 
     flatDir {
-        dirs '_local_repo'
+        dirs 'owo-lib_local_repo'
     }
 
     maven { url "https://maven.shedaniel.me/" }
