@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "things:block/deepslate_glowstone_fixture"
+    },
+    "facing=up": {
+      "model": "things:block/deepslate_glowstone_fixture",
+      "x": 180
+    },
+    "facing=west": {
+      "model": "things:block/deepslate_glowstone_fixture",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east": {
+      "model": "things:block/deepslate_glowstone_fixture",
+      "x": 90,
+      "y": 270
+    },
+    "facing=south": {
+      "model": "things:block/deepslate_glowstone_fixture",
+      "x": 90
+    },
+    "facing=north": {
+      "model": "things:block/deepslate_glowstone_fixture",
+      "x": 90,
+      "y": 180
+    }
+  }
+}
