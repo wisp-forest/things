@@ -4,6 +4,6 @@
 
 This is a modification for things 1.18.2-0.2.18 fixing some issues and adding 1.19 fixes that can be ported.
 
-## Fixed in 1.18.2-0.2.19
+## Fixed in 0.2.19+1.18
 - Now using fixed version of owo-lib (0.7.3+1.18)
 - Fixed crash when generating chunks (https://github.com/wisp-forest/things/issues/41)
