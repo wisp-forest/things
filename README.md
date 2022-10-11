@@ -5,4 +5,4 @@
 This is a modification for things 1.18.2-0.2.18 fixing some issues and adding 1.19 fixes that can be ported.
 
 ## Fixed in 1.18.2-0.2.18a
-- 
+- WIP: https://github.com/wisp-forest/things/issues/41
