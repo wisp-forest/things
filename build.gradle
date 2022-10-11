@@ -8,6 +8,11 @@ version = "${project.mod_version}+${project.minecraft_base_version}"
 group = project.maven_group
 
 repositories {
+
+    flatDir {
+        dirs '_local_repo'
+    }
+
     maven { url "https://maven.shedaniel.me/" }
 
     maven { url "https://maven.wispforest.io/"}

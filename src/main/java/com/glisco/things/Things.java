@@ -19,6 +19,7 @@ import io.wispforest.owo.particles.ClientParticles;
 import io.wispforest.owo.particles.systems.ParticleSystem;
 import io.wispforest.owo.particles.systems.ParticleSystemController;
 import io.wispforest.owo.registration.reflect.FieldRegistrationHandler;
+import io.wispforest.owo.util.Maldenhagen;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
@@ -108,6 +109,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
         if (CONFIG.generateGleamingOre) {
             BiomeModifications.addFeature(notNetherOrEndSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
+            Maldenhagen.injectCopium(ThingsBlocks.GLEAMING_ORE);
         }
 
         Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
@@ -126,7 +128,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);
         }
 
-        BROKEN_WATCH_RECIPE =  ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
+        BROKEN_WATCH_RECIPE = ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
 
         if (Owo.DEBUG) {
             CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
