@@ -88,7 +88,7 @@ public class ThingsClient implements ClientModInitializer {
                 var slotStack = slot.getStack();
                 int slotId = slot.id;
 
-                //This is required due to Screen Handler Mismatch for hotbar items with a certain itemgroup open in creative
+                //This is required due to Screen Handler Mismatch for hotbar items with a given Itemgroup open in Creative Mode
                 boolean fromPlayerInv = screen1 instanceof CreativeInventoryScreen && slot.inventory instanceof PlayerInventory && slot.getIndex() < 9;
 
                 if(slot instanceof CreativeSlotAccessor creativeSlot){
