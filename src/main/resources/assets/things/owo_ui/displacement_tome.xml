@@ -1,5 +1,5 @@
 <owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/0.8/owo-ui.xsd">
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.19/owo-ui.xsd">
     <components>
         <flow-layout direction="vertical">
             <children>
@@ -15,11 +15,21 @@
                                     </margins>
                                 </label>
 
-                                <textured-button texture="things:textures/gui/displacement_tome.png" u="147" v="0" width="12" height="12" id="new-button">
+                                <button id="new-button">
                                     <text>+</text>
                                     <active>false</active>
+
+                                    <renderer>
+                                        <texture texture="things:textures/gui/displacement_tome.png" u="147" v="0" texture-width="256" texture-height="256"/>
+                                    </renderer>
+
+                                    <sizing>
+                                        <vertical method="fixed">12</vertical>
+                                        <horizontal method="fixed">12</horizontal>
+                                    </sizing>
+
                                     <positioning type="relative">100,50</positioning>
-                                </textured-button>
+                                </button>
                             </children>
 
                             <vertical-alignment>center</vertical-alignment>
@@ -73,13 +83,23 @@
         <teleport-button>
             <flow-layout direction="vertical">
                 <children>
-                    <textured-button texture="things:textures/gui/displacement_tome.png" id="teleport-button"
-                                     u="0" v="166" width="133" height="13">
+                    <button id="teleport-button">
+                        <text>+</text>
+                        <text-shadow>false</text-shadow>
+
+                        <renderer>
+                            <texture texture="things:textures/gui/displacement_tome.png" u="0" v="166" texture-width="256" texture-height="256"/>
+                        </renderer>
+
                         <margins>
                             <vertical>2</vertical>
                         </margins>
-                        <text-shadow>false</text-shadow>
-                    </textured-button>
+
+                        <sizing>
+                            <vertical method="fixed">13</vertical>
+                            <horizontal method="fixed">133</horizontal>
+                        </sizing>
+                    </button>
 
                     <label id="edit-label">
                         <text translate="true">gui.things.displacement_tome.edit_hint</text>

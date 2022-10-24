@@ -87,8 +87,8 @@ public class ThingsClient implements ClientModInitializer {
                 var slotStack = slot.getStack();
                 int slotIndex = slot.id;
 
-                if(slot instanceof CreativeInventoryScreen.CreativeSlot creativeSlot){
-                    slotIndex = ((CreativeSlotAccessor)creativeSlot).things$getSlot().id;
+                if(slot instanceof CreativeSlotAccessor creativeSlot){
+                    slotIndex = creativeSlot.things$getSlot().id;
                 }
 
                 if (slotStack.getItem() instanceof AgglomerationItem && slotStack.has(AgglomerationItem.ITEMS_KEY)) {

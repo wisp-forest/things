@@ -1,13 +1,14 @@
 package com.glisco.things.client;
 
+import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
+import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.LabelComponent;
-import io.wispforest.owo.ui.component.TexturedButtonComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Component;
@@ -30,7 +31,8 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
     private final PlayerInventory inventory;
 
     protected DisplacementTomeScreen(DisplacementTomeScreenHandler handler, PlayerInventory inventory, Text title) {
-        super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.file("../src/main/resources/assets/things/owo_ui/displacement_tome.xml"));
+//        super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.file("../src/main/resources/assets/things/owo_ui/displacement_tome.xml"));
+        super(handler, inventory, title, FlowLayout.class, BaseUIModelScreen.DataSource.asset(Things.id("displacement_tome")));
         this.inventory = inventory;
     }
 
@@ -53,11 +55,11 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
 
         var targets = new HashSet<String>();
 
-        var newButton = rootComponent.childById(TexturedButtonComponent.class, "new-button");
+        var newButton = rootComponent.childById(ButtonComponent.class, "new-button");
         newButton.active = inventory.containsAny(Set.of(ThingsItems.DISPLACEMENT_PAGE)) && bookNbt.get(DisplacementTomeItem.TARGETS).getSize() < 8;
         if (!newButton.active) newButton.tooltip(Text.translatable("gui.things.displacement_tome.no_pages"));
 
-        newButton.onPress(button -> {
+        newButton.onPress((ButtonComponent button) -> {
             var floating = this.model.expandTemplate(FlowLayout.class, "create-box", Map.of("text", ""));
             var createButton = floating.childById(ButtonWidget.class, "create-button");
             var createBox = floating.childById(TextFieldWidget.class, "text-field");
@@ -82,7 +84,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                 targets.add(target);
 
                 var teleportComponent = this.model.expandTemplate(FlowLayout.class, "teleport-button", Map.of());
-                var teleportButton = teleportComponent.childById(TexturedButtonComponent.class, "teleport-button");
+                var teleportButton = teleportComponent.childById(ButtonComponent.class, "teleport-button");
                 var editLabel = teleportComponent.childById(LabelComponent.class, "edit-label");
 
                 teleportButton.setMessage(TextOps.withColor(target, 0x0096FF));
@@ -119,7 +121,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                     return true;
                 });
 
-                teleportButton.onPress(button -> this.handler.requestTeleport(target));
+                teleportButton.onPress((ButtonComponent button) -> this.handler.requestTeleport(target));
             }
         }
     }
