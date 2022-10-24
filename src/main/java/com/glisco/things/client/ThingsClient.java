@@ -5,8 +5,11 @@ import com.glisco.things.ThingsNetwork;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
+import com.glisco.things.items.trinkets.AgglomerationItem;
 import com.glisco.things.items.trinkets.AppleTrinket;
 import com.glisco.things.items.trinkets.SocksItem;
+import com.glisco.things.mixin.client.access.CreativeSlotAccessor;
+import com.glisco.things.mixin.client.access.HandledScreenAccessor;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
@@ -15,6 +18,10 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
@@ -67,6 +74,31 @@ public class ThingsClient implements ClientModInitializer {
                 if (!Things.hasTrinket(client.player, ThingsItems.ENDER_POUCH)) return;
                 ThingsNetwork.CHANNEL.clientHandle().send(new ThingsNetwork.OpenEnderChestPacket());
             }
+        });
+
+        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if(!(screen instanceof HandledScreen) || !Things.CONFIG.enableAgglomerationInvScrollSelection()) return;
+
+            ScreenMouseEvents.allowMouseScroll(screen).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
+                var slot = ((HandledScreenAccessor) screen1).thing$getSlotAt(mouseX, mouseY);
+
+                if(slot == null) return true;
+
+                var slotStack = slot.getStack();
+                int slotIndex = slot.id;
+
+                if(slot instanceof CreativeInventoryScreen.CreativeSlot creativeSlot){
+                    slotIndex = ((CreativeSlotAccessor)creativeSlot).things$getSlot().id;
+                }
+
+                if (slotStack.getItem() instanceof AgglomerationItem && slotStack.has(AgglomerationItem.ITEMS_KEY)) {
+                    ThingsNetwork.CHANNEL.clientHandle().send(new AgglomerationItem.ScrollStackFromSlotTrinket(slotIndex));
+
+                    return false;
+                }
+
+                return true;
+            });
         });
     }
 

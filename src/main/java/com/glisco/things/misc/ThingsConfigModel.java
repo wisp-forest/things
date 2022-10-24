@@ -39,6 +39,8 @@ public class ThingsConfigModel {
 
     public boolean enableAgglomeration = true;
 
+    public boolean enableAgglomerationInvScrollSelection = true;
+
     @Comment("How many ender pearls the displacement tome uses per teleport")
     @RangeConstraint(min = 1, max = 128)
     public int displacementTomeFuelConsumption = 1;
@@ -48,9 +50,9 @@ public class ThingsConfigModel {
 
     @Nest
     @Expanded
-    public EffectLevels effectLevels = new EffectLevels();
+    public EffectLevel effectLevels = new EffectLevel();
 
-    public static class EffectLevels {
+    public static class EffectLevel {
         @RangeConstraint(min = 1, max = 16)
         public int mossNecklaceRegen = 2;
 

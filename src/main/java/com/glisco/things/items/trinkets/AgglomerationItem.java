@@ -2,6 +2,7 @@ package com.glisco.things.items.trinkets;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.mixin.ItemUsageContextAccessor;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -11,8 +12,13 @@ import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import io.wispforest.owo.nbt.NbtKey;
+import io.wispforest.owo.network.ServerAccess;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -21,17 +27,20 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtType;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,9 +48,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
+
+    public static final NbtKey<Byte> SELECTED_TRINKET_KEY = new NbtKey<>("SelectedTrinket", NbtKey.Type.BYTE);
+    public static final NbtKey<NbtList> ITEMS_KEY = new NbtKey.ListKey<>("Items", NbtKey.Type.COMPOUND);
 
     private final static LoadingCache<ItemStack, StackData> CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
@@ -51,6 +65,78 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     public AgglomerationItem() {
         super(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    }
+
+    //--------
+
+    @Override
+    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+        return getStackAndRun(stack, player, innerStack -> {
+            return innerStack.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
+        });
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        return getStackAndRun(context.getStack(), context.getPlayer(), innerStack -> {
+            return innerStack.useOnBlock(new ItemUsageContext(context.getWorld(), context.getPlayer(), context.getHand(), innerStack, ((ItemUsageContextAccessor)context).things$getHitResult()));
+        });
+    }
+
+    @Override
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+        return getStackAndRun(stack, user instanceof PlayerEntity player ? player : null, innerStack -> {
+            return innerStack.finishUsing(world, user);
+        });
+    }
+
+    @Override
+    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
+        return getStackAndRun(stack, player, innerStack -> innerStack.onStackClicked(slot, clickType, player));
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return getStackAndRun(stack, attacker instanceof PlayerEntity player ? player : null, innerStack -> {
+            innerStack.postHit(target, ((PlayerEntity) attacker));
+
+            return true;
+        });
+    }
+
+    @Override
+    public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
+        return getStackAndRun(stack, miner instanceof PlayerEntity player ? player : null, innerStack -> {
+            innerStack.postMine(world, state, pos, ((PlayerEntity) miner));
+
+            return true;
+        });
+    }
+
+    @Override
+    public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+        return getStackAndRun(stack, user, innerStack -> innerStack.useOnEntity(user, entity, hand));
+    }
+
+    @Override
+    public boolean isUsedOnRelease(ItemStack stack) {
+        return getStackAndRun(stack, null, ItemStack::isUsedOnRelease);
+    }
+
+    //--------
+
+    public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru){
+        var data = getDataFor(stack);
+        var selectedTrinket = stack.get(SELECTED_TRINKET_KEY);
+
+        T value = methodPassthru.apply(data.subStacks.get(selectedTrinket));
+        data.updateStackIfNeeded(selectedTrinket, player);
+
+        return value;
+    }
+
+    public static void scrollSelectedStack(ItemStack stack){
+        stack.put(SELECTED_TRINKET_KEY, (byte) (stack.has(SELECTED_TRINKET_KEY) && stack.get(SELECTED_TRINKET_KEY) == 0 ? 1 : 0));
     }
 
     private static StackData getDataFor(ItemStack stack) {
@@ -68,11 +154,13 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         ItemStack stack = new ItemStack(ThingsItems.AGGLOMERATION, 1);
 
         NbtList itemsTag = new NbtList();
-        stack.getOrCreateNbt().put("Items", itemsTag);
+        stack.put(ITEMS_KEY, itemsTag);
 
         for (ItemStack itemStack : items) {
             itemsTag.add(itemStack.writeNbt(new NbtCompound()));
         }
+
+        stack.put(SELECTED_TRINKET_KEY, (byte) 0);
 
         return stack;
     }
@@ -234,7 +322,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             for (int j = 0; j < subTooltip.size(); j++) {
                 if (j == 0) {
-                    tooltip.add(Text.literal("• ").append(subTooltip.get(j)));
+                    tooltip.add(Text.literal(stack.hasNbt() && stack.get(SELECTED_TRINKET_KEY) == i ? "> " : "• ").append(subTooltip.get(j)));
                 } else {
                     tooltip.add(Text.literal("  ").append(subTooltip.get(j)));
                 }
@@ -260,7 +348,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             if (stack.hasNbt()) {
                 this.defensiveNbtData = stack.getNbt().copy();
 
-                var itemsTag = stack.getNbt().getList("Items", NbtElement.COMPOUND_TYPE);
+                var itemsTag = stack.get(ITEMS_KEY);
 
                 for (int i = 0; i < itemsTag.size(); i++) {
                     ItemStack subStack = ItemStack.fromNbt(itemsTag.getCompound(i));
@@ -283,10 +371,35 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             defensiveCopies.set(idx, subStacks.get(idx).copy());
 
-            var itemsTag = stack.getNbt().getList("Items", NbtElement.COMPOUND_TYPE);
+            var itemsTag = stack.get(ITEMS_KEY);
             itemsTag.set(idx, subStacks.get(idx).writeNbt(new NbtCompound()));
 
             defensiveNbtData = stack.getNbt().copy();
+        }
+    }
+
+    public static record ScrollHandStackTrinket(boolean mainHandStack){
+
+        public static void scrollItemStack(ScrollHandStackTrinket message, ServerAccess access){
+            var stack = message.mainHandStack ? access.player().getMainHandStack() : access.player().getOffHandStack();
+
+            AgglomerationItem.scrollSelectedStack(stack);
+
+            var data = AgglomerationItem.getDataFor(stack);
+
+            access.player().sendMessageToClient(Text.literal("> ")
+                    .append(Text.translatable(data.subStacks.get(stack.get(SELECTED_TRINKET_KEY)).getTranslationKey())), true);
+        }
+    }
+
+    public static record ScrollStackFromSlotTrinket(int slotId){
+
+        public static void scrollItemStack(ScrollStackFromSlotTrinket message, ServerAccess access){
+            var stack = access.player().currentScreenHandler.getSlot(message.slotId).getStack();
+
+            if(stack == null) return;
+
+            AgglomerationItem.scrollSelectedStack(stack);
         }
     }
 }

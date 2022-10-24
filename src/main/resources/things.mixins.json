@@ -14,6 +14,7 @@
     "EnchantmentHelperMixin",
     "EntityMixin",
     "ExplosionBehaviorMixin",
+    "ItemUsageContextAccessor",
     "LivingEntityMixin",
     "PlayerEntityMixin",
     "PotionItemMixin",
@@ -26,7 +27,10 @@
     "trinkets.LivingEntityTrinketComponentMixin"
   ],
   "client": [
-    "access.ScreenAccessor"
+    "client.access.CreativeSlotAccessor",
+    "client.access.HandledScreenAccessor",
+    "client.MouseMixin",
+    "client.access.ScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

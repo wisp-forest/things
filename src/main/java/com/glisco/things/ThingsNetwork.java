@@ -4,6 +4,7 @@ import com.glisco.things.blocks.PlacedItemBlockEntity;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.client.DisplacementTomeScreen;
 import com.glisco.things.items.ThingsItems;
+import com.glisco.things.items.trinkets.AgglomerationItem;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.wispforest.owo.network.OwoNetChannel;
@@ -81,6 +82,9 @@ public class ThingsNetwork {
             ((PlacedItemBlockEntity) world.getBlockEntity(pos)).setItem(ItemOps.singleCopy(stack));
             stack.decrement(1);
         });
+
+        CHANNEL.registerServerbound(AgglomerationItem.ScrollHandStackTrinket.class, AgglomerationItem.ScrollHandStackTrinket::scrollItemStack);
+        CHANNEL.registerServerbound(AgglomerationItem.ScrollStackFromSlotTrinket.class, AgglomerationItem.ScrollStackFromSlotTrinket::scrollItemStack);
     }
 
 
