@@ -11,7 +11,4 @@ public interface HandledScreenAccessor {
 
     @Invoker("getSlotAt")
     Slot thing$getSlotAt(double x, double y);
-
-    @Accessor("focusedSlot")
-    Slot thing$getFocusedSlot();
 }

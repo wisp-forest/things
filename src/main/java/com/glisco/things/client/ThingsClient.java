@@ -91,7 +91,7 @@ public class ThingsClient implements ClientModInitializer {
                     slotIndex = ((CreativeSlotAccessor)creativeSlot).things$getSlot().id;
                 }
 
-                if (slotStack.getItem() instanceof AgglomerationItem && slotStack.getOrCreateNbt().contains("Items")) {
+                if (slotStack.getItem() instanceof AgglomerationItem && slotStack.has(AgglomerationItem.ITEMS_KEY)) {
                     ThingsNetwork.CHANNEL.clientHandle().send(new AgglomerationItem.ScrollStackFromSlotTrinket(slotIndex));
 
                     return false;

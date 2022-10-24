@@ -12,6 +12,7 @@ import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
+import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.network.ServerAccess;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,6 +35,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -52,6 +54,9 @@ import java.util.function.Predicate;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
+    public static final NbtKey<Byte> SELECTED_TRINKET_KEY = new NbtKey<>("SelectedTrinket", NbtKey.Type.BYTE);
+    public static final NbtKey<NbtList> ITEMS_KEY = new NbtKey.ListKey<>("Items", NbtKey.Type.COMPOUND);
+
     private final static LoadingCache<ItemStack, StackData> CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
             .maximumSize(200)
@@ -66,8 +71,8 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        return getStackAndRun(stack, player, stack1 -> {
-            return stack1.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
+        return getStackAndRun(stack, player, innerStack -> {
+            return innerStack.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
         });
     }
 
@@ -122,7 +127,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru){
         var data = getDataFor(stack);
-        var selectedTrinket = stack.getNbt().getByte("SelectedTrinket");
+        var selectedTrinket = stack.get(SELECTED_TRINKET_KEY);
 
         T value = methodPassthru.apply(data.subStacks.get(selectedTrinket));
         data.updateStackIfNeeded(selectedTrinket, player);
@@ -131,9 +136,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     }
 
     public static void scrollSelectedStack(ItemStack stack){
-        NbtCompound nbtTag = stack.getOrCreateNbt();
-
-        nbtTag.putByte("SelectedTrinket", (byte) (nbtTag.contains("SelectedTrinket") && nbtTag.getByte("SelectedTrinket") == 0 ? 1 : 0));
+        stack.put(SELECTED_TRINKET_KEY, (byte) (stack.has(SELECTED_TRINKET_KEY) && stack.get(SELECTED_TRINKET_KEY) == 0 ? 1 : 0));
     }
 
     private static StackData getDataFor(ItemStack stack) {
@@ -151,13 +154,13 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         ItemStack stack = new ItemStack(ThingsItems.AGGLOMERATION, 1);
 
         NbtList itemsTag = new NbtList();
-        stack.getOrCreateNbt().put("Items", itemsTag);
+        stack.put(ITEMS_KEY, itemsTag);
 
         for (ItemStack itemStack : items) {
             itemsTag.add(itemStack.writeNbt(new NbtCompound()));
         }
 
-        stack.getOrCreateNbt().putByte("SelectedTrinket", (byte) 0);
+        stack.put(SELECTED_TRINKET_KEY, (byte) 0);
 
         return stack;
     }
@@ -319,7 +322,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             for (int j = 0; j < subTooltip.size(); j++) {
                 if (j == 0) {
-                    tooltip.add(Text.literal(stack.hasNbt() && stack.getNbt().getByte("SelectedTrinket") == i ? "> " : "• ").append(subTooltip.get(j)));
+                    tooltip.add(Text.literal(stack.hasNbt() && stack.get(SELECTED_TRINKET_KEY) == i ? "> " : "• ").append(subTooltip.get(j)));
                 } else {
                     tooltip.add(Text.literal("  ").append(subTooltip.get(j)));
                 }
@@ -345,7 +348,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             if (stack.hasNbt()) {
                 this.defensiveNbtData = stack.getNbt().copy();
 
-                var itemsTag = stack.getNbt().getList("Items", NbtElement.COMPOUND_TYPE);
+                var itemsTag = stack.get(ITEMS_KEY);
 
                 for (int i = 0; i < itemsTag.size(); i++) {
                     ItemStack subStack = ItemStack.fromNbt(itemsTag.getCompound(i));
@@ -368,7 +371,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             defensiveCopies.set(idx, subStacks.get(idx).copy());
 
-            var itemsTag = stack.getNbt().getList("Items", NbtElement.COMPOUND_TYPE);
+            var itemsTag = stack.get(ITEMS_KEY);
             itemsTag.set(idx, subStacks.get(idx).writeNbt(new NbtCompound()));
 
             defensiveNbtData = stack.getNbt().copy();
@@ -384,9 +387,8 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
             var data = AgglomerationItem.getDataFor(stack);
 
-            //TODO: Better Solution for rendering this text similar to hover renderHeldItemTooltip()
             access.player().sendMessageToClient(Text.literal("> ")
-                    .append(Text.translatable(data.subStacks.get(stack.getOrCreateNbt().getByte("SelectedTrinket")).getTranslationKey())), true);
+                    .append(Text.translatable(data.subStacks.get(stack.get(SELECTED_TRINKET_KEY)).getTranslationKey())), true);
         }
     }
 

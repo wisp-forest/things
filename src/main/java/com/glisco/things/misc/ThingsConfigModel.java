@@ -50,9 +50,9 @@ public class ThingsConfigModel {
 
     @Nest
     @Expanded
-    public EffectLevels effectLevels = new EffectLevels();
+    public EffectLevel effectLevels = new EffectLevel();
 
-    public static class EffectLevels {
+    public static class EffectLevel {
         @RangeConstraint(min = 1, max = 16)
         public int mossNecklaceRegen = 2;
 
