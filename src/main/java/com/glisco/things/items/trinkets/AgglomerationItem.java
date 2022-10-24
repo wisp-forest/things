@@ -78,27 +78,27 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        return getStackAndRun(context.getStack(), context.getPlayer(), stack1 -> {
-            return stack1.useOnBlock(new ItemUsageContext(context.getWorld(), context.getPlayer(), context.getHand(), stack1, ((ItemUsageContextAccessor)context).things$getHitResult()));
+        return getStackAndRun(context.getStack(), context.getPlayer(), innerStack -> {
+            return innerStack.useOnBlock(new ItemUsageContext(context.getWorld(), context.getPlayer(), context.getHand(), innerStack, ((ItemUsageContextAccessor)context).things$getHitResult()));
         });
     }
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        return getStackAndRun(stack, user instanceof PlayerEntity player ? player : null, stack1 -> {
-            return stack1.finishUsing(world, user);
+        return getStackAndRun(stack, user instanceof PlayerEntity player ? player : null, innerStack -> {
+            return innerStack.finishUsing(world, user);
         });
     }
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        return getStackAndRun(stack, player, stack1 -> stack1.onStackClicked(slot, clickType, player));
+        return getStackAndRun(stack, player, innerStack -> innerStack.onStackClicked(slot, clickType, player));
     }
 
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return getStackAndRun(stack, attacker instanceof PlayerEntity player ? player : null, stack1 -> {
-            stack1.postHit(target, ((PlayerEntity) attacker));
+        return getStackAndRun(stack, attacker instanceof PlayerEntity player ? player : null, innerStack -> {
+            innerStack.postHit(target, ((PlayerEntity) attacker));
 
             return true;
         });
@@ -106,8 +106,8 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
-        return getStackAndRun(stack, miner instanceof PlayerEntity player ? player : null, stack1 -> {
-            stack1.postMine(world, state, pos, ((PlayerEntity) miner));
+        return getStackAndRun(stack, miner instanceof PlayerEntity player ? player : null, innerStack -> {
+            innerStack.postMine(world, state, pos, ((PlayerEntity) miner));
 
             return true;
         });
@@ -115,7 +115,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        return getStackAndRun(stack, user, stack1 -> stack1.useOnEntity(user, entity, hand));
+        return getStackAndRun(stack, user, innerStack -> innerStack.useOnEntity(user, entity, hand));
     }
 
     @Override
