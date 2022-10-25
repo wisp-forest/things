@@ -25,6 +25,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -85,14 +86,17 @@ public class ThingsClient implements ClientModInitializer {
                 if(slot == null) return true;
 
                 var slotStack = slot.getStack();
-                int slotIndex = slot.id;
+                int slotId = slot.id;
+
+                //This is required due to Screen Handler Mismatch for hotbar items with a given Itemgroup open in Creative Mode
+                boolean fromPlayerInv = screen1 instanceof CreativeInventoryScreen && slot.inventory instanceof PlayerInventory && slot.getIndex() < 9;
 
                 if(slot instanceof CreativeSlotAccessor creativeSlot){
-                    slotIndex = creativeSlot.things$getSlot().id;
+                    slotId = creativeSlot.things$getSlot().id;
                 }
 
                 if (slotStack.getItem() instanceof AgglomerationItem && slotStack.has(AgglomerationItem.ITEMS_KEY)) {
-                    ThingsNetwork.CHANNEL.clientHandle().send(new AgglomerationItem.ScrollStackFromSlotTrinket(slotIndex));
+                    ThingsNetwork.CHANNEL.clientHandle().send(new AgglomerationItem.ScrollStackFromSlotTrinket(fromPlayerInv, fromPlayerInv ? slot.getIndex() : slotId));
 
                     return false;
                 }

@@ -16,8 +16,6 @@ import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.network.ServerAccess;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -35,7 +33,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -48,7 +45,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -392,10 +388,12 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
         }
     }
 
-    public static record ScrollStackFromSlotTrinket(int slotId){
+    public static record ScrollStackFromSlotTrinket(boolean fromPlayerInv, int slotId){
 
         public static void scrollItemStack(ScrollStackFromSlotTrinket message, ServerAccess access){
-            var stack = access.player().currentScreenHandler.getSlot(message.slotId).getStack();
+            var stack = message.fromPlayerInv
+                    ? access.player().getInventory().getStack(message.slotId)
+                    : access.player().currentScreenHandler.getSlot(message.slotId).getStack();
 
             if(stack == null) return;
 
