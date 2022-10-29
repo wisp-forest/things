@@ -1,12 +1,12 @@
 package com.glisco.things.client;
 
 import com.glisco.things.Things;
+import com.glisco.things.ThingsNetwork;
 import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
 import com.glisco.things.items.trinkets.AppleTrinket;
 import com.glisco.things.items.trinkets.SocksItem;
-import com.glisco.things.ThingsNetwork;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;

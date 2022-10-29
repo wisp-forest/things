@@ -1,9 +1,10 @@
 package com.glisco.things.misc;
 
 import com.glisco.things.Things;
+import com.glisco.things.ThingsNetwork;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.generic.DisplacementTomeItem;
-import com.glisco.things.ThingsNetwork;
+import io.wispforest.owo.client.screens.ScreenUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -101,9 +102,14 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
         return true;
     }
 
-    public static final record UpdateClientPacket(ItemStack tome) {}
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        return ScreenUtils.handleSlotTransfer(this, index, 0);
+    }
 
-    public static final record ActionPacket(Action action, String data) {
+    public record UpdateClientPacket(ItemStack tome) {}
+
+    public record ActionPacket(Action action, String data) {
         public enum Action {TELEPORT, DELETE_POINT, RENAME_POINT, CREATE_POINT}
 
         public static ActionPacket teleport(String where) {
