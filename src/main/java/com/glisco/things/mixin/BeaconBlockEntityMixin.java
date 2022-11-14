@@ -19,7 +19,7 @@ import java.util.List;
 @Mixin(BeaconBlockEntity.class)
 public class BeaconBlockEntityMixin {
 
-    @Inject(method = "applyPlayerEffects", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;hasNext()Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "applyPlayerEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void nerfHaste(World world, BlockPos pos, int beaconLevel, StatusEffect primaryEffect, StatusEffect secondaryEffect, CallbackInfo ci, double d, int i, int j, Box box, List<PlayerEntity> list) {
         if (!Things.CONFIG.nerfBeaconsWithMomentum() || secondaryEffect != StatusEffects.HASTE) return;
         list.removeIf(playerEntity -> playerEntity.hasStatusEffect(Things.MOMENTUM));
