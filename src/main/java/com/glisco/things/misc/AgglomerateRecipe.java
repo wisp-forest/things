@@ -25,6 +25,13 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inventory, World world) {
+        int totalItems = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.getStack(i).isEmpty()) continue;
+            totalItems++;
+        }
+        if (totalItems != 3) return false;
+
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.EMPTY_AGGLOMERATION))) return false;
 
         ItemStack firstStack = matchOne(inventory, AgglomerateRecipe::isValidItem);
