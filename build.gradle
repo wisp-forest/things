@@ -14,7 +14,7 @@ repositories {
 
     maven { url "https://maven.terraformersmc.com/"}
 
-    maven { url = "https://ladysnake.jfrog.io/artifactory/mods" }
+    maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
 
     maven { url 'https://maven.blamejared.com' }
 
@@ -23,7 +23,7 @@ repositories {
     maven {
         url 'https://api.modrinth.com/maven'
         content {
-            includeGroup "modrinth.maven"
+            includeGroup "maven.modrinth"
         }
     }
 
@@ -33,9 +33,6 @@ repositories {
             includeGroup "com.jamieswhiteshirt"
         }
     }
-
-    mavenLocal()
-    mavenCentral()
 }
 
 dependencies {
@@ -62,7 +59,7 @@ dependencies {
 
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attrs_version}")
 
-    modCompileOnly "com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}"
+    modCompileOnly "com.github.CrimsonDawn45:Fabric-Shield-Lib:${project.fabric_shield_lib_version}"
 
 //    modLocalRuntime 'com.ptsmods:devlogin:2.1'
 }
