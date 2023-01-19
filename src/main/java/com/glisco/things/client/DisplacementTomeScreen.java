@@ -9,13 +9,13 @@ import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.LabelComponent;
+import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.CursorStyle;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.util.UISounds;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -61,7 +61,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
 
         newButton.onPress((ButtonComponent button) -> {
             var floating = this.model.expandTemplate(FlowLayout.class, "create-box", Map.of("text", ""));
-            var createButton = floating.childById(ButtonWidget.class, "create-button");
+            var createButton = floating.childById(ButtonComponent.class, "create-button");
             var createBox = floating.childById(TextFieldWidget.class, "text-field");
 
             createBox.setChangedListener(s -> createButton.active = !s.isBlank() && !targets.contains(s));
@@ -108,9 +108,9 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                     var floating = this.model.expandTemplate(FlowLayout.class, "edit-box", Map.of("text", target));
                     var editBox = floating.childById(TextFieldWidget.class, "text-field");
 
-                    var renameButton = floating.childById(ButtonWidget.class, "rename-button");
+                    var renameButton = floating.childById(ButtonComponent.class, "rename-button");
                     renameButton.onPress(b -> this.handler.renamePoint(target + ":" + editBox.getText()));
-                    floating.childById(ButtonWidget.class, "delete-button").onPress(b -> this.handler.deletePoint(target));
+                    floating.childById(ButtonComponent.class, "delete-button").onPress(b -> this.handler.deletePoint(target));
 
                     editBox.setChangedListener(s -> renameButton.active = !s.isBlank() && !targets.contains(s));
 
@@ -124,6 +124,14 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                 teleportButton.onPress((ButtonComponent button) -> this.handler.requestTeleport(target));
             }
         }
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        // TODO remove this once owo with a fix is out
+        return this.uiAdapter.rootComponent.focusHandler().focused() instanceof TextBoxComponent inputTextField
+                ? inputTextField.onKeyPress(keyCode, scanCode, modifiers)
+                : super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void clearAnchor(FlowLayout layout) {
