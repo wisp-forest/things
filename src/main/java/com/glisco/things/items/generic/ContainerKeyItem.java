@@ -4,6 +4,7 @@ import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.mixin.access.ContainerLockAccessor;
 import com.glisco.things.mixin.access.LockableContainerBlockEntityAccessor;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -31,7 +32,7 @@ import java.util.List;
 public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
     public ContainerKeyItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override

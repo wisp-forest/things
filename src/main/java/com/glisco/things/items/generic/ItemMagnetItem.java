@@ -1,6 +1,7 @@
 package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.particles.ClientParticles;
 import net.fabricmc.api.EnvType;
@@ -21,9 +22,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ItemMagnetItem extends Item {
     private final NbtKey<Integer> CHARGE = new NbtKey<>("Charge", NbtKey.Type.INT);
 
     public ItemMagnetItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ItemMagnetItem extends Item {
 
             if (world.isClient) {
                 blue = !blue;
-                var particle = new DustParticleEffect(new Vec3f(blue ? 0.5f : 1, 0, blue ? 1 : 0.5f), 1);
+                var particle = new DustParticleEffect(new Vector3f(blue ? 0.5f : 1, 0, blue ? 1 : 0.5f), 1);
                 world.addParticle(particle, result.getPos().x, result.getPos().y, result.getPos().z, 0, 0, 0);
 
                 if (i > 9.5) {

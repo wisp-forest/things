@@ -2,6 +2,7 @@ package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
 import com.glisco.things.items.ItemWithExtendableTooltip;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -20,7 +21,7 @@ import java.util.Collections;
 public class InfernalScepterItem extends ItemWithExtendableTooltip {
 
     public InfernalScepterItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability()).fireproof());
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1).maxDamage(Things.CONFIG.infernalScepterDurability()).fireproof());
     }
 
     @Override

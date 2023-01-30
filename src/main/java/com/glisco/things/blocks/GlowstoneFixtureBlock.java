@@ -6,13 +6,12 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Properties;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
@@ -20,6 +19,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
+import org.joml.Vector3f;
 
 @SuppressWarnings("deprecation")
 public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable {
@@ -89,10 +89,11 @@ public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable 
         double y = center.getY() + facing.getOffsetY() * .35f;
         double z = center.getZ() + facing.getOffsetZ() * .35f;
 
-        world.addParticle(new DustParticleEffect(new Vec3f(1, 1, 1), 1),
+        world.addParticle(new DustParticleEffect(new Vector3f(1, 1, 1), 1),
                 x, y, z, 0, 0, 0);
     }
 
+    @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
         Direction direction = state.get(FACING);
         BlockPos blockPos = pos.offset(direction);
@@ -100,9 +101,10 @@ public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable 
         return blockState.isSideSolidFullSquare(world, blockPos, direction.getOpposite());
     }
 
+    @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
         if (state.get(Properties.WATERLOGGED)) {
-            world.createAndScheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
         return direction == state.get(FACING) && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : state;

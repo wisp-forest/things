@@ -10,17 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
-import net.minecraft.tag.TagKey;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class AgglomerateRecipe extends SpecialCraftingRecipe {
-    public AgglomerateRecipe(Identifier id) {
-        super(id);
+    public AgglomerateRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
 
         TrinketsApi.getPlayerSlots().forEach((groupName, slotGroup) -> {
             slotGroup.getSlots().forEach((slotName, slotType) -> {
-                if (firstStack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("trinkets", groupName + "/" + slotName)))) {
+                if (firstStack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("trinkets", groupName + "/" + slotName)))) {
                     firstValidSlots.add(slotType);
                 }
             });
@@ -50,7 +51,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
         return matchOnce(inventory, stack -> {
             boolean anyCompatibleSlot = false;
             for (var slotType : firstValidSlots) {
-                if (stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("trinkets", slotType.getGroup() + "/" + slotType.getName())))) {
+                if (stack.isIn(TagKey.of(RegistryKeys.ITEM, new Identifier("trinkets", slotType.getGroup() + "/" + slotType.getName())))) {
                     anyCompatibleSlot = true;
                 }
             }

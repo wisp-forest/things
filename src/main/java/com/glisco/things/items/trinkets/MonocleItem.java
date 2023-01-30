@@ -5,6 +5,7 @@ import com.glisco.things.client.SimplePlayerTrinketRenderer;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.client.TrinketRenderer;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -15,12 +16,12 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class MonocleItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public MonocleItem() {
-        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
+        super(new OwoItemSettings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override
@@ -42,7 +43,7 @@ public class MonocleItem extends TrinketItemWithOptionalTooltip implements Simpl
     public void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToFace(matrices, model, player, headYaw, headPitch);
 
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
         matrices.scale(.5f, .5f, .5f);
         matrices.translate(.25, -.215, -.05f);
     }

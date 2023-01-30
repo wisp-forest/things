@@ -1,6 +1,7 @@
 package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +24,7 @@ import java.util.Optional;
 public class RecallPotionItem extends Item {
 
     public RecallPotionItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(16));
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(16));
     }
 
     @Override

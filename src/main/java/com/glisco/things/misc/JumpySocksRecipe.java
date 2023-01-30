@@ -8,6 +8,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -15,8 +16,8 @@ import java.util.function.Predicate;
 
 public class JumpySocksRecipe extends SpecialCraftingRecipe {
 
-    public JumpySocksRecipe(Identifier id) {
-        super(id);
+    public JumpySocksRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
 
     @Override

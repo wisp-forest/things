@@ -9,7 +9,6 @@ import io.wispforest.owo.ui.base.BaseUIModelHandledScreen;
 import io.wispforest.owo.ui.base.BaseUIModelScreen;
 import io.wispforest.owo.ui.component.ButtonComponent;
 import io.wispforest.owo.ui.component.LabelComponent;
-import io.wispforest.owo.ui.component.TextBoxComponent;
 import io.wispforest.owo.ui.container.FlowLayout;
 import io.wispforest.owo.ui.core.Color;
 import io.wispforest.owo.ui.core.Component;
@@ -100,7 +99,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                 editLabel.mouseDown().subscribe((mouseX, mouseY, button) -> {
                     UISounds.playInteractionSound();
 
-                    if (floatingAnchor.children().size() != 0 && floatingAnchor.positioning().get().y == teleportButton.y) {
+                    if (floatingAnchor.children().size() != 0 && floatingAnchor.positioning().get().y == teleportButton.y()) {
                         this.clearAnchor(floatingAnchor);
                         return true;
                     }
@@ -115,7 +114,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                     editBox.setChangedListener(s -> renameButton.active = !s.isBlank() && !targets.contains(s));
 
                     this.clearAnchor(floatingAnchor);
-                    floatingAnchor.positioning(Positioning.absolute(teleportButton.x + teleportButton.width() + 10, teleportButton.y));
+                    floatingAnchor.positioning(Positioning.absolute(teleportButton.x() + teleportButton.width() + 10, teleportButton.y()));
                     floatingAnchor.child(floating);
 
                     return true;
@@ -124,14 +123,6 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
                 teleportButton.onPress((ButtonComponent button) -> this.handler.requestTeleport(target));
             }
         }
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        // TODO remove this once owo with a fix is out
-        return this.uiAdapter.rootComponent.focusHandler().focused() instanceof TextBoxComponent inputTextField
-                ? inputTextField.onKeyPress(keyCode, scanCode, modifiers)
-                : super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     private void clearAnchor(FlowLayout layout) {

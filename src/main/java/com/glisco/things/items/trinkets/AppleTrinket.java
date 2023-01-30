@@ -19,7 +19,7 @@ import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class AppleTrinket implements Trinket {
 
@@ -50,7 +50,7 @@ public class AppleTrinket implements Trinket {
         public void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
             TrinketRenderer.translateToFace(matrices, model, player, headYaw, headPitch);
 
-            matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
             matrices.translate(0, -.1, -.03);
         }
     }

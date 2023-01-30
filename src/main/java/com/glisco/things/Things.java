@@ -16,6 +16,8 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import io.wispforest.owo.Owo;
+import io.wispforest.owo.itemgroup.Icon;
+import io.wispforest.owo.itemgroup.OwoItemGroup;
 import io.wispforest.owo.particles.ClientParticles;
 import io.wispforest.owo.particles.systems.ParticleSystem;
 import io.wispforest.owo.particles.systems.ParticleSystemController;
@@ -24,7 +26,6 @@ import io.wispforest.owo.util.Maldenhagen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.fabricmc.loader.api.FabricLoader;
@@ -32,23 +33,21 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.tag.BiomeTags;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import net.minecraft.world.gen.feature.PlacedFeature;
 
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -61,7 +60,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final ThingsConfig CONFIG = ThingsConfig.createAndLoad();
 
-    public static final ItemGroup THINGS_GROUP = FabricItemGroupBuilder.build(new Identifier("things", "things"), () -> new ItemStack(ThingsItems.BATER_WUCKET));
+    public static final OwoItemGroup THINGS_GROUP = OwoItemGroup.builder(new Identifier("things", "things"), () -> Icon.of(ThingsItems.BATER_WUCKET)).build();
     public static final Enchantment RETRIBUTION = new RetributionEnchantment();
     public static final StatusEffect MOMENTUM = new MomentumStatusEffect();
 
@@ -71,20 +70,11 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER = new ScreenHandlerType<>(DisplacementTomeScreenHandler::new);
 
-    private static final RegistryEntry<ConfiguredFeature<OreFeatureConfig, ?>> CONFIGURED_GLEAMING_ORE = ConfiguredFeatures.register("things:ore_gleaming",
-            Feature.ORE, new OreFeatureConfig(List.of(
-                    OreFeatureConfig.createTarget(OreConfiguredFeatures.STONE_ORE_REPLACEABLES, ThingsBlocks.GLEAMING_ORE.getDefaultState()),
-                    OreFeatureConfig.createTarget(OreConfiguredFeatures.DEEPSLATE_ORE_REPLACEABLES, ThingsBlocks.DEEPSLATE_GLEAMING_ORE.getDefaultState())),
-                    3));
+    private static final RegistryKey<PlacedFeature> GLEAMING_ORE = RegistryKey.of(RegistryKeys.PLACED_FEATURE, id("ore_gleaming"));
 
-    private static final RegistryEntry<PlacedFeature> GLEAMING_ORE = PlacedFeatures.register("things:ore_gleaming", CONFIGURED_GLEAMING_ORE, List.of(CountPlacementModifier.of(3),
-            SquarePlacementModifier.of(),
-            HeightRangePlacementModifier.uniform(YOffset.fixed(-15), YOffset.fixed(15)),
-            BiomePlacementModifier.of()));
-
-    public static final TagKey<Item> HARDENING_CATALYST_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("hardening_catalyst_blacklist"));
-    public static final TagKey<Item> AGGLOMERATION_BLACKLIST = TagKey.of(Registry.ITEM_KEY, id("agglomeration_blacklist"));
-    public static final TagKey<Item> DISPLACEMENT_TOME_FUELS = TagKey.of(Registry.ITEM_KEY, id("displacement_tome_fuels"));
+    public static final TagKey<Item> HARDENING_CATALYST_BLACKLIST = TagKey.of(RegistryKeys.ITEM, id("hardening_catalyst_blacklist"));
+    public static final TagKey<Item> AGGLOMERATION_BLACKLIST = TagKey.of(RegistryKeys.ITEM, id("agglomeration_blacklist"));
+    public static final TagKey<Item> DISPLACEMENT_TOME_FUELS = TagKey.of(RegistryKeys.ITEM, id("displacement_tome_fuels"));
 
     private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
     private static Set<Item> BROKEN_WATCH_RECIPE;
@@ -100,28 +90,29 @@ public class Things implements ModInitializer, EntityComponentInitializer {
         FieldRegistrationHandler.register(ThingsItems.class, MOD_ID, false);
         FieldRegistrationHandler.register(ThingsBlocks.class, MOD_ID, false);
 
-        Registry.register(Registry.ENCHANTMENT, id("retribution"), RETRIBUTION);
+        Registry.register(Registries.ENCHANTMENT, id("retribution"), RETRIBUTION);
 
         if (CONFIG.generateGleamingOre()) {
-            BiomeModifications.addFeature(overworldSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE.getKey().get());
+            BiomeModifications.addFeature(overworldSelector(), GenerationStep.Feature.UNDERGROUND_ORES, GLEAMING_ORE);
             Maldenhagen.injectCopium(ThingsBlocks.GLEAMING_ORE);
         }
 
-        Registry.register(Registry.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
-        Registry.register(Registry.RECIPE_SERIALIZER, id("sock_upgrade_crafting"), SockUpgradeRecipe.Serializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, id("sock_upgrade_crafting"), SockUpgradeRecipe.Type.INSTANCE);
+        Registry.register(Registries.RECIPE_SERIALIZER, id("sock_upgrade_crafting"), SockUpgradeRecipe.Serializer.INSTANCE);
 
-        Registry.register(Registry.RECIPE_TYPE, id("jumpy_sock_crafting"), JumpySocksRecipe.Type.INSTANCE);
-        Registry.register(Registry.RECIPE_SERIALIZER, id("jumpy_sock_crafting"), JumpySocksRecipe.Serializer.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, id("jumpy_sock_crafting"), JumpySocksRecipe.Type.INSTANCE);
+        Registry.register(Registries.RECIPE_SERIALIZER, id("jumpy_sock_crafting"), JumpySocksRecipe.Serializer.INSTANCE);
 
-        Registry.register(Registry.RECIPE_SERIALIZER, id("agglomerate"), AgglomerateRecipe.Serializer.INSTANCE);
+        Registry.register(Registries.RECIPE_SERIALIZER, id("agglomerate"), AgglomerateRecipe.Serializer.INSTANCE);
 
-        Registry.register(Registry.STATUS_EFFECT, id("momentum"), MOMENTUM);
+        Registry.register(Registries.STATUS_EFFECT, id("momentum"), MOMENTUM);
 
-        Registry.register(Registry.SCREEN_HANDLER, id("displacement_tome"), DISPLACEMENT_TOME_SCREEN_HANDLER);
+        Registry.register(Registries.SCREEN_HANDLER, id("displacement_tome"), DISPLACEMENT_TOME_SCREEN_HANDLER);
 
         Criteria.register(AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION);
 
         ThingsNetwork.init();
+        THINGS_GROUP.initialize();
 
         if (FabricLoader.getInstance().isModLoaded("fabricshieldlib")) {
             SHIELD_PREDICATE = SHIELD_PREDICATE.or(item -> item instanceof FabricShield);

@@ -7,6 +7,7 @@ import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -15,12 +16,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implements SimplePlayerTrinketRenderer {
 
     public EnchantedWaxGlandItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     @Override
@@ -43,8 +44,8 @@ public class EnchantedWaxGlandItem extends TrinketItemWithOptionalTooltip implem
     @Environment(EnvType.CLIENT)
     public void align(AbstractClientPlayerEntity player, PlayerEntityModel<AbstractClientPlayerEntity> model, MatrixStack matrices, float headYaw, float headPitch) {
         TrinketRenderer.translateToChest(matrices, model, player);
-        matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
-        matrices.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
         matrices.scale(.5f, .5f, .5f);
         matrices.translate(0, -.6, .585);
     }

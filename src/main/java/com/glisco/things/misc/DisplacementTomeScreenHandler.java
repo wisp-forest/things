@@ -114,13 +114,13 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     @Override
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (!(player instanceof ServerPlayerEntity)) {
-            player.playSound(SoundEvents.UI_BUTTON_CLICK, 1, 1);
+            player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 1, 1);
         }
         return true;
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         return ScreenUtils.handleSlotTransfer(this, index, 0);
     }
 

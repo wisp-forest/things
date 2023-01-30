@@ -4,6 +4,7 @@ import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.client.item.TooltipContext;
@@ -29,7 +30,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
     public static final String SPEED_KEY = "Speed";
 
     public SocksItem() {
-        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
+        super(new OwoItemSettings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     public static ItemStack create(int speed, boolean jumpy) {

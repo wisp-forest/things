@@ -5,6 +5,7 @@ import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import com.google.common.collect.Multimap;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
 import dev.emi.trinkets.api.SlotReference;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -17,7 +18,7 @@ public class ArmExtenderItem extends TrinketItemWithOptionalTooltip {
     private static final UUID ATTACK_DISTANCE_MODIFIER_ID = UUID.fromString("DABEB32B-FAC1-48BA-A48D-A31B3B449FA2");
 
     public ArmExtenderItem() {
-        super(new Settings().maxCount(1).group(Things.THINGS_GROUP));
+        super(new OwoItemSettings().maxCount(1).group(Things.THINGS_GROUP));
     }
 
     @Override

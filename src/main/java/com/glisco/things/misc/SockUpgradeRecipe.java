@@ -10,6 +10,7 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.SpecialRecipeSerializer;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -17,8 +18,8 @@ import java.util.function.Predicate;
 
 public class SockUpgradeRecipe extends SpecialCraftingRecipe {
 
-    public SockUpgradeRecipe(Identifier id) {
-        super(id);
+    public SockUpgradeRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
 
     @Override

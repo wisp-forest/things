@@ -4,15 +4,18 @@ import com.glisco.things.Things;
 import com.glisco.things.ThingsNetwork;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.WorldOps;
+import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.UnclampedModelPredicateProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,8 +28,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +39,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
     public static final NbtKey<NbtCompound> TARGETS = new NbtKey<>("Targets", NbtKey.Type.COMPOUND);
 
     public DisplacementTomeItem() {
-        super(new Settings().group(Things.THINGS_GROUP).maxCount(1));
+        super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
     }
 
     public static void storeTeleportTargetInBook(ItemStack stack, Target target, String name, boolean replaceIfExisting) {
@@ -132,16 +133,16 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
             var nbt = compound.getCompound(key);
             return new Target(
                     BlockPos.fromLong(nbt.getLong("Pos")),
-                    RegistryKey.of(Registry.WORLD_KEY, new Identifier(nbt.getString("World"))),
+                    RegistryKey.of(RegistryKeys.WORLD, new Identifier(nbt.getString("World"))),
                     nbt.getFloat("HeadYaw"),
                     nbt.getFloat("HeadPitch")
             );
         }
     }
 
-    public static class PredicateProvider implements UnclampedModelPredicateProvider {
+    public static class PredicateProvider implements ClampedModelPredicateProvider {
         @Override
-        public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
+        public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
             int size = stack.get(TARGETS).getSize();
             if (size == 0) {
                 return 0;
@@ -150,6 +151,11 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
             } else {
                 return 2;
             }
+        }
+
+        @Override
+        public float unclampedCall(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
+            throw new AssertionError("respectfully, get fucked");
         }
     }
 }

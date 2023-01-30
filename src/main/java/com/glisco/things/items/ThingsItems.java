@@ -5,6 +5,7 @@ import com.glisco.things.items.generic.*;
 import com.glisco.things.items.trinkets.*;
 import com.glisco.things.mixin.access.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import io.wispforest.owo.util.TagInjector;
@@ -12,11 +13,11 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +36,7 @@ public class ThingsItems implements ItemRegistryContainer {
     public static final Item MOSS_NECKLACE = new MossNecklaceItem();
     public static final Item PLACEBO = new PlaceboItem();
     public static final Item DISPLACEMENT_TOME = new DisplacementTomeItem();
-    public static final Item DISPLACEMENT_PAGE = new Item(new Item.Settings().group(Things.THINGS_GROUP).maxCount(8));
+    public static final Item DISPLACEMENT_PAGE = new Item(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(8));
     public static final Item MINING_GLOVES = new MiningGlovesItem();
     public static final Item RIOT_GAUNTLET = new RiotGauntletItem();
     public static final Item INFERNAL_SCEPTER = new InfernalScepterItem();
@@ -60,7 +61,7 @@ public class ThingsItems implements ItemRegistryContainer {
     public void afterFieldProcessing() {
         if (Things.CONFIG.appleTrinket()) {
             TrinketsApi.registerTrinket(Items.APPLE, new AppleTrinket());
-            TagInjector.inject(Registry.ITEM, new Identifier("trinkets", "head/face"), Items.APPLE);
+            TagInjector.inject(Registries.ITEM, new Identifier("trinkets", "head/face"), Items.APPLE);
         }
 
         BaterWucketItem.registerCauldronBehavior();
@@ -70,7 +71,7 @@ public class ThingsItems implements ItemRegistryContainer {
 
     private static final class GleamingItem extends Item {
         public GleamingItem() {
-            super(new Settings().group(Things.THINGS_GROUP).rarity(Rarity.UNCOMMON));
+            super(new OwoItemSettings().group(Things.THINGS_GROUP).rarity(Rarity.UNCOMMON));
         }
 
         @Override
@@ -81,7 +82,7 @@ public class ThingsItems implements ItemRegistryContainer {
 
     private static final class HardeningCatalystItem extends ItemWithExtendableTooltip {
         public HardeningCatalystItem() {
-            super(new Item.Settings().group(Things.THINGS_GROUP).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
+            super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1).rarity(Rarity.UNCOMMON).fireproof());
         }
 
         @Override
@@ -92,7 +93,7 @@ public class ThingsItems implements ItemRegistryContainer {
 
     private static final class EmptyAgglomerationItem extends ItemWithExtendableTooltip {
         public EmptyAgglomerationItem() {
-            super(new Item.Settings().group(Things.THINGS_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
+            super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
         }
     }
 }
