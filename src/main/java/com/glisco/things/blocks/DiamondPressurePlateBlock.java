@@ -1,13 +1,13 @@
 package com.glisco.things.blocks;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.PressurePlateBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -17,7 +17,9 @@ import java.util.List;
 public class DiamondPressurePlateBlock extends PressurePlateBlock {
 
     protected DiamondPressurePlateBlock() {
-        super(ActivationRule.MOBS, FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).mapColor(MapColor.DIAMOND_BLUE), SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON);
+        super(ActivationRule.MOBS,
+                FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).mapColor(MapColor.DIAMOND_BLUE),
+                BlockSetType.IRON);
     }
 
     @Override

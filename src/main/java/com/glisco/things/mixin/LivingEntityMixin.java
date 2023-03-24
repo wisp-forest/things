@@ -6,11 +6,13 @@ import com.glisco.things.misc.ExtendedStatusEffectInstance;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin extends Entity {
+
+    public LivingEntityMixin(EntityType<?> type, World world) {
+        super(type, world);
+    }
 
     @Inject(method = "takeShieldHit", at = @At("HEAD"))
     public void onShieldHit(LivingEntity attacker, CallbackInfo ci) {
@@ -80,7 +86,7 @@ public abstract class LivingEntityMixin {
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private float decreaseKineticDamage(DamageSource source, float damage) {
-        if (source != DamageSource.FLY_INTO_WALL)
+        if (source.getType() != this.world.getDamageSources().flyIntoWall().getType())
             return damage;
 
         if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
@@ -92,18 +98,18 @@ public abstract class LivingEntityMixin {
 
     @ModifyArg(method = "readCustomDataFromNbt", at = @At(value = "INVOKE", target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), index = 1)
     private Object attachPlayerToEffect(Object effect) {
-        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity) (Object) this);
 
         return effect;
     }
 
     @Inject(method = "onStatusEffectApplied", at = @At("HEAD"))
     private void attachPlayerToEffect(StatusEffectInstance effect, Entity source, CallbackInfo ci) {
-        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity) (Object) this);
     }
 
     @Inject(method = "onStatusEffectUpgraded", at = @At("HEAD"))
     private void attachPlayerToEffect(StatusEffectInstance effect, boolean reapplyEffect, Entity source, CallbackInfo ci) {
-        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity)(Object) this);
+        ((ExtendedStatusEffectInstance) effect).things$setAttachedEntity((LivingEntity) (Object) this);
     }
 }

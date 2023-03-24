@@ -43,6 +43,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.GenerationStep;
@@ -68,7 +69,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static final ComponentKey<SockDataComponent> SOCK_DATA = ComponentRegistry.getOrCreate(id("sock_data"), SockDataComponent.class);
 
-    public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER = new ScreenHandlerType<>(DisplacementTomeScreenHandler::new);
+    public static final ScreenHandlerType<DisplacementTomeScreenHandler> DISPLACEMENT_TOME_SCREEN_HANDLER = new ScreenHandlerType<>(DisplacementTomeScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
 
     private static final RegistryKey<PlacedFeature> GLEAMING_ORE = RegistryKey.of(RegistryKeys.PLACED_FEATURE, id("ore_gleaming"));
 

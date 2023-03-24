@@ -8,7 +8,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -63,7 +63,7 @@ public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<Placed
         }
         matrixStack.scale(scaleFactor, scaleFactor, scaleFactor);
         matrixStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90f));
-        MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformation.Mode.FIXED, false, matrixStack, vertexConsumers, light, OverlayTexture.DEFAULT_UV, itemModel);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(item, ModelTransformationMode.FIXED, false, matrixStack, vertexConsumers, light, OverlayTexture.DEFAULT_UV, itemModel);
         matrixStack.pop();
     }
 }
