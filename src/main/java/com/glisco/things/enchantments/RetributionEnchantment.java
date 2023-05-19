@@ -28,11 +28,6 @@ public class RetributionEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return Things.isShield(stack.getItem());
     }

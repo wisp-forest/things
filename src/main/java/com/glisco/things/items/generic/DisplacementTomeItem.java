@@ -106,7 +106,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("item.things.displacement_tome.tooltip.charges", stack.get(FUEL)));
+        tooltip.add(Text.translatable("item.things.displacement_tome.tooltip.charges", stack.getOr(FUEL, 0)));
         super.appendTooltip(stack, world, tooltip, context);
     }
 

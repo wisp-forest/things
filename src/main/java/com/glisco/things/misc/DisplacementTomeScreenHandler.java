@@ -19,7 +19,6 @@ import net.minecraft.util.Hand;
 public class DisplacementTomeScreenHandler extends ScreenHandler {
 
     private ItemStack book;
-    private PlayerEntity player;
 
     public DisplacementTomeScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, ItemStack.EMPTY);
@@ -28,7 +27,6 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     public DisplacementTomeScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack book) {
         super(Things.DISPLACEMENT_TOME_SCREEN_HANDLER, syncId);
         this.book = book;
-        this.player = playerInventory.player;
     }
 
     @Override
@@ -46,11 +44,11 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public void requestTeleport(String location) {
-        if (this.player instanceof ServerPlayerEntity) {
+        if (this.player() instanceof ServerPlayerEntity serverPlayer) {
             int currentFuel = book.getOrCreateNbt().contains("Fuel") ? book.getOrCreateNbt().getInt("Fuel") : 0;
 
             if (currentFuel < Things.CONFIG.displacementTomeFuelConsumption()) {
-                player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
+                serverPlayer.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1, 0);
                 return;
             }
 
@@ -61,20 +59,20 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
             book.getOrCreateNbt().putInt("Fuel", currentFuel);
 
             DisplacementTomeItem.Target target = DisplacementTomeItem.Target.get(bookTargetsTag, location);
-            target.teleportPlayer((ServerPlayerEntity) player);
-            player.world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
-            player.closeHandledScreen();
+            target.teleportPlayer(serverPlayer);
+            serverPlayer.world.playSound(null, serverPlayer.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
+            serverPlayer.closeHandledScreen();
         } else {
             ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.teleport(location));
         }
     }
 
     public void addPoint(String name) {
-        if (this.player instanceof ServerPlayerEntity) {
+        if (this.player() instanceof ServerPlayerEntity player) {
             player.getInventory().getStack(player.getInventory().getSlotWithStack(new ItemStack(ThingsItems.DISPLACEMENT_PAGE))).decrement(1);
             sendContentUpdates();
             DisplacementTomeItem.storeTeleportTargetInBook(book,
-                    DisplacementTomeItem.Target.fromPlayer((ServerPlayerEntity) player), name, false);
+                    DisplacementTomeItem.Target.fromPlayer(player), name, false);
             updateClient();
         } else {
             ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.create(name));
@@ -82,7 +80,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public boolean deletePoint(String name) {
-        if (this.player instanceof ServerPlayerEntity) {
+        if (this.player() instanceof ServerPlayerEntity) {
             boolean result = DisplacementTomeItem.deletePoint(book, name);
             updateClient();
             return result;
@@ -93,7 +91,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     public boolean renamePoint(String data) {
-        if (this.player instanceof ServerPlayerEntity) {
+        if (this.player() instanceof ServerPlayerEntity) {
             boolean result = DisplacementTomeItem.rename(book, data);
             updateClient();
             return result;
@@ -104,7 +102,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
     }
 
     private void updateClient() {
-        ThingsNetwork.CHANNEL.serverHandle(player).send(new UpdateClientPacket(book));
+        ThingsNetwork.CHANNEL.serverHandle(this.player()).send(new UpdateClientPacket(book));
     }
 
     public ItemStack getBook() {

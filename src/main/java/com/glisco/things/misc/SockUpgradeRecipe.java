@@ -28,7 +28,7 @@ public class SockUpgradeRecipe extends SpecialCraftingRecipe {
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.GLEAMING_POWDER))) return false;
         if (!matchOnce(inventory, stack -> PotionUtil.getPotion(stack) == Potions.STRONG_SWIFTNESS)) return false;
 
-        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && stack.getOrCreateNbt().getInt(SocksItem.SPEED_KEY) < 2);
+        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && stack.getOr(SocksItem.SPEED_KEY, 0) < 2);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SockUpgradeRecipe extends SpecialCraftingRecipe {
         if (socc == null) return ItemStack.EMPTY;
 
         final var soccNbt = socc.getOrCreateNbt();
-        soccNbt.putInt(SocksItem.SPEED_KEY, soccNbt.getInt(SocksItem.SPEED_KEY) + 1);
+        soccNbt.mutate(SocksItem.SPEED_KEY, speed -> speed + 1);
 
         return socc;
     }

@@ -26,7 +26,7 @@ public class JumpySocksRecipe extends SpecialCraftingRecipe {
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.GLEAMING_COMPOUND))) return false;
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.RABBIT_FOOT_CHARM))) return false;
 
-        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && !stack.getOrCreateNbt().getBoolean(SocksItem.JUMPY_KEY));
+        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && !stack.getOr(SocksItem.JUMPY_KEY, false));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class JumpySocksRecipe extends SpecialCraftingRecipe {
         if (socc == null) return ItemStack.EMPTY;
 
         final var soccNbt = socc.getOrCreateNbt();
-        soccNbt.putBoolean(SocksItem.JUMPY_KEY, true);
+        soccNbt.put(SocksItem.JUMPY_KEY, true);
 
         return socc;
     }

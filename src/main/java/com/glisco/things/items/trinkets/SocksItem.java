@@ -5,6 +5,7 @@ import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.client.item.TooltipContext;
@@ -25,9 +26,9 @@ import java.util.List;
 
 public class SocksItem extends TrinketItemWithOptionalTooltip {
 
-    public static final String JUMPY_KEY = "Jumpy";
-    public static final String JUMP_BOOST_TOGGLE_KEY = "JumpBoostDisabled";
-    public static final String SPEED_KEY = "Speed";
+    public static final NbtKey<Boolean> JUMPY_KEY = new NbtKey<>("Jumpy", NbtKey.Type.BOOLEAN);
+    public static final NbtKey<Boolean> JUMP_BOOST_TOGGLE_KEY = new NbtKey<>("JumpBoostDisabled", NbtKey.Type.BOOLEAN);
+    public static final NbtKey<Integer> SPEED_KEY = new NbtKey<>("Speed", NbtKey.Type.INT);
 
     public SocksItem() {
         super(new OwoItemSettings().maxCount(1).group(Things.THINGS_GROUP));
@@ -35,8 +36,8 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
 
     public static ItemStack create(int speed, boolean jumpy) {
         var stack = new ItemStack(ThingsItems.SOCKS);
-        stack.getOrCreateNbt().putInt(SocksItem.SPEED_KEY, speed);
-        stack.getOrCreateNbt().putBoolean(SocksItem.JUMPY_KEY, jumpy);
+        stack.put(SocksItem.SPEED_KEY, speed);
+        stack.put(SocksItem.JUMPY_KEY, jumpy);
         return stack;
     }
 
@@ -47,13 +48,13 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         final var sockData = Things.SOCK_DATA.get(player);
         final var nbt = stack.getOrCreateNbt();
 
-        sockData.jumpySocksEquipped = nbt.getBoolean(JUMPY_KEY);
+        sockData.jumpySocksEquipped = nbt.get(JUMPY_KEY);
         if (player.world.isClient) return;
 
         if (player.isSneaking() && player.isSprinting()) {
             sockData.sneakTicks++;
             if (sockData.sneakTicks >= 20) {
-                nbt.putBoolean(JUMP_BOOST_TOGGLE_KEY, !nbt.getBoolean(JUMP_BOOST_TOGGLE_KEY));
+                nbt.mutate(JUMP_BOOST_TOGGLE_KEY, enabled -> !enabled);
                 sockData.sneakTicks = 0;
 
                 WorldOps.playSound(player.world, player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
@@ -63,9 +64,9 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
             sockData.sneakTicks = 0;
         }
 
-        sockData.updateSockSpeed(slotRef.index(), nbt.getInt(SPEED_KEY) + 1);
+        sockData.updateSockSpeed(slotRef.index(), nbt.get(SPEED_KEY) + 1);
 
-        if (!sockData.jumpySocksEquipped || nbt.getBoolean(JUMP_BOOST_TOGGLE_KEY)) return;
+        if (!sockData.jumpySocksEquipped || nbt.get(JUMP_BOOST_TOGGLE_KEY)) return;
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 5, 1, true, false, true));
     }
 
@@ -74,7 +75,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         Things.SOCK_DATA.get(entity).jumpySocksEquipped = false;
 
         if (!(entity instanceof ServerPlayerEntity player)) return;
-        int speed = stack.getOrCreateNbt().getInt(SocksItem.SPEED_KEY);
+        int speed = stack.getOr(SPEED_KEY, 0);
 
         Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier() * (speed + 1));
         Things.SOCK_DATA.get(player).clearSockSpeed(slot.index());
@@ -82,14 +83,12 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        var soccNbt = stack.getOrCreateNbt();
-
-        if (soccNbt.getBoolean(JUMPY_KEY)) {
-            tooltip.add(TextOps.withColor("↑ ", soccNbt.getBoolean(JUMP_BOOST_TOGGLE_KEY) ? TextOps.color(Formatting.GRAY) : 0x34d49c)
+        if (stack.getOr(JUMPY_KEY, false)) {
+            tooltip.add(TextOps.withColor("↑ ", stack.getOr(JUMP_BOOST_TOGGLE_KEY, false) ? TextOps.color(Formatting.GRAY) : 0x34d49c)
                     .append(TextOps.translateWithColor("item.things.socks.jumpy", TextOps.color(Formatting.GRAY))));
         }
 
-        int speed = soccNbt.getInt(SocksItem.SPEED_KEY);
+        int speed = stack.getOr(SocksItem.SPEED_KEY, 0);
         if (speed < 3) {
             tooltip.add(TextOps.withColor("☄ ", 0x34b1d4)
                     .append(TextOps.translateWithColor("item.things.socks.speed_" + speed, TextOps.color(Formatting.GRAY))));

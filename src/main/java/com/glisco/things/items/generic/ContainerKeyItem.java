@@ -5,6 +5,7 @@ import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.mixin.access.ContainerLockAccessor;
 import com.glisco.things.mixin.access.LockableContainerBlockEntityAccessor;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import io.wispforest.owo.nbt.NbtKey;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -16,7 +17,6 @@ import net.minecraft.inventory.ContainerLock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.MutableText;
@@ -30,6 +30,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ContainerKeyItem extends ItemWithExtendableTooltip {
+
+    private static final NbtKey<Integer> LOCK_KEY = new NbtKey<>("Lock", NbtKey.Type.INT);
 
     public ContainerKeyItem() {
         super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
@@ -51,14 +53,14 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
         String existingLock = getExistingLock(world, pos);
 
         if (existingLock.isEmpty()) {
-            setLock((LockableContainerBlockEntity) world.getBlockEntity(pos), String.valueOf(stack.getNbt().getInt("Lock")));
+            setLock((LockableContainerBlockEntity) world.getBlockEntity(pos), String.valueOf(stack.get(LOCK_KEY)));
 
             if (world.isClient) {
                 sendLockedState(context, true);
             }
 
             return ActionResult.SUCCESS;
-        } else if (existingLock.equals(String.valueOf(stack.getNbt().getInt("Lock")))) {
+        } else if (existingLock.equals(String.valueOf(stack.get(LOCK_KEY)))) {
             setLock((LockableContainerBlockEntity) world.getBlockEntity(pos), "");
 
             if (world.isClient) {
@@ -87,17 +89,16 @@ public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        var nbt = stack.getOrCreateNbt();
-        if (nbt.contains("Lock", NbtElement.INT_TYPE)) {
-            tooltip.add(Text.literal("§9Key: §7#" + Integer.toHexString(nbt.getInt("Lock"))));
+        if (stack.has(LOCK_KEY)) {
+            tooltip.add(Text.literal("§9Key: §7#" + Integer.toHexString(stack.get(LOCK_KEY))));
         }
 
         super.appendTooltip(stack, world, tooltip, context);
     }
 
     private static void createKey(ItemStack stack, Random random) {
-        if (stack.getOrCreateNbt().contains("Lock")) return;
-        stack.getOrCreateNbt().putInt("Lock", random.nextInt(200000));
+        if (stack.has(LOCK_KEY)) return;
+        stack.put(LOCK_KEY, random.nextInt(200000));
     }
 
     private static String getExistingLock(World world, BlockPos pos) {
