@@ -5,8 +5,10 @@ import com.glisco.things.items.generic.*;
 import com.glisco.things.items.trinkets.*;
 import com.glisco.things.mixin.access.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;
+import io.wispforest.lavender.book.BookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.ops.TextOps;
+import io.wispforest.owo.registration.annotations.IterationIgnored;
 import io.wispforest.owo.registration.reflect.ItemRegistryContainer;
 import io.wispforest.owo.util.TagInjector;
 import net.minecraft.client.item.TooltipContext;
@@ -26,7 +28,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ThingsItems implements ItemRegistryContainer {
 
-    public static final Item THINGS_ALMANAC = new ThingsAlmanacItem();
+    @IterationIgnored
+    public static final Item THINGS_ALMANAC = BookItem.registerForBook(Things.id("almanac"), Things.id("things_almanac"), new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
 
     public static final Item RECALL_POTION = new RecallPotionItem();
     public static final Item CONTAINER_KEY = new ContainerKeyItem();

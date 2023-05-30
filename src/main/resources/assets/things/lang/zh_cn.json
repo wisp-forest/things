@@ -1,6 +1,5 @@
 {
   "item.things.things_almanac": "杂七杂八的手册",
-  "item.things.guide_book.landing": "关于$(thing)『杂七杂八的东西』$()的杂七杂八的手册",
 
   "block.things.stone_glowstone_fixture": "石制萤石灯具",
   "block.things.quartz_glowstone_fixture": "石英制萤石灯具",

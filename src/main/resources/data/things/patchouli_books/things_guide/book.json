@@ -1,9 +1,0 @@
-{
-  "name": "item.things.things_almanac",
-  "landing_text": "item.things.guide_book.landing",
-  "version": 3,
-  "book_texture": "patchouli:textures/gui/book_blue.png",
-  "show_progress": false,
-  "dont_generate_book": true,
-  "custom_book_item": "things:things_almanac"
-}
