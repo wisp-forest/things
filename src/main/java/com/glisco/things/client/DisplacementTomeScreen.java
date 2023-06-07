@@ -15,6 +15,7 @@ import io.wispforest.owo.ui.core.Component;
 import io.wispforest.owo.ui.core.CursorStyle;
 import io.wispforest.owo.ui.core.Positioning;
 import io.wispforest.owo.ui.util.UISounds;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -136,5 +137,5 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
     }
 
     @Override
-    protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {}
+    protected void drawForeground(DrawContext context, int mouseX, int mouseY) {}
 }

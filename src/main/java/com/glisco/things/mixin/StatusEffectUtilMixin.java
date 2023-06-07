@@ -42,7 +42,7 @@ public class StatusEffectUtilMixin {
         return i;
     }
 
-    @ModifyVariable(method = "durationToString", at = @At(value = "HEAD"), argsOnly = true)
+    @ModifyVariable(method = "getDurationText", at = @At(value = "HEAD"), argsOnly = true)
     private static float extendTime(float multiplier, StatusEffectInstance instance, float unused) {
         var entity = ((ExtendedStatusEffectInstance) instance).things$getAttachedEntity();
         if (entity != null && Things.hasTrinket(entity, ThingsItems.BROKEN_WATCH)) {

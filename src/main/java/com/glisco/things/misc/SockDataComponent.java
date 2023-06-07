@@ -86,7 +86,7 @@ public class SockDataComponent implements Component, ServerTickingComponent {
 
     @Override
     public void serverTick() {
-        final var playerWorld = this.bearer.world.getRegistryKey();
+        final var playerWorld = this.bearer.getWorld().getRegistryKey();
         if (this.lastWorld == null) {
             this.lastWorld = playerWorld;
         } else if (playerWorld != this.lastWorld) {

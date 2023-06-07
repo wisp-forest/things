@@ -35,7 +35,7 @@ public class PlacedItemBlock extends BlockWithEntity {
     private final VoxelShape EMPTY_SHAPE = Block.createCuboidShape(0, 0, 0, 0, 0, 0);
 
     public PlacedItemBlock() {
-        super(FabricBlockSettings.of(Material.AIR).nonOpaque().hardness(-1).sounds(BlockSoundGroup.METAL));
+        super(FabricBlockSettings.create().nonOpaque().hardness(-1).sounds(BlockSoundGroup.METAL));
     }
 
     @Nullable

@@ -29,9 +29,9 @@ public class MossNecklaceItem extends TrinketItemWithOptionalTooltip implements 
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         if (!(entity instanceof ServerPlayerEntity player)) return;
 
-        int daytime = (int) player.world.getTimeOfDay() % 24000;
-        if (player.world.getLightLevel(LightType.BLOCK, player.getBlockPos()) > 7 ||
-                (player.world.getLightLevel(LightType.SKY, player.getBlockPos()) > 7 && (daytime > 23500 || daytime < 12500))) {
+        int daytime = (int) player.getWorld().getTimeOfDay() % 24000;
+        if (player.getWorld().getLightLevel(LightType.BLOCK, player.getBlockPos()) > 7 ||
+                (player.getWorld().getLightLevel(LightType.SKY, player.getBlockPos()) > 7 && (daytime > 23500 || daytime < 12500))) {
 
             if (player.getStatusEffect(StatusEffects.REGENERATION) != null
                     && player.getStatusEffect(StatusEffects.REGENERATION).getDuration() > 10) return;

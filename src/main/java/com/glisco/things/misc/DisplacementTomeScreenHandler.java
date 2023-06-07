@@ -60,7 +60,7 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
 
             DisplacementTomeItem.Target target = DisplacementTomeItem.Target.get(bookTargetsTag, location);
             target.teleportPlayer(serverPlayer);
-            serverPlayer.world.playSound(null, serverPlayer.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
+            serverPlayer.getWorld().playSound(null, serverPlayer.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
             serverPlayer.closeHandledScreen();
         } else {
             ThingsNetwork.CHANNEL.clientHandle().send(ActionPacket.teleport(location));

@@ -47,7 +47,7 @@ public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable 
     private static final VoxelShape SHAPE_EAST = VoxelShapes.union(BASE_EAST, GLOWSTONE_EAST);
 
     public GlowstoneFixtureBlock() {
-        super(FabricBlockSettings.of(Material.STONE).nonOpaque().luminance(15).requiresTool().hardness(1));
+        super(FabricBlockSettings.create().nonOpaque().luminance(15).requiresTool().hardness(1));
         this.setDefaultState(this.getDefaultState().with(Properties.WATERLOGGED, false));
     }
 

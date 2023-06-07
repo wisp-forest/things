@@ -28,7 +28,7 @@ public interface SimplePlayerTrinketRenderer extends TrinketRenderer {
 
         align(player, (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, matrices, headYaw, headPitch);
 
-        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.world, 0);
+        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.GROUND, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 0);
     }
 
     @Environment(EnvType.CLIENT)

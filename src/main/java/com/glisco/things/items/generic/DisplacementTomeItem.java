@@ -117,7 +117,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
         }
 
         public static Target fromPlayer(ServerPlayerEntity player) {
-            return new Target(player.getBlockPos(), player.world.getRegistryKey(), player.headYaw, player.getPitch());
+            return new Target(player.getBlockPos(), player.getWorld().getRegistryKey(), player.headYaw, player.getPitch());
         }
 
         public void put(NbtCompound compound, String key) {

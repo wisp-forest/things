@@ -5,18 +5,13 @@ import com.google.gson.JsonObject;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class AnAmazinglyExpensiveMistakeCriterion extends AbstractCriterion<AnAmazinglyExpensiveMistakeCriterion.Conditions> {
 
     private static final Identifier ID = Things.id("an_amazingly_expensive_mistake");
-
-    @Override
-    protected Conditions conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        return new Conditions();
-    }
 
     @Override
     public Identifier getId() {
@@ -27,9 +22,14 @@ public class AnAmazinglyExpensiveMistakeCriterion extends AbstractCriterion<AnAm
         this.trigger(player, conditions -> true);
     }
 
+    @Override
+    protected Conditions conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+        return new Conditions();
+    }
+
     public static class Conditions extends AbstractCriterionConditions {
         public Conditions() {
-            super(ID, EntityPredicate.Extended.EMPTY);
+            super(ID, LootContextPredicate.EMPTY);
         }
     }
 }

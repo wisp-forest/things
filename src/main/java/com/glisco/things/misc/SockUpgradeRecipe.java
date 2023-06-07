@@ -3,6 +3,7 @@ package com.glisco.things.misc;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.SocksItem;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
@@ -24,7 +25,7 @@ public class SockUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inventory, World world) {
+    public boolean matches(RecipeInputInventory inventory, World world) {
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.GLEAMING_POWDER))) return false;
         if (!matchOnce(inventory, stack -> PotionUtil.getPotion(stack) == Potions.STRONG_SWIFTNESS)) return false;
 
@@ -32,7 +33,7 @@ public class SockUpgradeRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inventory, DynamicRegistryManager drm) {
+    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager drm) {
         ItemStack socc = null;
 
         for (int i = 0; i < inventory.size(); i++) {
@@ -51,7 +52,7 @@ public class SockUpgradeRecipe extends SpecialCraftingRecipe {
         return socc;
     }
 
-    private static boolean matchOnce(CraftingInventory inventory, Predicate<ItemStack> condition) {
+    private static boolean matchOnce(RecipeInputInventory inventory, Predicate<ItemStack> condition) {
         boolean found = false;
 
         for (int i = 0; i < inventory.size(); i++) {

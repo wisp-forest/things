@@ -49,7 +49,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         final var nbt = stack.getOrCreateNbt();
 
         sockData.jumpySocksEquipped = nbt.get(JUMPY_KEY);
-        if (player.world.isClient) return;
+        if (player.getWorld().isClient) return;
 
         if (player.isSneaking() && player.isSprinting()) {
             sockData.sneakTicks++;
@@ -57,8 +57,8 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
                 nbt.mutate(JUMP_BOOST_TOGGLE_KEY, enabled -> !enabled);
                 sockData.sneakTicks = 0;
 
-                WorldOps.playSound(player.world, player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
-                Things.TOGGLE_JUMP_BOOST_PARTICLES.spawn(player.world, player.getPos());
+                WorldOps.playSound(player.getWorld(), player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
+                Things.TOGGLE_JUMP_BOOST_PARTICLES.spawn(player.getWorld(), player.getPos());
             }
         } else {
             sockData.sneakTicks = 0;

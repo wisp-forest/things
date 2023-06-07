@@ -86,7 +86,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private float decreaseKineticDamage(DamageSource source, float damage) {
-        if (source.getType() != this.world.getDamageSources().flyIntoWall().getType())
+        if (source.getType() != this.getWorld().getDamageSources().flyIntoWall().getType())
             return damage;
 
         if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {

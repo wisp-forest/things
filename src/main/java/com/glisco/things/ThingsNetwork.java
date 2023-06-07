@@ -66,7 +66,7 @@ public class ThingsNetwork {
             final var target = message.target();
             final var pos = target.getBlockPos().offset(target.getSide());
 
-            final var world = access.player().world;
+            final var world = access.player().getWorld();
             if (!world.getBlockState(pos).isAir()) return;
             if (!world.canSetBlock(pos)) {
                 LOGGER.warn("Received illegal place item packet");

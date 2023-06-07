@@ -6,6 +6,7 @@ import com.glisco.things.items.trinkets.AgglomerationItem;
 import dev.emi.trinkets.api.SlotType;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
@@ -26,7 +27,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingInventory inventory, World world) {
+    public boolean matches(RecipeInputInventory inventory, World world) {
         int totalItems = 0;
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.getStack(i).isEmpty()) continue;
@@ -68,7 +69,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inventory, DynamicRegistryManager drm) {
+    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager drm) {
         ItemStack firstTrinket = matchOne(inventory, stack -> !stack.isEmpty() && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION));
         ItemStack secondTrinket = matchOne(inventory, stack -> !stack.isEmpty() && stack != firstTrinket && !stack.isOf(ThingsItems.EMPTY_AGGLOMERATION));
 
@@ -85,7 +86,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
         return Serializer.INSTANCE;
     }
 
-    private static boolean matchOnce(CraftingInventory inventory, Predicate<ItemStack> condition) {
+    private static boolean matchOnce(RecipeInputInventory inventory, Predicate<ItemStack> condition) {
         boolean found = false;
 
         for (int i = 0; i < inventory.size(); i++) {
@@ -98,7 +99,7 @@ public class AgglomerateRecipe extends SpecialCraftingRecipe {
         return found;
     }
 
-    private static ItemStack matchOne(CraftingInventory inventory, Predicate<ItemStack> condition) {
+    private static ItemStack matchOne(RecipeInputInventory inventory, Predicate<ItemStack> condition) {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
 
