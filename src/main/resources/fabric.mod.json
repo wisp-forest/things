@@ -45,7 +45,8 @@
     "minecraft": ">=1.19.3",
     "trinkets": ">=3.3.0",
     "owo": ">=0.5.4+1.18",
-    "reach-entity-attributes": "*"
+    "reach-entity-attributes": "*",
+    "lavender": ">=0.1.0-pre.6"
   },
   "recommends": {
     "patchouli": "*"

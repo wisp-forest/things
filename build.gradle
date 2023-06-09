@@ -49,7 +49,7 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"
 
-    modImplementation "io.wispforest:lavender:${project.lavender_version}"
+    include modImplementation("io.wispforest:lavender:${project.lavender_version}")
 
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modLocalRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
