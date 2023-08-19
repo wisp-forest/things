@@ -12,7 +12,7 @@
 Everybody knows that all the cool kids have socks. As such, it is of course possible to obtain a pair for oneself.
 Easily obtained using some {light_purple}Wool{} adorned with [Gleaming Powder](^things:items/gleaming_materials), they
 provide an instant {gold}speed boost{}. Should there be a need for even greater swiftness, the {light_purple}Socks{} may
-be upgraded with a {gold}String Potion of Swiftness{} and some [Gleaming Powder](^things:items/gleaming_materials).
+be upgraded in a Crafting Table with a {gold}Strong Potion of Swiftness{} and some [Gleaming Powder](^things:items/gleaming_materials).
 
 ;;;;;
 
