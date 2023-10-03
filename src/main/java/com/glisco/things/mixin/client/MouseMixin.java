@@ -21,7 +21,7 @@ public class MouseMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method = "onMouseScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;scrollInHotbar(D)V"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    private void beforePlayerScrollHotbar(long window, double horizontal, double vertical, CallbackInfo ci, double verticalAmount, int i) {
+    private void beforePlayerScrollHotbar(long window, double horizontal, double vertical, CallbackInfo ci, boolean bl, double d, double e, double f, int i, int j, int k) {
         ClientPlayerEntity player = this.client.player;
 
         if(!player.shouldCancelInteraction()) return;

@@ -110,7 +110,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
         Registry.register(Registries.SCREEN_HANDLER, id("displacement_tome"), DISPLACEMENT_TOME_SCREEN_HANDLER);
 
-        Criteria.register(AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION);
+        Criteria.register("things:an_amazingly_expensive_mistake", AN_AMAZINGLY_EXPENSIVE_MISTAKE_CRITERION);
 
         ThingsNetwork.init();
         THINGS_GROUP.initialize();

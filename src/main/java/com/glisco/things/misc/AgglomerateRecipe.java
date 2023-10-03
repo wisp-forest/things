@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class AgglomerateRecipe extends SpecialCraftingRecipe {
-    public AgglomerateRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public AgglomerateRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override

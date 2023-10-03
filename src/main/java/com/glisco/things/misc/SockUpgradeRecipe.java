@@ -20,8 +20,8 @@ import java.util.function.Predicate;
 
 public class SockUpgradeRecipe extends SpecialCraftingRecipe {
 
-    public SockUpgradeRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public SockUpgradeRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override

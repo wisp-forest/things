@@ -18,8 +18,8 @@ import java.util.function.Predicate;
 
 public class JumpySocksRecipe extends SpecialCraftingRecipe {
 
-    public JumpySocksRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public JumpySocksRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override
