@@ -18,7 +18,6 @@ public class SockDataComponent implements Component, ServerTickingComponent {
     private final PlayerEntity bearer;
     private RegistryKey<World> lastWorld = null;
 
-    public int sneakTicks = 0;
     public boolean jumpySocksEquipped = false;
 
     private float speedModification = 0;

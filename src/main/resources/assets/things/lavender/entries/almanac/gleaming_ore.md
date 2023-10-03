@@ -2,7 +2,6 @@
 {
   "icon": "things:gleaming_ore",
   "title": "Gleaming Ore",
-  "category": "things:blocks",
   "associated_items": [
     "things:gleaming_ore",
     "things:deepslate_gleaming_ore"

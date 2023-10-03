@@ -20,4 +20,4 @@ be upgraded in a Crafting Table with a {gold}Strong Potion of Swiftness{} and so
 
 Similarly, a {light_purple}Rabbit Foot Charm{} may be integrated, consuming one {light_purple}Gleaming Compound{}. This
 will bestow upon the wearer {gold}Jump Boost II{} as well as {gold}step-assist{}. Said {light_purple}Jump Boost{} may
-also be toggled by {gold}sneaking for one second while sprinting{}.
+also be toggled by pressing <keybind;key.things.toggle_socks_jump_boost>.

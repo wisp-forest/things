@@ -1,14 +1,14 @@
 package com.glisco.things.items;
 
-import io.wispforest.owo.ops.TextOps;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
-import org.apache.commons.lang3.text.WordUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface ExtendableTooltipProvider {
 
@@ -16,26 +16,42 @@ public interface ExtendableTooltipProvider {
 
     String tooltipTranslationKey();
 
+    @Environment(EnvType.CLIENT)
     default boolean hasExtendedTooltip() {
         return true;
     }
 
+    @Environment(EnvType.CLIENT)
     default void tryAppend(List<Text> tooltip) {
-        if (!hasExtendedTooltip()) return;
+        if (!this.hasExtendedTooltip()) return;
 
-        if (Screen.hasShiftDown()) append(tooltip);
+        if (Screen.hasShiftDown()) this.append(tooltip);
         else tooltip.add(TOOLTIP_HINT);
     }
 
+    @Environment(EnvType.CLIENT)
     default void append(List<Text> tooltip) {
-        var lines = WordUtils.wrap(I18n.translate(tooltipTranslationKey()), 35).split(System.lineSeparator());
-        var texts = new ArrayList<Text>();
-
-        for (var line : lines) {
-            texts.add(TextOps.withColor(line, TextOps.color(Formatting.GRAY)));
-        }
-
-        tooltip.addAll(texts);
+        this.appendWrapped(tooltip, Text.translatable(this.tooltipTranslationKey()));
     }
 
+    @Environment(EnvType.CLIENT)
+    default void appendWrapped(List<Text> tooltip, Text toAppend) {
+        MinecraftClient.getInstance().textRenderer.getTextHandler().wrapLines(toAppend, 220, Style.EMPTY.withFormatting(Formatting.GRAY))
+                .stream()
+                .map(VisitableTextContent::new)
+                .map(MutableText::of)
+                .forEach(tooltip::add);
+    }
+
+    record VisitableTextContent(StringVisitable content) implements TextContent {
+        @Override
+        public <T> Optional<T> visit(StringVisitable.StyledVisitor<T> visitor, Style style) {
+            return this.content.visit(visitor, style);
+        }
+
+        @Override
+        public <T> Optional<T> visit(StringVisitable.Visitor<T> visitor) {
+            return this.content.visit(visitor);
+        }
+    }
 }

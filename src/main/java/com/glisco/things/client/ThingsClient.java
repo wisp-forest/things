@@ -17,7 +17,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -25,6 +24,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -43,10 +43,12 @@ public class ThingsClient implements ClientModInitializer {
     public static final KeyBinding OPEN_ENDER_CHEST =
             KeyBindingHelper.registerKeyBinding(new KeyBinding(keybindId("openenderchest"), GLFW.GLFW_KEY_G, THINGS_CATEGORY));
 
+    public static final KeyBinding TOGGLE_SOCKS_JUMP_BOOST =
+            KeyBindingHelper.registerKeyBinding(new KeyBinding(keybindId("toggle_socks_jump_boost"), GLFW.GLFW_KEY_CAPS_LOCK, THINGS_CATEGORY));
 
     @Override
     public void onInitializeClient() {
-        BlockEntityRendererRegistry.register(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY, PlacedItemBlockEntityRenderer::new);
+        BlockEntityRendererFactories.register(ThingsBlocks.PLACED_ITEM_BLOCK_ENTITY, PlacedItemBlockEntityRenderer::new);
 
         HandledScreens.register(Things.DISPLACEMENT_TOME_SCREEN_HANDLER, DisplacementTomeScreen::new);
 
@@ -68,22 +70,25 @@ public class ThingsClient implements ClientModInitializer {
                 if (!(client.crosshairTarget instanceof BlockHitResult blockResult)) return;
                 ThingsNetwork.CHANNEL.clientHandle().send(new ThingsNetwork.PlaceItemPacket(blockResult));
             }
-        });
 
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (OPEN_ENDER_CHEST.wasPressed()) {
                 if (!Things.hasTrinket(client.player, ThingsItems.ENDER_POUCH)) return;
                 ThingsNetwork.CHANNEL.clientHandle().send(new ThingsNetwork.OpenEnderChestPacket());
             }
+
+            while (TOGGLE_SOCKS_JUMP_BOOST.wasPressed()) {
+                if (!Things.hasTrinket(client.player, ThingsItems.SOCKS)) return;
+                ThingsNetwork.CHANNEL.clientHandle().send(new ThingsNetwork.ToggleSocksJumpBoostPacket());
+            }
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            if(!(screen instanceof HandledScreen) || !Things.CONFIG.enableAgglomerationInvScrollSelection()) return;
+            if (!(screen instanceof HandledScreen) || !Things.CONFIG.enableAgglomerationInvScrollSelection()) return;
 
             ScreenMouseEvents.allowMouseScroll(screen).register((screen1, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
                 var slot = ((HandledScreenAccessor) screen1).thing$getSlotAt(mouseX, mouseY);
 
-                if(slot == null) return true;
+                if (slot == null) return true;
 
                 var slotStack = slot.getStack();
                 int slotId = slot.id;
@@ -91,7 +96,7 @@ public class ThingsClient implements ClientModInitializer {
                 //This is required due to Screen Handler Mismatch for hotbar items with a given Itemgroup open in Creative Mode
                 boolean fromPlayerInv = screen1 instanceof CreativeInventoryScreen && slot.inventory instanceof PlayerInventory && slot.getIndex() < 9;
 
-                if(slot instanceof CreativeSlotAccessor creativeSlot){
+                if (slot instanceof CreativeSlotAccessor creativeSlot) {
                     slotId = creativeSlot.things$getSlot().id;
                 }
 

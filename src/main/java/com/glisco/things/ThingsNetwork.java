@@ -5,13 +5,17 @@ import com.glisco.things.blocks.ThingsBlocks;
 import com.glisco.things.client.DisplacementTomeScreen;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.AgglomerationItem;
+import com.glisco.things.items.trinkets.SocksItem;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import dev.emi.trinkets.api.TrinketsApi;
 import io.wispforest.owo.network.OwoNetChannel;
 import io.wispforest.owo.ops.ItemOps;
+import io.wispforest.owo.ops.WorldOps;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -32,7 +36,7 @@ public class ThingsNetwork {
         CHANNEL.registerServerbound(OpenEnderChestPacket.class, (message, access) -> {
             final var player = access.player();
 
-            if (!TrinketsApi.getTrinketComponent(player).get().isEquipped(ThingsItems.ENDER_POUCH)) {
+            if (!Things.hasTrinket(player, ThingsItems.ENDER_POUCH)) {
                 LOGGER.warn("Received illegal openEChest packet");
                 return;
             }
@@ -83,6 +87,17 @@ public class ThingsNetwork {
             stack.decrement(1);
         });
 
+        CHANNEL.registerServerbound(ToggleSocksJumpBoostPacket.class, (message, access) -> {
+            var player = access.player();
+            if (!Things.hasTrinket(player, ThingsItems.SOCKS)) return;
+
+            var socks = Things.getTrinkets(player).getEquipped(ThingsItems.SOCKS).get(0).getRight();
+            socks.mutate(SocksItem.JUMP_BOOST_TOGGLE_KEY, enabled -> !enabled);
+
+            WorldOps.playSound(player.getWorld(), player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
+            Things.TOGGLE_JUMP_BOOST_PARTICLES.spawn(player.getWorld(), player.getPos());
+        });
+
         CHANNEL.registerServerbound(AgglomerationItem.ScrollHandStackTrinket.class, AgglomerationItem.ScrollHandStackTrinket::scrollItemStack);
         CHANNEL.registerServerbound(AgglomerationItem.ScrollStackFromSlotTrinket.class, AgglomerationItem.ScrollStackFromSlotTrinket::scrollItemStack);
     }
@@ -91,4 +106,6 @@ public class ThingsNetwork {
     public record OpenEnderChestPacket() {}
 
     public record PlaceItemPacket(BlockHitResult target) {}
+
+    public record ToggleSocksJumpBoostPacket() {}
 }

@@ -24,8 +24,9 @@ public class EnderPouchItem extends TrinketItemWithOptionalTooltip implements Si
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void append(List<Text> tooltip) {
-        tooltip.add(Text.translatable(tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText()));
+        tooltip.add(Text.translatable(this.tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.OPEN_ENDER_CHEST).getLocalizedText()));
     }
 
     @Override

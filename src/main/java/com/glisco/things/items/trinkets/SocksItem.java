@@ -1,13 +1,16 @@
 package com.glisco.things.items.trinkets;
 
 import com.glisco.things.Things;
+import com.glisco.things.client.ThingsClient;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.TextOps;
-import io.wispforest.owo.ops.WorldOps;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -15,8 +18,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
@@ -51,19 +52,6 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         sockData.jumpySocksEquipped = nbt.get(JUMPY_KEY);
         if (player.getWorld().isClient) return;
 
-        if (player.isSneaking() && player.isSprinting()) {
-            sockData.sneakTicks++;
-            if (sockData.sneakTicks >= 20) {
-                nbt.mutate(JUMP_BOOST_TOGGLE_KEY, enabled -> !enabled);
-                sockData.sneakTicks = 0;
-
-                WorldOps.playSound(player.getWorld(), player.getPos(), SoundEvents.UI_TOAST_IN, SoundCategory.PLAYERS, 1, 2);
-                Things.TOGGLE_JUMP_BOOST_PARTICLES.spawn(player.getWorld(), player.getPos());
-            }
-        } else {
-            sockData.sneakTicks = 0;
-        }
-
         sockData.updateSockSpeed(slotRef.index(), nbt.get(SPEED_KEY) + 1);
 
         if (!sockData.jumpySocksEquipped || nbt.get(JUMP_BOOST_TOGGLE_KEY)) return;
@@ -79,6 +67,12 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
 
         Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier() * (speed + 1));
         Things.SOCK_DATA.get(player).clearSockSpeed(slot.index());
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void append(List<Text> tooltip) {
+        this.appendWrapped(tooltip, Text.translatable(this.tooltipTranslationKey(), KeyBindingHelper.getBoundKeyOf(ThingsClient.TOGGLE_SOCKS_JUMP_BOOST).getLocalizedText()));
     }
 
     @Override

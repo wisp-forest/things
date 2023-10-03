@@ -78,7 +78,7 @@ public abstract class LivingEntityMixin extends Entity {
     @ModifyVariable(method = "handleFallDamage", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;computeFallDamage(FF)I"))
     private int decreaseFallDamage(int originalFallDamage) {
         if (Things.getTrinkets((LivingEntity) (Object) this).isEquipped(ThingsItems.SHOCK_ABSORBER)) {
-            return originalFallDamage / 4;
+            return originalFallDamage - (int) Math.min(16, originalFallDamage * 0.20f);
         } else {
             return originalFallDamage;
         }

@@ -5,7 +5,7 @@ import com.glisco.things.items.generic.*;
 import com.glisco.things.items.trinkets.*;
 import com.glisco.things.mixin.access.ItemAccessor;
 import dev.emi.trinkets.api.TrinketsApi;
-import io.wispforest.lavender.book.BookItem;
+import io.wispforest.lavender.book.LavenderBookItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import io.wispforest.owo.ops.TextOps;
 import io.wispforest.owo.registration.annotations.IterationIgnored;
@@ -29,7 +29,7 @@ import java.util.List;
 public class ThingsItems implements ItemRegistryContainer {
 
     @IterationIgnored
-    public static final Item THINGS_ALMANAC = BookItem.registerForBook(Things.id("almanac"), Things.id("things_almanac"), new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
+    public static final Item THINGS_ALMANAC = LavenderBookItem.registerForBook(Things.id("almanac"), Things.id("things_almanac"), new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
 
     public static final Item RECALL_POTION = new RecallPotionItem();
     public static final Item CONTAINER_KEY = new ContainerKeyItem();

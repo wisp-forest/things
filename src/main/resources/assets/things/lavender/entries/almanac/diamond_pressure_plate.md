@@ -2,7 +2,6 @@
 {
   "icon": "things:diamond_pressure_plate",
   "title": "Diamond Pressure Plate",
-  "category": "things:blocks",
   "associated_items": [
     "things:diamond_pressure_plate"
   ]

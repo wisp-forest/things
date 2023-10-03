@@ -4,12 +4,15 @@ import com.glisco.things.Things;
 import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.trinkets.SocksItem;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.displays.brewing.DefaultBrewingDisplay;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
@@ -20,6 +23,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class ThingsPlugin implements REIClientPlugin {
+
+    public static final CategoryIdentifier<BrokenWatchDisplay> BROKEN_WATCH_CATEGORY = CategoryIdentifier.of(Things.id("broken_watch"));
+
+    @Override
+    public void registerCategories(CategoryRegistry registry) {
+        registry.add(new BrokenWatchCategory());
+        registry.addWorkstations(BROKEN_WATCH_CATEGORY, EntryStacks.of(Blocks.PISTON));
+    }
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
@@ -38,6 +49,7 @@ public class ThingsPlugin implements REIClientPlugin {
         registry.add(new SockDisplay(averageSocks, new ItemStack(ThingsItems.RABBIT_FOOT_CHARM), SocksItem.create(0, true), true));
         registry.add(new SockDisplay(averageSocks, swiftnessPotion, SocksItem.create(1, false), false));
         registry.add(new SockDisplay(SocksItem.create(1, false), swiftnessPotion, SocksItem.create(2, false), false));
+        registry.add(new BrokenWatchDisplay());
     }
 
     @Override

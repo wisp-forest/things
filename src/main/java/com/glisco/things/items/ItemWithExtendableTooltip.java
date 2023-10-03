@@ -1,5 +1,7 @@
 package com.glisco.things.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,8 @@ public abstract class ItemWithExtendableTooltip extends Item implements Extendab
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tryAppend(tooltip);
+        this.tryAppend(tooltip);
     }
 }

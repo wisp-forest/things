@@ -2,7 +2,6 @@
 {
   "icon": "things:quartz_glowstone_fixture",
   "title": "Glowstone Fixtures",
-  "category": "things:blocks",
   "associated_items": [
     "things:quartz_glowstone_fixture",
     "things:stone_glowstone_fixture",
