@@ -42,14 +42,11 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.19.3",
-    "trinkets": ">=3.3.0",
-    "owo": ">=0.5.4+1.18",
+    "minecraft": ">=1.20.2",
+    "trinkets": ">=3.8.0",
+    "owo": ">=0.11.3",
     "reach-entity-attributes": "*",
-    "lavender": ">=0.1.0-pre.6"
-  },
-  "recommends": {
-    "patchouli": "*"
+    "lavender": ">=0.1.0-pre.15"
   },
   "custom": {
     "modmenu": {
