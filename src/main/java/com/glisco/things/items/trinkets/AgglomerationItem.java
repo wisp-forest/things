@@ -47,6 +47,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
@@ -69,26 +70,26 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
         return getStackAndRun(stack, player, innerStack -> {
             return innerStack.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
-        });
+        }, () -> false);
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         return getStackAndRun(context.getStack(), context.getPlayer(), innerStack -> {
             return innerStack.useOnBlock(new ItemUsageContext(context.getWorld(), context.getPlayer(), context.getHand(), innerStack, ((ItemUsageContextAccessor)context).things$getHitResult()));
-        });
+        }, () -> ActionResult.FAIL);
     }
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         return getStackAndRun(stack, user instanceof PlayerEntity player ? player : null, innerStack -> {
             return innerStack.finishUsing(world, user);
-        });
+        }, () -> stack);
     }
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        return getStackAndRun(stack, player, innerStack -> innerStack.onStackClicked(slot, clickType, player));
+        return getStackAndRun(stack, player, innerStack -> innerStack.onStackClicked(slot, clickType, player), () -> false);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             innerStack.postHit(target, ((PlayerEntity) attacker));
 
             return true;
-        });
+        }, () -> false);
     }
 
     @Override
@@ -106,24 +107,27 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             innerStack.postMine(world, state, pos, ((PlayerEntity) miner));
 
             return true;
-        });
+        }, () -> false);
     }
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-        return getStackAndRun(stack, user, innerStack -> innerStack.useOnEntity(user, entity, hand));
+        return getStackAndRun(stack, user, innerStack -> innerStack.useOnEntity(user, entity, hand), () -> ActionResult.FAIL);
     }
 
     @Override
     public boolean isUsedOnRelease(ItemStack stack) {
-        return getStackAndRun(stack, null, ItemStack::isUsedOnRelease);
+        return getStackAndRun(stack, null, ItemStack::isUsedOnRelease, () -> false);
     }
 
     //--------
 
-    public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru){
+    public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru, Supplier<T> error){
         var data = getDataFor(stack);
+
         var selectedTrinket = stack.get(SELECTED_TRINKET_KEY);
+
+        if(selectedTrinket >= data.subStacks.size()) return error.get();
 
         T value = methodPassthru.apply(data.subStacks.get(selectedTrinket));
         data.updateStackIfNeeded(selectedTrinket, player);
