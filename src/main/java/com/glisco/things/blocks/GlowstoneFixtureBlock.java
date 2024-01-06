@@ -1,5 +1,6 @@
 package com.glisco.things.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
@@ -110,4 +111,8 @@ public class GlowstoneFixtureBlock extends FacingBlock implements Waterloggable 
         return direction == state.get(FACING) && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : state;
     }
 
+    @Override
+    protected MapCodec<? extends FacingBlock> getCodec() {
+        return null;
+    }
 }

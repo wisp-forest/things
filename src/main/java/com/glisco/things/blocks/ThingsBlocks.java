@@ -28,8 +28,8 @@ public class ThingsBlocks implements BlockRegistryContainer {
     public static final Block QUARTZ_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
     public static final Block DEEPSLATE_GLOWSTONE_FIXTURE = new GlowstoneFixtureBlock();
 
-    public static final Block GLEAMING_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
-    public static final Block DEEPSLATE_GLEAMING_ORE = new ExperienceDroppingBlock(FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).luminance(5).requiresTool(), UniformIntProvider.create(3, 7));
+    public static final Block GLEAMING_ORE = new ExperienceDroppingBlock(UniformIntProvider.create(3, 7), FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE).luminance(5).requiresTool());
+    public static final Block DEEPSLATE_GLEAMING_ORE = new ExperienceDroppingBlock(UniformIntProvider.create(3, 7), FabricBlockSettings.copyOf(Blocks.DEEPSLATE_DIAMOND_ORE).luminance(5).requiresTool());
 
     public static final Block DIAMOND_PRESSURE_PLATE = new DiamondPressurePlateBlock();
     public static final BlockItem DIAMOND_PRESSURE_PLATE_ITEM = new BlockItem(ThingsBlocks.DIAMOND_PRESSURE_PLATE, new OwoItemSettings().group(Things.THINGS_GROUP)) {

@@ -8,15 +8,15 @@
     "glisco"
   ],
   "contact": {
-    "issues": "https://github.com/glisco03/things/issues",
-    "sources": "https://github.com/glisco03/things",
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/things-fabric"
+    "issues": "https://github.com/wisp-forest/things/issues",
+    "sources": "https://github.com/wisp-forest/things",
+    "homepage": "https://modrinth.com/mod/things"
   },
   "contributors": [
     "Pois1x",
     "Noaaan",
-    "esiotrot",
     "naschhorn",
+    "esiotrot",
     "BasiqueEvangelist"
   ],
   "icon": "assets/things/icon.png",
@@ -42,7 +42,7 @@
   "depends": {
     "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.20.2",
+    "minecraft": ">=1.20.3",
     "trinkets": ">=3.8.0",
     "owo": ">=0.11.3",
     "reach-entity-attributes": "*",

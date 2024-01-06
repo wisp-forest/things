@@ -5,15 +5,17 @@ import com.glisco.things.ThingsNetwork;
 import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.misc.DisplacementTomeScreenHandler;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.WorldOps;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
+import io.wispforest.owo.serialization.endec.StructEndecBuilder;
 import net.minecraft.client.item.ClampedModelPredicateProvider;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
@@ -24,19 +26,20 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
-    public static final NbtKey<Integer> FUEL = new NbtKey<>("Fuel", NbtKey.Type.INT);
-    public static final NbtKey<NbtCompound> TARGETS = new NbtKey<>("Targets", NbtKey.Type.COMPOUND);
+    public static final KeyedEndec<Integer> FUEL = Endec.INT.keyed("Fuel", 0);
+    public static final KeyedEndec<Map<String, Target>> TARGETS = Target.ENDEC.mapOf().keyed("Targets", HashMap::new);
 
     public DisplacementTomeItem() {
         super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
@@ -45,11 +48,11 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
     public static void storeTeleportTargetInBook(ItemStack stack, Target target, String name, boolean replaceIfExisting) {
         var targets = stack.get(TARGETS);
 
-        if (targets.contains(name) && !replaceIfExisting) {
+        if (targets.containsKey(name) && !replaceIfExisting) {
             throw new IllegalArgumentException("Teleport point '" + name + "' already exists and replaceIfExisting was not set");
         }
 
-        target.put(targets, name);
+        targets.put(name, target);
         stack.put(TARGETS, targets);
     }
 
@@ -59,7 +62,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     public static boolean deletePoint(ItemStack stack, String name) {
         var targets = stack.get(TARGETS);
-        if (!targets.contains(name)) return false;
+        if (!targets.containsKey(name)) return false;
         targets.remove(name);
         return true;
     }
@@ -69,7 +72,7 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
         var newName = data.split(":")[1];
 
         var targets = stack.get(TARGETS);
-        if (!targets.contains(name)) return false;
+        if (!targets.containsKey(name)) return false;
         targets.put(newName, targets.get(name));
         targets.remove(name);
         return true;
@@ -106,11 +109,19 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable("item.things.displacement_tome.tooltip.charges", stack.getOr(FUEL, 0)));
+        tooltip.add(Text.translatable("item.things.displacement_tome.tooltip.charges", stack.get(FUEL)));
         super.appendTooltip(stack, world, tooltip, context);
     }
 
     public record Target(BlockPos pos, RegistryKey<World> world, float headYaw, float headPitch) {
+
+        public static final Endec<Target> ENDEC = StructEndecBuilder.of(
+                Endec.LONG.xmap(BlockPos::fromLong, BlockPos::asLong).fieldOf("Pos", Target::pos),
+                BuiltInEndecs.IDENTIFIER.xmap(identifier -> RegistryKey.of(RegistryKeys.WORLD, identifier), RegistryKey::getValue).fieldOf("World", Target::world),
+                Endec.FLOAT.fieldOf("HeadYaw", Target::headYaw),
+                Endec.FLOAT.fieldOf("HeadPitch", Target::headPitch),
+                Target::new
+        );
 
         public void teleportPlayer(ServerPlayerEntity player) {
             WorldOps.teleportToWorld(player, player.getServer().getWorld(this.world), Vec3d.ofCenter(this.pos), this.headYaw, this.headPitch);
@@ -119,31 +130,12 @@ public class DisplacementTomeItem extends ItemWithExtendableTooltip {
         public static Target fromPlayer(ServerPlayerEntity player) {
             return new Target(player.getBlockPos(), player.getWorld().getRegistryKey(), player.headYaw, player.getPitch());
         }
-
-        public void put(NbtCompound compound, String key) {
-            var nbt = new NbtCompound();
-            nbt.putLong("Pos", this.pos.asLong());
-            nbt.putString("World", this.world.getValue().toString());
-            nbt.putFloat("HeadYaw", this.headYaw);
-            nbt.putFloat("HeadPitch", this.headPitch);
-            compound.put(key, nbt);
-        }
-
-        public static Target get(NbtCompound compound, String key) {
-            var nbt = compound.getCompound(key);
-            return new Target(
-                    BlockPos.fromLong(nbt.getLong("Pos")),
-                    RegistryKey.of(RegistryKeys.WORLD, new Identifier(nbt.getString("World"))),
-                    nbt.getFloat("HeadYaw"),
-                    nbt.getFloat("HeadPitch")
-            );
-        }
     }
 
     public static class PredicateProvider implements ClampedModelPredicateProvider {
         @Override
         public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity, int seed) {
-            int size = stack.get(TARGETS).getSize();
+            int size = stack.get(TARGETS).size();
             if (size == 0) {
                 return 0;
             } else if (size < 4) {

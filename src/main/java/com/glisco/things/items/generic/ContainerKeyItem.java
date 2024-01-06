@@ -5,7 +5,8 @@ import com.glisco.things.items.ItemWithExtendableTooltip;
 import com.glisco.things.mixin.access.ContainerLockAccessor;
 import com.glisco.things.mixin.access.LockableContainerBlockEntityAccessor;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.nbt.NbtKey;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class ContainerKeyItem extends ItemWithExtendableTooltip {
 
-    private static final NbtKey<Integer> LOCK_KEY = new NbtKey<>("Lock", NbtKey.Type.INT);
+    private static final KeyedEndec<Integer> LOCK_KEY = Endec.INT.keyed("Lock", 0);
 
     public ContainerKeyItem() {
         super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));

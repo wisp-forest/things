@@ -1,5 +1,6 @@
 package com.glisco.things.items;
 
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -44,6 +45,9 @@ public interface ExtendableTooltipProvider {
     }
 
     record VisitableTextContent(StringVisitable content) implements TextContent {
+
+        private static final Type<VisitableTextContent> DUMMY_TYPE = new Type<>(MapCodec.unit(new VisitableTextContent(StringVisitable.EMPTY)), "idwtialsimmoedm:visitable_text");
+
         @Override
         public <T> Optional<T> visit(StringVisitable.StyledVisitor<T> visitor, Style style) {
             return this.content.visit(visitor, style);
@@ -52,6 +56,11 @@ public interface ExtendableTooltipProvider {
         @Override
         public <T> Optional<T> visit(StringVisitable.Visitor<T> visitor) {
             return this.content.visit(visitor);
+        }
+
+        @Override
+        public Type<?> getType() {
+            return DUMMY_TYPE;
         }
     }
 }

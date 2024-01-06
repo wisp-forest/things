@@ -17,9 +17,8 @@ import java.util.List;
 public class DiamondPressurePlateBlock extends PressurePlateBlock {
 
     protected DiamondPressurePlateBlock() {
-        super(ActivationRule.MOBS,
-                FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).mapColor(MapColor.DIAMOND_BLUE),
-                BlockSetType.IRON);
+        super(BlockSetType.IRON,
+                FabricBlockSettings.copyOf(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE).sounds(BlockSoundGroup.METAL).mapColor(MapColor.DIAMOND_BLUE));
     }
 
     @Override

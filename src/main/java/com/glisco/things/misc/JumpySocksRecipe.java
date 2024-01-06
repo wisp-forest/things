@@ -27,7 +27,7 @@ public class JumpySocksRecipe extends SpecialCraftingRecipe {
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.GLEAMING_COMPOUND))) return false;
         if (!matchOnce(inventory, stack -> stack.isOf(ThingsItems.RABBIT_FOOT_CHARM))) return false;
 
-        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && !stack.getOr(SocksItem.JUMPY_KEY, false));
+        return matchOnce(inventory, stack -> stack.isOf(ThingsItems.SOCKS) && !stack.get(SocksItem.JUMPY_KEY));
     }
 
     @Override

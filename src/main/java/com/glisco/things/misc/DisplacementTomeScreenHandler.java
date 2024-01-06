@@ -52,14 +52,13 @@ public class DisplacementTomeScreenHandler extends ScreenHandler {
                 return;
             }
 
-            NbtCompound bookTargetsTag = book.getOrCreateSubNbt("Targets");
-            if (!bookTargetsTag.contains(location)) return;
+            var targets = book.get(DisplacementTomeItem.TARGETS);
+            if (!targets.containsKey(location)) return;
 
             currentFuel -= Things.CONFIG.displacementTomeFuelConsumption();
             book.getOrCreateNbt().putInt("Fuel", currentFuel);
 
-            DisplacementTomeItem.Target target = DisplacementTomeItem.Target.get(bookTargetsTag, location);
-            target.teleportPlayer(serverPlayer);
+            targets.get(location).teleportPlayer(serverPlayer);
             serverPlayer.getWorld().playSound(null, serverPlayer.getBlockPos(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
             serverPlayer.closeHandledScreen();
         } else {

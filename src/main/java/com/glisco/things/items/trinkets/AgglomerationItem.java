@@ -12,8 +12,10 @@ import dev.emi.trinkets.api.TrinketItem;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.emi.trinkets.api.client.TrinketRenderer;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
-import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.network.ServerAccess;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.BuiltInEndecs;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -41,18 +43,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
 
-    public static final NbtKey<Byte> SELECTED_TRINKET_KEY = new NbtKey<>("SelectedTrinket", NbtKey.Type.BYTE);
-    public static final NbtKey<NbtList> ITEMS_KEY = new NbtKey.ListKey<>("Items", NbtKey.Type.COMPOUND);
+    public static final KeyedEndec<Byte> SELECTED_TRINKET_KEY = Endec.BYTE.keyed("SelectedTrinket", (byte) 0);
+    public static final KeyedEndec<List<ItemStack>> ITEMS_KEY = BuiltInEndecs.ITEM_STACK.listOf().keyed("Items", ArrayList::new);
 
     private final static LoadingCache<ItemStack, StackData> CACHE = CacheBuilder.newBuilder()
             .concurrencyLevel(1)
@@ -151,15 +150,9 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
     }
 
     public static ItemStack createStack(ItemStack... items) {
-        ItemStack stack = new ItemStack(ThingsItems.AGGLOMERATION, 1);
+        var stack = new ItemStack(ThingsItems.AGGLOMERATION, 1);
 
-        NbtList itemsTag = new NbtList();
-        stack.put(ITEMS_KEY, itemsTag);
-
-        for (ItemStack itemStack : items) {
-            itemsTag.add(itemStack.writeNbt(new NbtCompound()));
-        }
-
+        stack.put(ITEMS_KEY, Arrays.asList(items));
         stack.put(SELECTED_TRINKET_KEY, (byte) 0);
 
         return stack;
@@ -348,13 +341,10 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             if (stack.hasNbt()) {
                 this.defensiveNbtData = stack.getNbt().copy();
 
-                var itemsTag = stack.get(ITEMS_KEY);
-
-                for (int i = 0; i < itemsTag.size(); i++) {
-                    ItemStack subStack = ItemStack.fromNbt(itemsTag.getCompound(i));
-
-                    subStacks.add(subStack);
-                    defensiveCopies.add(subStack.copy());
+                var items = stack.get(ITEMS_KEY);
+                for (var item : items) {
+                    this.subStacks.add(item);
+                    this.defensiveCopies.add(item.copy());
                 }
             }
         }
@@ -372,7 +362,7 @@ public class AgglomerationItem extends TrinketItem implements TrinketRenderer {
             defensiveCopies.set(idx, subStacks.get(idx).copy());
 
             var itemsTag = stack.get(ITEMS_KEY);
-            itemsTag.set(idx, subStacks.get(idx).writeNbt(new NbtCompound()));
+            itemsTag.set(idx, subStacks.get(idx));
 
             defensiveNbtData = stack.getNbt().copy();
         }

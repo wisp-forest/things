@@ -6,8 +6,9 @@ import com.glisco.things.items.ThingsItems;
 import com.glisco.things.items.TrinketItemWithOptionalTooltip;
 import dev.emi.trinkets.api.SlotReference;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.ops.TextOps;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -27,9 +28,9 @@ import java.util.List;
 
 public class SocksItem extends TrinketItemWithOptionalTooltip {
 
-    public static final NbtKey<Boolean> JUMPY_KEY = new NbtKey<>("Jumpy", NbtKey.Type.BOOLEAN);
-    public static final NbtKey<Boolean> JUMP_BOOST_TOGGLE_KEY = new NbtKey<>("JumpBoostDisabled", NbtKey.Type.BOOLEAN);
-    public static final NbtKey<Integer> SPEED_KEY = new NbtKey<>("Speed", NbtKey.Type.INT);
+    public static final KeyedEndec<Boolean> JUMPY_KEY = Endec.BOOLEAN.keyed("Jumpy", false);
+    public static final KeyedEndec<Boolean> JUMP_BOOST_TOGGLE_KEY = Endec.BOOLEAN.keyed("JumpBoostDisabled", false);
+    public static final KeyedEndec<Integer> SPEED_KEY = Endec.INT.keyed("Speed", 0);
 
     public SocksItem() {
         super(new OwoItemSettings().maxCount(1).group(Things.THINGS_GROUP));
@@ -63,7 +64,7 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
         Things.SOCK_DATA.get(entity).jumpySocksEquipped = false;
 
         if (!(entity instanceof ServerPlayerEntity player)) return;
-        int speed = stack.getOr(SPEED_KEY, 0);
+        int speed = stack.get(SPEED_KEY);
 
         Things.SOCK_DATA.get(player).modifySpeed(-Things.CONFIG.sockPerLevelSpeedAmplifier() * (speed + 1));
         Things.SOCK_DATA.get(player).clearSockSpeed(slot.index());
@@ -77,12 +78,12 @@ public class SocksItem extends TrinketItemWithOptionalTooltip {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.getOr(JUMPY_KEY, false)) {
-            tooltip.add(TextOps.withColor("↑ ", stack.getOr(JUMP_BOOST_TOGGLE_KEY, false) ? TextOps.color(Formatting.GRAY) : 0x34d49c)
+        if (stack.get(JUMPY_KEY)) {
+            tooltip.add(TextOps.withColor("↑ ", stack.get(JUMP_BOOST_TOGGLE_KEY) ? TextOps.color(Formatting.GRAY) : 0x34d49c)
                     .append(TextOps.translateWithColor("item.things.socks.jumpy", TextOps.color(Formatting.GRAY))));
         }
 
-        int speed = stack.getOr(SocksItem.SPEED_KEY, 0);
+        int speed = stack.get(SocksItem.SPEED_KEY);
         if (speed < 3) {
             tooltip.add(TextOps.withColor("☄ ", 0x34b1d4)
                     .append(TextOps.translateWithColor("item.things.socks.speed_" + speed, TextOps.color(Formatting.GRAY))));

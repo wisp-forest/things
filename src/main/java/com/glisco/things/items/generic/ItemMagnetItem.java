@@ -2,8 +2,9 @@ package com.glisco.things.items.generic;
 
 import com.glisco.things.Things;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
-import io.wispforest.owo.nbt.NbtKey;
 import io.wispforest.owo.particles.ClientParticles;
+import io.wispforest.owo.serialization.Endec;
+import io.wispforest.owo.serialization.endec.KeyedEndec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -35,7 +36,7 @@ public class ItemMagnetItem extends Item {
     private static final int USE_COST = 50;
     private static final int MAX_CHARGE = 200;
 
-    private final NbtKey<Integer> CHARGE = new NbtKey<>("Charge", NbtKey.Type.INT);
+    private static final KeyedEndec<Integer> CHARGE = Endec.INT.keyed("Charge", MAX_CHARGE);
 
     public ItemMagnetItem() {
         super(new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
@@ -44,7 +45,7 @@ public class ItemMagnetItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         var stack = user.getStackInHand(hand);
-        if (stack.getOr(CHARGE, MAX_CHARGE) < USE_COST) return TypedActionResult.pass(stack);
+        if (stack.get(CHARGE) < USE_COST) return TypedActionResult.pass(stack);
 
         var teleportedItems = new HashSet<>();
         boolean blue = true;
@@ -72,7 +73,7 @@ public class ItemMagnetItem extends Item {
                 break;
             }
 
-            double radius = 1.25 + (stack.getOr(CHARGE, MAX_CHARGE) / (double) MAX_CHARGE) * 2;
+            double radius = 1.25 + (stack.get(CHARGE) / (double) MAX_CHARGE) * 2;
             Vec3d box1 = result.getPos().add(-radius, -radius, -radius);
             Vec3d box2 = result.getPos().add(radius, radius, radius);
 
@@ -92,35 +93,35 @@ public class ItemMagnetItem extends Item {
         }
 
         user.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 0.125f, 2);
-        stack.put(CHARGE, stack.getOr(CHARGE, MAX_CHARGE) - USE_COST);
+        stack.put(CHARGE, stack.get(CHARGE) - USE_COST);
 
         return TypedActionResult.success(stack);
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.translatable(this.getTranslationKey() + ".tooltip", stack.getOr(CHARGE, MAX_CHARGE)));
+        tooltip.add(Text.translatable(this.getTranslationKey() + ".tooltip", stack.get(CHARGE)));
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if (stack.getOr(CHARGE, MAX_CHARGE) >= MAX_CHARGE) return;
+        if (stack.get(CHARGE) >= MAX_CHARGE) return;
         stack.mutate(CHARGE, energy -> Math.min(energy + 1 + energy / 80, MAX_CHARGE));
     }
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
-        return stack.getOr(CHARGE, MAX_CHARGE) < MAX_CHARGE;
+        return stack.get(CHARGE) < MAX_CHARGE;
     }
 
     @Override
     public int getItemBarStep(ItemStack stack) {
-        return (int) (13 * (stack.getOr(CHARGE, MAX_CHARGE) / (float) MAX_CHARGE));
+        return (int) (13 * (stack.get(CHARGE) / (float) MAX_CHARGE));
     }
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        float energy = stack.getOr(CHARGE, MAX_CHARGE) / (float) MAX_CHARGE;
+        float energy = stack.get(CHARGE) / (float) MAX_CHARGE;
 
         int r = (int) (100 + 155 * (1 - energy));
         int b = (int) (127 + 128 * energy);

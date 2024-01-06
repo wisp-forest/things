@@ -56,7 +56,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
         var targets = new HashSet<String>();
 
         var newButton = rootComponent.childById(ButtonComponent.class, "new-button");
-        newButton.active = inventory.containsAny(Set.of(ThingsItems.DISPLACEMENT_PAGE)) && bookNbt.get(DisplacementTomeItem.TARGETS).getSize() < 8;
+        newButton.active = inventory.containsAny(Set.of(ThingsItems.DISPLACEMENT_PAGE)) && bookNbt.get(DisplacementTomeItem.TARGETS).size() < 8;
         if (!newButton.active) newButton.tooltip(Text.translatable("gui.things.displacement_tome.no_pages"));
 
         newButton.onPress((ButtonComponent button) -> {
@@ -80,7 +80,7 @@ public class DisplacementTomeScreen extends BaseUIModelHandledScreen<FlowLayout,
         });
 
         if (bookNbt.has(DisplacementTomeItem.TARGETS)) {
-            for (var target : bookNbt.get(DisplacementTomeItem.TARGETS).getKeys()) {
+            for (var target : bookNbt.get(DisplacementTomeItem.TARGETS).keySet()) {
                 targets.add(target);
 
                 var teleportComponent = this.model.expandTemplate(FlowLayout.class, "teleport-button", Map.of());

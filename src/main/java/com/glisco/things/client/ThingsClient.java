@@ -53,7 +53,7 @@ public class ThingsClient implements ClientModInitializer {
         HandledScreens.register(Things.DISPLACEMENT_TOME_SCREEN_HANDLER, DisplacementTomeScreen::new);
 
         ModelPredicateProviderRegistry.register(ThingsItems.DISPLACEMENT_TOME, new Identifier("pages"), new DisplacementTomeItem.PredicateProvider());
-        ModelPredicateProviderRegistry.register(ThingsItems.SOCKS, new Identifier("jumpy"), (stack, world, entity, seed) -> stack.getOr(SocksItem.JUMPY_KEY, false) ? 1 : 0);
+        ModelPredicateProviderRegistry.register(ThingsItems.SOCKS, new Identifier("jumpy"), (stack, world, entity, seed) -> stack.get(SocksItem.JUMPY_KEY) ? 1 : 0);
 
         TrinketRendererRegistry.registerRenderer(Items.APPLE, new AppleTrinket.Renderer());
 

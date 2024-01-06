@@ -32,7 +32,7 @@ public class BaterWucketItem extends BucketItem {
     }
 
     public static void registerCauldronBehavior() {
-        CauldronBehavior.EMPTY_CAULDRON_BEHAVIOR.put(ThingsItems.BATER_WUCKET, (state, world, pos, player, hand, stack) -> {
+        CauldronBehavior.EMPTY_CAULDRON_BEHAVIOR.map().put(ThingsItems.BATER_WUCKET, (state, world, pos, player, hand, stack) -> {
             if (world.isClient) return ActionResult.SUCCESS;
 
             world.setBlockState(pos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
