@@ -34,6 +34,7 @@ public class ThingsItems implements ItemRegistryContainer {
     public static final Item RECALL_POTION = new RecallPotionItem();
     public static final Item CONTAINER_KEY = new ContainerKeyItem();
     public static final Item BATER_WUCKET = new BaterWucketItem();
+    public static final Item BEMPTY_UCKET = new BemptyUcketItem();
     public static final Item ENDER_POUCH = new EnderPouchItem();
     public static final Item MONOCLE = new MonocleItem();
     public static final Item MOSS_NECKLACE = new MossNecklaceItem();
@@ -68,6 +69,7 @@ public class ThingsItems implements ItemRegistryContainer {
         }
 
         BaterWucketItem.registerCauldronBehavior();
+        BemptyUcketItem.registerCauldronBehavior();
         ((ItemAccessor) BATER_WUCKET).things$setRecipeRemainder(BATER_WUCKET);
         ((ItemAccessor) Items.POTION).things$setRecipeRemainder(Items.GLASS_BOTTLE);
     }

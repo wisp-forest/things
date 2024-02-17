@@ -15,6 +15,7 @@
   "item.things.container_key": "Container Key",
   "item.things.container_key.tooltip": "Used to lock containers, sneak-click to lock/unlock. Required to open a locked container",
   "item.things.bater_wucket": "Bater Wucket",
+  "item.things.bempty_ucket": "Bempty Ucket",
   "item.things.ender_pouch": "Ender Pouch",
   "item.things.ender_pouch.tooltip": [
     {"text": "Press ", "color": "gray"},

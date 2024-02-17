@@ -27,9 +27,9 @@
     "trinkets.LivingEntityTrinketComponentMixin"
   ],
   "client": [
+    "client.MouseMixin",
     "client.access.CreativeSlotAccessor",
     "client.access.HandledScreenAccessor",
-    "client.MouseMixin",
     "client.access.ScreenAccessor"
   ],
   "injectors": {

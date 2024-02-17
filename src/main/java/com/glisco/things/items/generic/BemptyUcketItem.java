@@ -6,6 +6,7 @@ import io.wispforest.owo.itemgroup.OwoItemSettings;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StoragePreconditions;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ExtractionOnlyStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
@@ -22,10 +23,10 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.event.GameEvent;
 
-public class BaterWucketItem extends BucketItem {
+public class BemptyUcketItem extends BucketItem {
 
-    public BaterWucketItem() {
-        super(Fluids.WATER, new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
+    public BemptyUcketItem() {
+        super(Fluids.EMPTY, new OwoItemSettings().group(Things.THINGS_GROUP).maxCount(1));
         FluidStorage.ITEM.registerForItems((stack, ctx) -> new Storage(), this);
     }
 
@@ -35,46 +36,40 @@ public class BaterWucketItem extends BucketItem {
     }
 
     public static void registerCauldronBehavior() {
-        CauldronBehavior.EMPTY_CAULDRON_BEHAVIOR.map().put(ThingsItems.BATER_WUCKET, (state, world, pos, player, hand, stack) -> {
-            if (world.isClient) return ActionResult.SUCCESS;
+        CauldronBehavior.WATER_CAULDRON_BEHAVIOR.map().put(ThingsItems.BEMPTY_UCKET, (state, world, pos, player, hand, stack) -> {
+            return CauldronBehavior.emptyCauldron(state, world, pos, player, hand, stack, stack, blockState -> blockState.get(LeveledCauldronBlock.LEVEL) == 3, SoundEvents.ITEM_BUCKET_FILL);
+        });
 
-            world.setBlockState(pos, Blocks.WATER_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
-            player.incrementStat(Stats.FILL_CAULDRON);
-            player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
-            world.playSound(null, pos, SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
-            world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-
-            return ActionResult.CONSUME;
+        CauldronBehavior.LAVA_CAULDRON_BEHAVIOR.map().put(ThingsItems.BEMPTY_UCKET, (state, world, pos, player, hand, stack) -> {
+            return CauldronBehavior.emptyCauldron(state, world, pos, player, hand, stack, stack, blockState -> true, SoundEvents.ITEM_BUCKET_FILL_LAVA);
         });
     }
 
-    private static class Storage implements ExtractionOnlyStorage<FluidVariant>, SingleSlotStorage<FluidVariant> {
-        private static final FluidVariant WATER = FluidVariant.of(Fluids.WATER);
+    private static class Storage implements net.fabricmc.fabric.api.transfer.v1.storage.Storage<FluidVariant>, SingleSlotStorage<FluidVariant> {
+
+        @Override
+        public long insert(FluidVariant resource, long maxAmount, TransactionContext transaction) {
+            return 0;
+        }
 
         @Override
         public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-            StoragePreconditions.notBlankNotNegative(resource, maxAmount);
-
-            if (resource.equals(WATER)) {
-                return Math.min(maxAmount, FluidConstants.BUCKET);
-            }
-
             return 0;
         }
 
         @Override
         public boolean isResourceBlank() {
-            return false;
+            return true;
         }
 
         @Override
         public FluidVariant getResource() {
-            return WATER;
+            return FluidVariant.blank();
         }
 
         @Override
         public long getAmount() {
-            return FluidConstants.BUCKET;
+            return 0;
         }
 
         @Override
