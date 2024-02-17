@@ -48,6 +48,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 import java.util.function.Predicate;
@@ -78,7 +79,7 @@ public class Things implements ModInitializer, EntityComponentInitializer {
     public static final TagKey<Item> DISPLACEMENT_TOME_FUELS = TagKey.of(RegistryKeys.ITEM, id("displacement_tome_fuels"));
 
     private static Predicate<Item> SHIELD_PREDICATE = item -> item instanceof ShieldItem;
-    private static Set<Item> BROKEN_WATCH_RECIPE;
+    private static final Set<Item> BROKEN_WATCH_RECIPE = ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
 
     private static final ParticleSystemController CONTROLLER = new ParticleSystemController(id("particles"));
     public static final ParticleSystem<Void> TOGGLE_JUMP_BOOST_PARTICLES = CONTROLLER.register(Void.class, (world, pos, data) -> {
@@ -121,8 +122,6 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
         ResourceConditions.register(Things.id("agglomeration_enabled"), jsonObject -> CONFIG.enableAgglomeration());
 
-        BROKEN_WATCH_RECIPE = ImmutableSet.of(Items.LEATHER, Items.CLOCK, ThingsItems.GLEAMING_COMPOUND);
-
         if (Owo.DEBUG) {
             CommandRegistrationCallback.EVENT.register((dispatcher, access, environment) -> {
                 dispatcher.register(literal("things:set_walk_speed_modifier")
@@ -145,6 +144,11 @@ public class Things implements ModInitializer, EntityComponentInitializer {
 
     public static Set<Item> brokenWatchRecipe() {
         return BROKEN_WATCH_RECIPE;
+    }
+
+    public static @Nullable Item recallPotionIngredient() {
+        if (!CONFIG.enableRecallPotionRecipe()) return null;
+        return Registries.ITEM.getOrEmpty(CONFIG.recallPotionIngredient()).orElse(null);
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

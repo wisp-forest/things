@@ -3,6 +3,7 @@ package com.glisco.things.misc;
 import io.wispforest.owo.config.annotation.*;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import net.minecraft.util.Identifier;
 
 @Modmenu(modId = "things")
 @Config(name = "things", wrapperName = "ThingsConfig")
@@ -40,6 +41,10 @@ public class ThingsConfigModel {
     public boolean enableAgglomeration = true;
 
     public boolean enableAgglomerationInvScrollSelection = true;
+
+    public boolean enableRecallPotionRecipe = true;
+
+    public Identifier recallPotionIngredient = new Identifier("ender_pearl");
 
     @Comment("How many ender pearls the displacement tome uses per teleport")
     @RangeConstraint(min = 1, max = 128)

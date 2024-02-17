@@ -191,6 +191,8 @@
   "text.config.things.option.sockPerLevelSpeedAmplifier": "Socks speed amplifier",
   "text.config.things.option.makeLockedContainersUnbreakable": "Unbreakable Locked Containers",
   "text.config.things.option.enableAgglomerationInvScrollSelection": "Toggle Inventory Scrolling On Agglomeration",
+  "text.config.things.option.enableRecallPotionRecipe": "Enable Recall Potion Recipe",
+  "text.config.things.option.recallPotionIngredient": "Recall Potion Ingredient",
 
   "text.config.things.category.effectLevels": "Trinket Status Effects",
   "text.config.things.option.effectLevels.miningGloveMomentum": "Mining Glove Momentum Level",
