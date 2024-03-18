@@ -23,11 +23,11 @@
     " Чтобы открыть инвентарь эндер-сундука"
   ],
   "item.things.monocle": "Моноколь",
-  "item.things.monocle.tooltip": "Даёт бесконечное ночноё зрение",
+  "item.things.monocle.tooltip": "Даёт бесконечное ночное зрение",
   "item.things.moss_necklace": "Замшелое ожерелье",
-  "item.things.moss_necklace.tooltip": "Даёт регенерацию 2, когда на свету",
+  "item.things.moss_necklace.tooltip": "Даёт регенерацию II, когда на свету",
   "item.things.placebo": "Плацебо",
-  "item.things.placebo.tooltip": "Даёт 25% шанс не использовать зелье, когда надето",
+  "item.things.placebo.tooltip": "Даёт 25%% шанс не использовать зелье, когда надето",
   "item.things.displacement_tome": "Том перемещения",
   "item.things.displacement_tome.tooltip": "Необычный инструмент, используемый для телепортации. Нажми ПКМ на жемчуг эндера, чтоба зарядить",
   "item.things.displacement_tome.tooltip.charges": [
@@ -36,7 +36,7 @@
   ],
   "item.things.displacement_page": "Страница перемещения",
   "item.things.mining_gloves": "Шахтёрская перчатка",
-  "item.things.mining_gloves.tooltip": "Даёт Спешку 2 навсегда",
+  "item.things.mining_gloves.tooltip": "Даёт Спешку II навсегда",
   "item.things.riot_gauntlet": "Перчатка бунта",
   "item.things.riot_gauntlet.tooltip": "Даёт Силу навсегда",
   "item.things.infernal_scepter": "Адский скипетр",
@@ -61,17 +61,14 @@
     {"text": "❤", "color": "#EB1D36"}
   ],
   "item.things.rabbit_foot_charm": "Амулет кроличьих лапок ",
-  "item.things.rabbit_foot_charm.tooltip": "Даёт Прыгучесть 2 навсегда",
+  "item.things.rabbit_foot_charm.tooltip": "Даёт Прыгучесть II навсегда",
   "item.things.luck_of_the_irish": "Амулет удачи",
 
   "_comment": "Когда ты ешь отравленный картофель - даёт бафф удачи, регенрацции и удаляет отправление, автор об этом прямов в своем тексте не говорит, решил оставить оригинал.",
-  "item.things.luck_of_the_irish.tooltip": "Типа превращение отправленной картошки в золотое яблоко",
+  "item.things.luck_of_the_irish.tooltip": "Будто превращение Ядовитого картофеля в золотое яблоко",
   "item.things.socks": "Носки",
-  "item.things.socks.tooltip": [
-    "Увеличивает скорость бега и, при надобности, высоту прыжка, включая автопрыжок. Нажми ",
-    {"index": 0, "color": "white"},
-    " Чтобы включить высокий прыжок"
-  ],
+  "item.things.socks.tooltip": "Увеличивает скорость бега и, при надобности, высоту прыжка.",
+
   "item.things.socks.jumpy": "Прыгучий",
   "item.things.socks.speed_0": "Обычный",
   "item.things.socks.speed_1": "Шустрый",
@@ -80,12 +77,12 @@
   "item.things.arm_extender": "Удлинитель руки",
   "item.things.arm_extender.tooltip": "Увеличивает твою досягаемость на 2 блока",
   "item.things.shock_absorber": "Амортизаторы",
-  "item.things.shock_absorber.tooltip": "Уменьшает урона от падения на 20%% до 8 сердец и кинетический урон на 75%%",
+  "item.things.shock_absorber.tooltip": "Уменьшает урон от падения на 20%% до 8 сердец и кинетический урон на 75%%",
   "item.things.broken_watch": "Сломанные часы",
-  "item.things.broken_watch.tooltip": "Увеличивают время действия эффектов зелий на 50%%",
+  "item.things.broken_watch.tooltip": "Увеличивает время действия эффектов зелий на 50%%",
   "item.things.agglomeration": "Агломерат",
   "item.things.empty_agglomeration": "Пустой Агломерат",
-  "item.things.empty_agglomeration.tooltip": "Объедини две безделушки у которых общий слот, чтобы объединить их.",
+  "item.things.empty_agglomeration.tooltip": "Объедини две безделушки у которых общий слот, чтобы объединить их в одну безделушку.",
 
   "effect.things.momentum": "Моментум",
 
@@ -124,7 +121,7 @@
   ],
   "text.things.crafting_component": "Компонент для крафта",
 
-  "key.things.openenderchest": "Открыть Эндер-сумкау",
+  "key.things.openenderchest": "Открыть Эндер-сумку",
   "key.things.place_item": "Поставьте предмет в мир",
   "key.things.toggle_socks_jump_boost": "Переключить Носки на Высокий прыжок",
 
