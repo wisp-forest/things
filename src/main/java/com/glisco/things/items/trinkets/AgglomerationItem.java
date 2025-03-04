@@ -18,11 +18,10 @@ import io.wispforest.accessories.data.SlotTypeLoader;
 import io.wispforest.accessories.impl.AccessoryNestUtils;
 import io.wispforest.endec.Endec;
 import io.wispforest.endec.SerializationAttributes;
-import io.wispforest.endec.impl.KeyedEndec;
 import io.wispforest.endec.impl.StructEndecBuilder;
 import io.wispforest.owo.network.ServerAccess;
 import io.wispforest.owo.serialization.CodecUtils;
-import io.wispforest.owo.serialization.endec.MinecraftEndecs;
+import it.unimi.dsi.fastutil.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.util.TriState;
@@ -34,6 +33,7 @@ import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -51,6 +51,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -64,8 +65,8 @@ public class AgglomerationItem extends AccessoryItem implements AccessoryNest, A
 
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        return getStackAndRun(stack, player, innerStack -> {
-            return innerStack.onClicked(ItemStack.EMPTY, slot, clickType, player, cursorStackReference);
+        return getSlottedStackAndRun(stack, player, (innerSlot, innerStack) -> {
+            return innerStack.onClicked(otherStack, innerSlot, clickType, player, cursorStackReference);
         }, () -> false);
     }
 
@@ -85,7 +86,7 @@ public class AgglomerationItem extends AccessoryItem implements AccessoryNest, A
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        return getStackAndRun(stack, player, innerStack -> innerStack.onStackClicked(slot, clickType, player), () -> false);
+        return getSlottedStackAndRun(stack, player, (innerSlot, innerStack) -> innerStack.onStackClicked(innerSlot, clickType, player), () -> false);
     }
 
     @Override
@@ -117,7 +118,13 @@ public class AgglomerationItem extends AccessoryItem implements AccessoryNest, A
     }
 
     public <T> T getStackAndRun(ItemStack stack, PlayerEntity player, Function<ItemStack, T> methodPassthru, Supplier<T> error){
+        return getSlottedStackAndRun(stack, player, (integer, stack1) -> methodPassthru.apply(stack1), error);
+    }
+
+    public <T> T getSlottedStackAndRun(ItemStack stack, PlayerEntity player, BiFunction<Slot, ItemStack, T> methodPassthru, Supplier<T> error){
         var value = AccessoryNest.attemptFunction(stack, player, map -> {
+            var data = AccessoryNestUtils.getData(stack);
+
             int index = 0;
 
             var selectedTrinket = getSelectedIndex(stack);
@@ -125,7 +132,7 @@ public class AgglomerationItem extends AccessoryItem implements AccessoryNest, A
             if(selectedTrinket >= map.size()) return error.get();
 
             for (var entry : map.entrySet()) {
-                if(index == selectedTrinket) return methodPassthru.apply(entry.getKey());
+                if(index == selectedTrinket) return methodPassthru.apply(new AgglomerationItemSlot(stack, data, index, 0, 0), entry.getKey());
 
                 index++;
             }
@@ -312,5 +319,100 @@ public class AgglomerationItem extends AccessoryItem implements AccessoryNest, A
                 .packetCodec(CodecUtils.toPacketCodec(ENDEC))
                 .cache()
                 .build();
+    }
+
+    private static class AgglomerationItemSlot extends Slot {
+        public AgglomerationItemSlot(ItemStack nestStack, AccessoryNestContainerContents containerContents, int index, int x, int y) {
+            super(new AccessoryNestInventory(nestStack, containerContents), index, x, y);
+        }
+    }
+
+    public static class AccessoryNestInventory implements Inventory {
+
+        private final ItemStack nestStack;
+        private AccessoryNestContainerContents containerContents;
+
+        private AccessoryNestInventory(ItemStack nestStack, AccessoryNestContainerContents containerContents) {
+            this.nestStack = nestStack;
+            this.containerContents = containerContents;
+        }
+
+        @Override
+        public int size() {
+            return this.containerContents.accessories().size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.containerContents.accessories().isEmpty();
+        }
+
+        @Override
+        public ItemStack getStack(int slot) {
+            return this.containerContents.accessories().get(slot);
+        }
+
+        @Override
+        public ItemStack removeStack(int slot, int amount) {
+            var stacks = splitStack(this.containerContents.accessories(), slot, amount);
+
+            if (stacks == null || stacks.right().isEmpty()) return ItemStack.EMPTY;
+
+            // Force Change to be updated
+            this.setStack(slot, stacks.left());
+
+            return stacks.right();
+        }
+
+        // Return is the Slot based stack on the LEFT and
+        // the split off stack with the given amount on the RIGHT
+        @Nullable
+        public static Pair<ItemStack, ItemStack> splitStack(List<ItemStack> stacks, int slot, int amount) {
+            if (slot >= 0 && slot < stacks.size() && !stacks.get(slot).isEmpty() && amount > 0) {
+                var copiedStack = stacks.get(slot).copy();
+
+                return Pair.of(copiedStack, copiedStack.split(amount));
+            }
+
+            return null;
+        }
+
+        @Override
+        public ItemStack removeStack(int slot) {
+            var itemStack = this.containerContents.accessories().get(slot);
+
+            if (itemStack.isEmpty()) return ItemStack.EMPTY;
+
+            // Force Change to be updated
+            this.setStack(slot, ItemStack.EMPTY);
+
+            return itemStack;
+        }
+
+        @Override
+        public void setStack(int slot, ItemStack stack) {
+            // Force Change to be updated
+            this.containerContents = this.containerContents.setStack(slot, stack);
+
+            stack.capCount(this.getMaxCount(stack));
+
+            this.markDirty();
+        }
+
+        @Override
+        public void markDirty() {
+            this.nestStack.set(AccessoriesDataComponents.NESTED_ACCESSORIES, this.containerContents);
+        }
+
+        @Override
+        public boolean canPlayerUse(PlayerEntity player) {
+            return false;
+        }
+
+        @Override
+        public void clear() {
+            this.containerContents.accessories().clear();
+            this.markDirty();
+        }
     }
 }
